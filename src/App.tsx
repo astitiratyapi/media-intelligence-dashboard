@@ -36,13 +36,34 @@ const demoRiskLevel = {
 const demoActors = {
   subtitle: 'Most mentioned actors in recent coverage',
   actors: [
-    { name: 'BGN', count: 28 },
-    { name: 'Prabowo Subianto', count: 21 },
-    { name: 'MBG', count: 14 },
-    { name: 'Badan Gizi Nasional (BGN)', count: 11 },
-    { name: 'Dadan Hindayana', count: 8 },
-    { name: 'Sri Mulyani', count: 5 },
-    { name: 'Zulhas', count: 3 },
+    {
+      name: 'BGN',
+      type: 'Media' as const,
+      count: 28,
+      sentiment: 'Netral' as const,
+      positive: 1, neutral: 24, negative: 3,
+    },
+    {
+      name: 'Prabowo Subianto',
+      type: 'Media' as const,
+      count: 21,
+      sentiment: 'Netral' as const,
+      positive: 4, neutral: 14, negative: 3,
+    },
+    {
+      name: 'Badan Gizi Nasional RI (@badangizinasional.ri)',
+      type: 'Media Sosial' as const,
+      count: 18,
+      sentiment: 'Positif' as const,
+      positive: 18, neutral: 0, negative: 0,
+    },
+    {
+      name: 'MBG',
+      type: 'Media' as const,
+      count: 14,
+      sentiment: 'Netral' as const,
+      positive: 1, neutral: 10, negative: 3,
+    },
   ],
 }
 

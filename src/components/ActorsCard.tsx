@@ -1,130 +1,333 @@
-import { Users } from 'lucide-react'
+import { Newspaper, Share2, Users } from 'lucide-react'
 import { tokens, foundation } from '../tokens'
 
-// ─── Actor bar row ────────────────────────────────────────────────────────────
-// Resizing: fill container horizontally, hug content vertically
-// Auto Layout: flex-col, gap/xs (name row + bar row)
+// ─── Types ────────────────────────────────────────────────────────────────────
 
-interface Actor {
+export interface Actor {
   name: string
+  type: 'Media' | 'Media Sosial'
   count: number
+  sentiment: 'Positif' | 'Netral' | 'Negatif'
+  positive: number
+  neutral: number
+  negative: number
 }
-
-interface ActorRowProps {
-  actor: Actor
-  maxCount: number
-}
-
-function ActorRow({ actor, maxCount }: ActorRowProps) {
-  const fillPct = maxCount > 0 ? (actor.count / maxCount) * 100 : 0
-
-  return (
-    // Row container: flex-col, gap/xs (2px effectively)
-    <div className="flex flex-col gap-1" style={{ minWidth: 0 }}>
-      {/* Name + count row: flex-row, space-between */}
-      <div className="flex flex-row items-center justify-between gap-2">
-        <span
-          className="truncate"
-          style={{
-            fontSize: tokens.typography.size['body-sm'],
-            color: tokens.color.text.primary,
-            fontWeight: tokens.typography.weight.medium,
-            minWidth: 0,
-          }}
-        >
-          {actor.name}
-        </span>
-        <span
-          className="flex-shrink-0 font-semibold tabular-nums"
-          style={{
-            fontSize: tokens.typography.size['body-sm'],
-            color: tokens.color.text.secondary,
-          }}
-        >
-          {actor.count}
-        </span>
-      </div>
-
-      {/* Bar track: fill container horizontally, fixed height */}
-      <div
-        className="w-full overflow-hidden"
-        style={{
-          height: 4,
-          backgroundColor: foundation.color.neutral[100],
-          borderRadius: tokens.radius.full,
-        }}
-      >
-        {/* Bar fill: brand blue, proportional width */}
-        <div
-          style={{
-            height: '100%',
-            width: `${fillPct}%`,
-            backgroundColor: tokens.color.surface.brand,
-            borderRadius: tokens.radius.full,
-            transition: 'width 0.5s ease-out',
-          }}
-        />
-      </div>
-    </div>
-  )
-}
-
-// ─── Props ────────────────────────────────────────────────────────────────────
 
 export interface ActorsCardProps {
   actors: Actor[]
   subtitle?: string
 }
 
-// ─── Component ────────────────────────────────────────────────────────────────
-// Resizing: fill container horizontally (flex-1), hug content vertically
-// Auto Layout: flex-col, gap = spacing/default
+// ─── Constants ────────────────────────────────────────────────────────────────
 
-export function ActorsCard({ actors, subtitle }: ActorsCardProps) {
-  const maxCount = actors.reduce((m, a) => Math.max(m, a.count), 0)
-  const visibleActors = actors.slice(0, 8)
+const FONT = "'Plus Jakarta Sans', system-ui, -apple-system, sans-serif"
+
+const SENTIMENT_BADGE = {
+  Positif: {
+    bg:   foundation.color.green[50],
+    text: foundation.color.green[700],
+    border: foundation.color.green[600],
+  },
+  Netral: {
+    bg:   foundation.color.neutral[100],
+    text: foundation.color.neutral[600],
+    border: foundation.color.neutral[300],
+  },
+  Negatif: {
+    bg:   foundation.color.red[50],
+    text: foundation.color.red[600],
+    border: foundation.color.red[500],
+  },
+}
+
+// Each expanded card ≈ 104px + 8px gap → 4 cards = 448px scroll area
+const LIST_HEIGHT = 448
+
+// ─── SentimentBadge ───────────────────────────────────────────────────────────
+
+function SentimentBadge({ value }: { value: 'Positif' | 'Netral' | 'Negatif' }) {
+  const s = SENTIMENT_BADGE[value]
+  return (
+    <span
+      style={{
+        fontFamily: FONT,
+        fontSize: tokens.typography.size['label-xs'],
+        fontWeight: tokens.typography.weight.semibold,
+        color: s.text,
+        backgroundColor: s.bg,
+        border: `1px solid ${s.border}`,
+        borderRadius: tokens.radius.full,
+        paddingLeft: tokens.spacing.sm,
+        paddingRight: tokens.spacing.sm,
+        paddingTop: 2,
+        paddingBottom: 2,
+        whiteSpace: 'nowrap',
+        flexShrink: 0,
+      }}
+    >
+      {value}
+    </span>
+  )
+}
+
+// ─── SourceTag ────────────────────────────────────────────────────────────────
+
+function SourceTag({ type }: { type: 'Media' | 'Media Sosial' }) {
+  return (
+    <span
+      style={{
+        fontFamily: FONT,
+        fontSize: tokens.typography.size['label-xs'],
+        fontWeight: tokens.typography.weight.medium,
+        color: tokens.color.text.tertiary,
+        backgroundColor: foundation.color.neutral[100],
+        border: `1px solid ${foundation.color.neutral[200]}`,
+        borderRadius: tokens.radius.sm,
+        paddingLeft: 6,
+        paddingRight: 6,
+        paddingTop: 1,
+        paddingBottom: 1,
+        whiteSpace: 'nowrap',
+        alignSelf: 'flex-start',
+      }}
+    >
+      {type}
+    </span>
+  )
+}
+
+// ─── SentimentBar ─────────────────────────────────────────────────────────────
+
+function SentimentBar({
+  positive, neutral, negative,
+}: {
+  positive: number
+  neutral: number
+  negative: number
+}) {
+  const total = positive + neutral + negative
+  if (total === 0) return null
+
+  const posPct = (positive / total) * 100
+  const neuPct = (neutral  / total) * 100
+  const negPct = (negative / total) * 100
 
   return (
-    // Card container: fill × hug, flex-col, white bg, border, radius/default
-    <article
-      className="flex flex-col flex-1 bg-surface-primary border border-edge-primary rounded-token-default shadow-xs overflow-hidden"
-      style={{ minWidth: 0 }}
-    >
-      {/* Card header: flex-col, gap/xs */}
+    <div className="flex flex-col" style={{ gap: 4, minWidth: 0 }}>
+      {/* Segmented bar */}
       <div
-        className="flex flex-col gap-1"
+        className="flex flex-row w-full overflow-hidden"
+        style={{
+          height: 6,
+          borderRadius: tokens.radius.full,
+          backgroundColor: foundation.color.neutral[100],
+        }}
+      >
+        {posPct > 0 && (
+          <div
+            style={{
+              width: `${posPct}%`,
+              height: '100%',
+              backgroundColor: foundation.color.green[500],
+              flexShrink: 0,
+            }}
+          />
+        )}
+        {neuPct > 0 && (
+          <div
+            style={{
+              width: `${neuPct}%`,
+              height: '100%',
+              backgroundColor: foundation.color.neutral[300],
+              flexShrink: 0,
+            }}
+          />
+        )}
+        {negPct > 0 && (
+          <div
+            style={{
+              width: `${negPct}%`,
+              height: '100%',
+              backgroundColor: foundation.color.red[400],
+              flexShrink: 0,
+            }}
+          />
+        )}
+      </div>
+
+      {/* Counts row: pos · neu · neg */}
+      <div
+        className="flex flex-row justify-between"
+        style={{ minWidth: 0 }}
+      >
+        <span
+          style={{
+            fontFamily: FONT,
+            fontSize: tokens.typography.size['label-xs'],
+            fontWeight: tokens.typography.weight.medium,
+            color: foundation.color.green[700],
+          }}
+        >
+          {positive}
+        </span>
+        <span
+          style={{
+            fontFamily: FONT,
+            fontSize: tokens.typography.size['label-xs'],
+            fontWeight: tokens.typography.weight.medium,
+            color: tokens.color.text.tertiary,
+          }}
+        >
+          {neutral}
+        </span>
+        <span
+          style={{
+            fontFamily: FONT,
+            fontSize: tokens.typography.size['label-xs'],
+            fontWeight: tokens.typography.weight.medium,
+            color: foundation.color.red[600],
+          }}
+        >
+          {negative}
+        </span>
+      </div>
+    </div>
+  )
+}
+
+// ─── ActorItem ────────────────────────────────────────────────────────────────
+
+function ActorItem({ actor }: { actor: Actor }) {
+  const Icon = actor.type === 'Media' ? Newspaper : Share2
+
+  return (
+    <article
+      className="flex flex-col"
+      style={{
+        backgroundColor: tokens.component.card.bg,
+        border: `1px solid ${tokens.color.border.secondary}`,
+        borderRadius: tokens.radius.default,
+        padding: tokens.spacing.default,
+        gap: tokens.spacing.sm,
+        minWidth: 0,
+      }}
+    >
+      {/* ── Top row: icon + name | count + sentiment badge ── */}
+      <div
+        className="flex flex-row items-start justify-between"
+        style={{ gap: tokens.spacing.sm, minWidth: 0 }}
+      >
+        {/* Left: icon + name column */}
+        <div
+          className="flex flex-row items-center"
+          style={{ gap: 6, minWidth: 0, flex: 1 }}
+        >
+          <Icon
+            size={14}
+            style={{ color: tokens.color.icon.secondary, flexShrink: 0 }}
+            aria-hidden="true"
+          />
+          <span
+            className="truncate"
+            style={{
+              fontFamily: FONT,
+              fontSize: tokens.typography.size['body-sm'],
+              fontWeight: tokens.typography.weight.bold,
+              color: tokens.color.text.primary,
+              lineHeight: tokens.typography.lineHeight.tight,
+              minWidth: 0,
+            }}
+          >
+            {actor.name}
+          </span>
+        </div>
+
+        {/* Right: count + badge */}
+        <div
+          className="flex flex-row items-center flex-shrink-0"
+          style={{ gap: 6 }}
+        >
+          <span
+            style={{
+              fontFamily: FONT,
+              fontSize: tokens.typography.size['body-sm'],
+              fontWeight: tokens.typography.weight.bold,
+              color: tokens.color.text.primary,
+              lineHeight: tokens.typography.lineHeight.tight,
+            }}
+          >
+            {actor.count}
+          </span>
+          <SentimentBadge value={actor.sentiment} />
+        </div>
+      </div>
+
+      {/* ── Source type tag ── */}
+      <SourceTag type={actor.type} />
+
+      {/* ── Sentiment bar + counts ── */}
+      <SentimentBar
+        positive={actor.positive}
+        neutral={actor.neutral}
+        negative={actor.negative}
+      />
+    </article>
+  )
+}
+
+// ─── ActorsCard ───────────────────────────────────────────────────────────────
+
+export function ActorsCard({ actors, subtitle }: ActorsCardProps) {
+  return (
+    <article
+      className="flex flex-col flex-1"
+      style={{
+        backgroundColor: tokens.component.card.bg,
+        border: `1px solid ${tokens.component.card.border}`,
+        borderRadius: tokens.component.card.radius,
+        minWidth: 0,
+        overflow: 'hidden',
+      }}
+    >
+      {/* ── Card header ── */}
+      <div
+        className="flex flex-col"
         style={{
           paddingLeft: tokens.component.card.headerPaddingX,
           paddingRight: tokens.component.card.headerPaddingX,
           paddingTop: tokens.component.card.headerPaddingTop,
           paddingBottom: tokens.component.card.headerPaddingBottom,
+          borderBottom: `1px solid ${tokens.color.border.secondary}`,
+          gap: 4,
+          flexShrink: 0,
         }}
       >
-        {/* Title row: flex-row, gap/sm */}
-        <div className="flex flex-row items-center gap-2">
+        <div className="flex flex-row items-center" style={{ gap: tokens.spacing.sm }}>
           <Users
             size={16}
             style={{ color: tokens.color.icon.brand, flexShrink: 0 }}
             aria-hidden="true"
           />
           <h3
-            className="font-bold"
             style={{
+              fontFamily: FONT,
               fontSize: tokens.typography.size['heading-xs'],
-              lineHeight: tokens.typography.lineHeight.tight,
+              fontWeight: tokens.typography.weight.bold,
               color: tokens.color.text.primary,
+              lineHeight: tokens.typography.lineHeight.tight,
+              margin: 0,
             }}
           >
             Actors
           </h3>
         </div>
-
-        {/* Subtitle: body-sm, tertiary */}
         {subtitle && (
           <p
             style={{
+              fontFamily: FONT,
               fontSize: tokens.typography.size['body-sm'],
               color: tokens.color.text.tertiary,
+              margin: 0,
             }}
           >
             {subtitle}
@@ -132,23 +335,24 @@ export function ActorsCard({ actors, subtitle }: ActorsCardProps) {
         )}
       </div>
 
-      {/* Scrollable actor list: flex-col, gap/md, overflow-y-auto */}
+      {/* ── Scrollable actor list ── */}
       <div
-        className="flex flex-col gap-3 overflow-y-auto"
+        role="list"
+        aria-label="Most mentioned actors"
         style={{
-          paddingLeft: tokens.component.card.contentPaddingX,
-          paddingRight: tokens.component.card.contentPaddingX,
-          paddingBottom: tokens.component.card.contentPaddingBottom,
-          // Subtle scrollbar track using surface tokens
+          height: LIST_HEIGHT,
+          overflowY: 'auto',
+          padding: tokens.spacing.default,
+          display: 'flex',
+          flexDirection: 'column',
+          gap: tokens.spacing.sm,
           scrollbarWidth: 'thin',
           scrollbarColor: `${foundation.color.neutral[300]} transparent`,
         }}
-        role="list"
-        aria-label="Most mentioned actors"
       >
-        {visibleActors.map((actor) => (
+        {actors.map((actor) => (
           <div key={actor.name} role="listitem">
-            <ActorRow actor={actor} maxCount={maxCount} />
+            <ActorItem actor={actor} />
           </div>
         ))}
       </div>
