@@ -1,0 +1,87 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ── CSS custom properties from Figma tokens ────────────────────────────────
+   These mirror the Token collection variables (Light mode).
+   Components reference these via tokens.ts JS values (not raw CSS vars),
+   but they are declared here for portability and potential CSS usage. */
+
+:root {
+  /* Brand */
+  --color-brand:            #004990;
+  --color-brand-secondary:  #1BA8DF;
+
+  /* Surface */
+  --surface-primary:        #FFFFFF;
+  --surface-secondary:      #F9FAFB;
+  --surface-tertiary:       #F3F4F6;
+
+  /* Text */
+  --text-primary:           #111827;
+  --text-secondary:         #4B5563;
+  --text-tertiary:          #9CA3AF;
+
+  /* Border */
+  --border-primary:         #D1D5DB;
+  --border-secondary:       #E5E7EB;
+
+  /* Status */
+  --status-warning:         #EAB308;
+  --status-warning-subtle:  #FEFCE8;
+  --status-warning-text:    #A16207;
+  --status-error:           #DC2626;
+  --status-error-subtle:    #FEF2F2;
+  --status-success:         #15803D;
+  --status-success-subtle:  #F0FDF4;
+  --status-info:            #3B82F6;
+  --status-info-subtle:     #EFF6FF;
+
+  /* Typography */
+  --font-sans:   'Inter', system-ui, -apple-system, sans-serif;
+  --font-mono:   'JetBrains Mono', 'Fira Code', monospace;
+
+  /* Radius — border/radius/* */
+  --radius-sm:      4px;
+  --radius-md:      6px;
+  --radius-default: 8px;
+  --radius-lg:      12px;
+  --radius-xl:      16px;
+  --radius-full:    9999px;
+
+  /* Spacing — spacing/* */
+  --spacing-xs:  4px;
+  --spacing-sm:  8px;
+  --spacing-md:  12px;
+  --spacing-default: 16px;
+  --spacing-lg:  20px;
+  --spacing-xl:  24px;
+  --spacing-2xl: 32px;
+  --spacing-3xl: 40px;
+}
+
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+body {
+  font-family: var(--font-sans);
+  color: var(--text-primary);
+  background-color: var(--surface-secondary);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Thin scrollbar for actors card */
+.overflow-y-auto::-webkit-scrollbar {
+  width: 4px;
+}
+.overflow-y-auto::-webkit-scrollbar-track {
+  background: transparent;
+}
+.overflow-y-auto::-webkit-scrollbar-thumb {
+  background: var(--border-primary);
+  border-radius: var(--radius-full);
+}
