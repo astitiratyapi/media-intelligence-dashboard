@@ -239,6 +239,36 @@ function ScoreDriversModal({ score, onClose }: { score: number; onClose: () => v
   )
 }
 
+// ─── Status badge (soft amber pill) ──────────────────────────────────────────
+
+function StatusBadge({ status }: { status: string }) {
+  const bv = tokens.component.badge.variants.warning
+  return (
+    <span
+      style={{
+        display: 'inline-flex',
+        alignItems: 'center',
+        fontFamily: FONT,
+        fontSize: tokens.typography.size['label-xs'],
+        fontWeight: tokens.typography.weight.semibold,
+        letterSpacing: '0.03em',
+        lineHeight: 1,
+        color: bv.text,
+        backgroundColor: bv.bg,
+        border: `${tokens.component.badge.borderWidth}px solid ${bv.border}`,
+        borderRadius: tokens.component.badge.radius,
+        paddingLeft: tokens.component.badge.paddingX,
+        paddingRight: tokens.component.badge.paddingX,
+        paddingTop: tokens.component.badge.paddingY + 3,
+        paddingBottom: tokens.component.badge.paddingY + 3,
+        whiteSpace: 'nowrap',
+      }}
+    >
+      {status}
+    </span>
+  )
+}
+
 // ─── Props ────────────────────────────────────────────────────────────────────
 
 export interface ReputationHealthProps {
@@ -279,48 +309,63 @@ export function ReputationHealthCard({
           overflow: 'hidden',
         }}
       >
-        {/* Card header */}
+        {/* ── Card header: icon + title | status badge ── */}
         <div
-          className="flex flex-row items-center gap-2"
+          className="flex flex-row items-center justify-between"
           style={{
             paddingLeft: tokens.component.card.headerPaddingX,
             paddingRight: tokens.component.card.headerPaddingX,
             paddingTop: tokens.component.card.headerPaddingTop,
             paddingBottom: tokens.component.card.headerPaddingBottom,
+            gap: tokens.spacing.sm,
           }}
         >
-          <Heart size={16} style={{ color: tokens.color.icon.error, flexShrink: 0 }} aria-hidden="true" />
-          <h3
-            className="font-bold"
-            style={{
-              fontSize: tokens.typography.size['heading-xs'],
-              lineHeight: tokens.typography.lineHeight.tight,
-              color: tokens.color.text.primary,
-            }}
-          >
-            Reputation Health
-          </h3>
+          {/* Left: icon + title */}
+          <div className="flex flex-row items-center" style={{ gap: tokens.spacing.sm }}>
+            <Heart size={16} style={{ color: tokens.color.icon.error, flexShrink: 0 }} aria-hidden="true" />
+            <h3
+              style={{
+                fontFamily: FONT,
+                fontSize: tokens.typography.size['heading-xs'],
+                fontWeight: tokens.typography.weight.bold,
+                lineHeight: tokens.typography.lineHeight.tight,
+                color: tokens.color.text.primary,
+                margin: 0,
+              }}
+            >
+              Reputation Health
+            </h3>
+          </div>
+
+          {/* Right: status badge pill */}
+          <StatusBadge status={scoreStyle.status} />
         </div>
 
-        {/* Card body */}
+        {/* ── Card body: vertically centered content ── */}
         <div
-          className="flex flex-col flex-1 items-center justify-center gap-2"
+          className="flex flex-col flex-1 items-center justify-center"
           style={{
             paddingLeft: tokens.component.card.contentPaddingX,
             paddingRight: tokens.component.card.contentPaddingX,
             paddingBottom: tokens.spacing.default,
+            gap: tokens.spacing.sm,
           }}
         >
-          {/* Previous score */}
+          {/* Previous score row */}
           <div
-            className="flex flex-row items-center gap-1 self-center"
-            style={{ fontSize: tokens.typography.size['body-sm'], color: tokens.color.text.tertiary }}
+            className="flex flex-row items-center"
+            style={{ gap: 4, fontSize: tokens.typography.size['body-sm'], color: tokens.color.text.tertiary }}
           >
-            <span>Previous: {previousScore}</span>
+            <span style={{ fontFamily: FONT }}>Previous: {previousScore}</span>
             {isPositive
               ? <TrendingUp size={12} style={{ color: tokens.color.text.success }} />
               : <TrendingDown size={12} style={{ color: tokens.color.text.error }} />}
-            <span style={{ color: isPositive ? tokens.color.text.success : tokens.color.text.error }}>
+            <span
+              style={{
+                fontFamily: FONT,
+                color: isPositive ? tokens.color.text.success : tokens.color.text.error,
+              }}
+            >
               {isPositive ? '+' : ''}{delta.toFixed(1)}
             </span>
           </div>
@@ -330,30 +375,34 @@ export function ReputationHealthCard({
             <GaugeArc score={score} max={maxScore} color={scoreStyle.gauge} />
             <div className="absolute inset-0 flex flex-col items-center justify-center">
               <span
-                className="font-bold leading-none"
-                style={{ fontSize: tokens.typography.size['heading-lg'], color: tokens.color.text.primary }}
+                style={{
+                  fontFamily: FONT,
+                  fontSize: tokens.typography.size['heading-lg'],
+                  fontWeight: tokens.typography.weight.bold,
+                  lineHeight: 1,
+                  color: tokens.color.text.primary,
+                }}
               >
                 {score}
               </span>
-              <span style={{ fontSize: tokens.typography.size['body-sm'], color: tokens.color.text.tertiary }}>
+              <span
+                style={{
+                  fontFamily: FONT,
+                  fontSize: tokens.typography.size['body-sm'],
+                  color: tokens.color.text.tertiary,
+                }}
+              >
                 /{maxScore}
               </span>
             </div>
           </div>
-
-          {/* Status */}
-          <span
-            className="font-semibold"
-            style={{ fontSize: tokens.typography.size['body-base'], color: scoreStyle.label }}
-          >
-            {scoreStyle.status}
-          </span>
 
           {/* View Drivers link */}
           <button
             onClick={handleViewDrivers}
             className="flex flex-row items-center gap-1 hover:underline focus:outline-none"
             style={{
+              fontFamily: FONT,
               fontSize: tokens.typography.size['body-sm'],
               color: tokens.color.text.brand,
               background: 'none',
