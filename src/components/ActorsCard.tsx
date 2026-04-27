@@ -6,8 +6,10 @@ import { tokens, foundation } from '../tokens'
 export interface Actor {
   name: string
   type: 'Media' | 'Media Sosial'
-  count: number
-  sentiment: 'Positif' | 'Netral' | 'Negatif'
+  /** Kept for data compatibility — no longer rendered */
+  count?: number
+  /** Kept for data compatibility — no longer rendered */
+  sentiment?: 'Positif' | 'Netral' | 'Negatif'
   positive: number
   neutral: number
   negative: number
@@ -22,79 +24,8 @@ export interface ActorsCardProps {
 
 const FONT = "'Plus Jakarta Sans', system-ui, -apple-system, sans-serif"
 
-const SENTIMENT_BADGE = {
-  Positif: {
-    bg:   foundation.color.green[50],
-    text: foundation.color.green[700],
-    border: foundation.color.green[600],
-  },
-  Netral: {
-    bg:   foundation.color.neutral[100],
-    text: foundation.color.neutral[600],
-    border: foundation.color.neutral[300],
-  },
-  Negatif: {
-    bg:   foundation.color.red[50],
-    text: foundation.color.red[600],
-    border: foundation.color.red[500],
-  },
-}
-
-// Each compact card ≈ 80px + 4px gap → 4 cards fit in 348px; use 360px for breathing room
-const LIST_HEIGHT = 360
-
-// ─── SentimentBadge ───────────────────────────────────────────────────────────
-
-function SentimentBadge({ value }: { value: 'Positif' | 'Netral' | 'Negatif' }) {
-  const s = SENTIMENT_BADGE[value]
-  return (
-    <span
-      style={{
-        fontFamily: FONT,
-        fontSize: tokens.typography.size['label-xs'],
-        fontWeight: tokens.typography.weight.semibold,
-        color: s.text,
-        backgroundColor: s.bg,
-        border: `1px solid ${s.border}`,
-        borderRadius: tokens.radius.full,
-        paddingLeft: tokens.spacing.sm,
-        paddingRight: tokens.spacing.sm,
-        paddingTop: 2,
-        paddingBottom: 2,
-        whiteSpace: 'nowrap',
-        flexShrink: 0,
-      }}
-    >
-      {value}
-    </span>
-  )
-}
-
-// ─── SourceTag ────────────────────────────────────────────────────────────────
-
-function SourceTag({ type }: { type: 'Media' | 'Media Sosial' }) {
-  return (
-    <span
-      style={{
-        fontFamily: FONT,
-        fontSize: tokens.typography.size['label-xs'],
-        fontWeight: tokens.typography.weight.medium,
-        color: tokens.color.text.tertiary,
-        backgroundColor: foundation.color.neutral[100],
-        border: `1px solid ${foundation.color.neutral[200]}`,
-        borderRadius: tokens.radius.sm,
-        paddingLeft: 6,
-        paddingRight: 6,
-        paddingTop: 1,
-        paddingBottom: 1,
-        whiteSpace: 'nowrap',
-        alignSelf: 'flex-start',
-      }}
-    >
-      {type}
-    </span>
-  )
-}
+// Each compact card ≈ 68px + 4px gap → 4 cards fit in ~296px; use 320px for breathing room
+const LIST_HEIGHT = 320
 
 // ─── SentimentBar ─────────────────────────────────────────────────────────────
 
@@ -106,21 +37,20 @@ function SentimentBar({
   negative: number
 }) {
   const total = positive + neutral + negative
-  if (total === 0) return null
 
-  const posPct = (positive / total) * 100
-  const neuPct = (neutral  / total) * 100
-  const negPct = (negative / total) * 100
+  const posPct = total > 0 ? (positive / total) * 100 : 0
+  const neuPct = total > 0 ? (neutral  / total) * 100 : 0
+  const negPct = total > 0 ? (negative / total) * 100 : 0
 
   return (
-    <div className="flex flex-col" style={{ gap: 4, minWidth: 0 }}>
-      {/* Segmented bar */}
+    <div className="flex flex-col w-full" style={{ gap: tokens.spacing.xs }}>
+      {/* Segmented bar — full gray track when all-zero */}
       <div
         className="flex flex-row w-full overflow-hidden"
         style={{
           height: 6,
           borderRadius: tokens.radius.full,
-          backgroundColor: foundation.color.neutral[100],
+          backgroundColor: foundation.color.neutral[200],
         }}
       >
         {posPct > 0 && (
@@ -155,17 +85,14 @@ function SentimentBar({
         )}
       </div>
 
-      {/* Counts row: pos · neu · neg */}
-      <div
-        className="flex flex-row justify-between"
-        style={{ minWidth: 0 }}
-      >
+      {/* Raw count labels: positive (green) · neutral (gray) · negative (red) */}
+      <div className="flex flex-row justify-between w-full">
         <span
           style={{
             fontFamily: FONT,
-            fontSize: tokens.typography.size['label-xs'],
+            fontSize: tokens.typography.size['body-sm'],
             fontWeight: tokens.typography.weight.medium,
-            color: foundation.color.green[700],
+            color: tokens.color.text.success,
           }}
         >
           {positive}
@@ -173,9 +100,9 @@ function SentimentBar({
         <span
           style={{
             fontFamily: FONT,
-            fontSize: tokens.typography.size['label-xs'],
+            fontSize: tokens.typography.size['body-sm'],
             fontWeight: tokens.typography.weight.medium,
-            color: tokens.color.text.tertiary,
+            color: tokens.color.text.secondary,
           }}
         >
           {neutral}
@@ -183,9 +110,9 @@ function SentimentBar({
         <span
           style={{
             fontFamily: FONT,
-            fontSize: tokens.typography.size['label-xs'],
+            fontSize: tokens.typography.size['body-sm'],
             fontWeight: tokens.typography.weight.medium,
-            color: foundation.color.red[600],
+            color: tokens.color.text.error,
           }}
         >
           {negative}
@@ -215,58 +142,30 @@ function ActorItem({ actor }: { actor: Actor }) {
         minWidth: 0,
       }}
     >
-      {/* ── Top row: icon + name | count + sentiment badge ── */}
+      {/* ── Top row: icon + name only ── */}
       <div
-        className="flex flex-row items-start justify-between"
-        style={{ gap: tokens.spacing.sm, minWidth: 0 }}
+        className="flex flex-row items-center"
+        style={{ gap: 6, minWidth: 0 }}
       >
-        {/* Left: icon + name column */}
-        <div
-          className="flex flex-row items-center"
-          style={{ gap: 6, minWidth: 0, flex: 1 }}
+        <Icon
+          size={14}
+          style={{ color: tokens.color.icon.secondary, flexShrink: 0 }}
+          aria-hidden="true"
+        />
+        <span
+          className="truncate"
+          style={{
+            fontFamily: FONT,
+            fontSize: tokens.typography.size['body-sm'],
+            fontWeight: tokens.typography.weight.bold,
+            color: tokens.color.text.primary,
+            lineHeight: tokens.typography.lineHeight.tight,
+            minWidth: 0,
+          }}
         >
-          <Icon
-            size={14}
-            style={{ color: tokens.color.icon.secondary, flexShrink: 0 }}
-            aria-hidden="true"
-          />
-          <span
-            className="truncate"
-            style={{
-              fontFamily: FONT,
-              fontSize: tokens.typography.size['body-sm'],
-              fontWeight: tokens.typography.weight.bold,
-              color: tokens.color.text.primary,
-              lineHeight: tokens.typography.lineHeight.tight,
-              minWidth: 0,
-            }}
-          >
-            {actor.name}
-          </span>
-        </div>
-
-        {/* Right: count + badge */}
-        <div
-          className="flex flex-row items-center flex-shrink-0"
-          style={{ gap: 6 }}
-        >
-          <span
-            style={{
-              fontFamily: FONT,
-              fontSize: tokens.typography.size['body-sm'],
-              fontWeight: tokens.typography.weight.bold,
-              color: tokens.color.text.primary,
-              lineHeight: tokens.typography.lineHeight.tight,
-            }}
-          >
-            {actor.count}
-          </span>
-          <SentimentBadge value={actor.sentiment} />
-        </div>
+          {actor.name}
+        </span>
       </div>
-
-      {/* ── Source type tag ── */}
-      <SourceTag type={actor.type} />
 
       {/* ── Sentiment bar + counts ── */}
       <SentimentBar
