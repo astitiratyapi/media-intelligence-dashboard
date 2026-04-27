@@ -30,8 +30,8 @@ function GaugeArc({ score, max = 100, color }: GaugeProps) {
   return (
     <svg
       viewBox="0 0 100 100"
-      width={128}
-      height={128}
+      width={96}
+      height={96}
       aria-hidden="true"
     >
       {/* Background track */}
@@ -139,13 +139,13 @@ export function ReputationHealthCard({
         </h3>
       </div>
 
-      {/* Card body: flex-col, centered, gap = spacing/sm */}
+      {/* Card body: flex-col, centered, flex-1 so it grows to fill stretch height */}
       <div
-        className="flex flex-col items-center gap-3"
+        className="flex flex-col flex-1 items-center justify-center gap-2"
         style={{
           paddingLeft: tokens.component.card.contentPaddingX,
           paddingRight: tokens.component.card.contentPaddingX,
-          paddingBottom: tokens.component.card.contentPaddingBottom,
+          paddingBottom: tokens.spacing.default,
         }}
       >
         {/* Previous score row: flex-row, gap/xs */}
@@ -168,14 +168,14 @@ export function ReputationHealthCard({
         </div>
 
         {/* Gauge + score overlay: relative container, hug content */}
-        <div className="relative flex items-center justify-center" style={{ width: 128, height: 128 }}>
+        <div className="relative flex items-center justify-center" style={{ width: 96, height: 96 }}>
           <GaugeArc score={score} max={maxScore} color={scoreStyle.gauge} />
           {/* Score label: absolute centered inside gauge */}
           <div className="absolute inset-0 flex flex-col items-center justify-center">
             <span
               className="font-bold leading-none"
               style={{
-                fontSize: tokens.typography.size['display-sm'],
+                fontSize: tokens.typography.size['heading-lg'],
                 color: tokens.color.text.primary,
               }}
             >

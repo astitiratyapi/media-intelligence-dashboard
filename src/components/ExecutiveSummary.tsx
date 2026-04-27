@@ -27,11 +27,11 @@ export function ExecutiveSummary({ summaryText }: ExecutiveSummaryProps) {
       style={{
         backgroundColor: BG,
         borderRadius: tokens.radius.default,
-        paddingTop: tokens.spacing.xl,
-        paddingBottom: tokens.spacing.xl,
+        paddingTop: tokens.spacing.default,
+        paddingBottom: tokens.spacing.default,
         paddingLeft: tokens.spacing['2xl'],
         paddingRight: tokens.spacing['2xl'],
-        gap: tokens.spacing.sm,
+        gap: tokens.spacing.xs,
       }}
     >
       {/* Header row: icon badge + label */}
@@ -65,10 +65,10 @@ export function ExecutiveSummary({ summaryText }: ExecutiveSummaryProps) {
       <p
         style={{
           fontFamily: FONT,
-          fontSize: tokens.typography.size['body-base'],
+          fontSize: tokens.typography.size['body-sm'],
           fontWeight: tokens.typography.weight.regular,
           color: tokens.color.text.primary,
-          lineHeight: tokens.typography.lineHeight.relaxed,
+          lineHeight: tokens.typography.lineHeight.normal,
           margin: 0,
         }}
       >

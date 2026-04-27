@@ -43,7 +43,7 @@ export function SituationOverview({ reputationHealth, riskLevel, actors }: Situa
     // Section container: flex-col, gap/lg
     <section
       className="flex flex-col w-full"
-      style={{ gap: tokens.spacing.lg }}
+      style={{ gap: tokens.spacing.md }}
       aria-labelledby="situation-overview-heading"
     >
       {/* Section header: flex-row, gap/sm, align-center */}
@@ -81,7 +81,7 @@ export function SituationOverview({ reputationHealth, riskLevel, actors }: Situa
       {/* Each card has flex-1 — fills available width equally (Figma: fill container) */}
       <div
         className="flex flex-row items-stretch"
-        style={{ gap: tokens.spacing.default }}
+        style={{ gap: tokens.spacing.md }}
       >
         <ReputationHealthCard {...reputationHealth} />
         <RiskLevelCard {...riskLevel} />

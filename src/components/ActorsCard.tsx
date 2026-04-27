@@ -40,8 +40,8 @@ const SENTIMENT_BADGE = {
   },
 }
 
-// Each expanded card ≈ 104px + 8px gap → 4 cards = 448px scroll area
-const LIST_HEIGHT = 448
+// Each compact card ≈ 80px + 4px gap → 4 cards fit in 348px; use 360px for breathing room
+const LIST_HEIGHT = 360
 
 // ─── SentimentBadge ───────────────────────────────────────────────────────────
 
@@ -207,8 +207,11 @@ function ActorItem({ actor }: { actor: Actor }) {
         backgroundColor: tokens.component.card.bg,
         border: `1px solid ${tokens.color.border.secondary}`,
         borderRadius: tokens.radius.default,
-        padding: tokens.spacing.default,
-        gap: tokens.spacing.sm,
+        paddingLeft: tokens.spacing.md,
+        paddingRight: tokens.spacing.md,
+        paddingTop: tokens.spacing.sm,
+        paddingBottom: tokens.spacing.sm,
+        gap: tokens.spacing.xs,
         minWidth: 0,
       }}
     >
@@ -342,10 +345,10 @@ export function ActorsCard({ actors, subtitle }: ActorsCardProps) {
         style={{
           height: LIST_HEIGHT,
           overflowY: 'auto',
-          padding: tokens.spacing.default,
+          padding: tokens.spacing.md,
           display: 'flex',
           flexDirection: 'column',
-          gap: tokens.spacing.sm,
+          gap: tokens.spacing.xs,
           scrollbarWidth: 'thin',
           scrollbarColor: `${foundation.color.neutral[300]} transparent`,
         }}
