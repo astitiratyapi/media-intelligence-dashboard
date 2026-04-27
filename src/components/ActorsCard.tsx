@@ -24,8 +24,9 @@ export interface ActorsCardProps {
 
 const FONT = "'Plus Jakarta Sans', system-ui, -apple-system, sans-serif"
 
-// Each compact card ≈ 68px + 4px gap → 4 cards fit in ~296px; use 320px for breathing room
-const LIST_HEIGHT = 320
+// Each item ≈ 66px (padding 16 + title 18 + gap 4 + bar 26 + border 2)
+// 3 items × 66 + 2 gaps × 4 + container padding 24 = 230px → shows exactly 3, scroll for 4+
+const LIST_HEIGHT = 230
 
 // ─── SentimentBar ─────────────────────────────────────────────────────────────
 
@@ -185,7 +186,7 @@ export function ActorsCard({ actors, subtitle }: ActorsCardProps) {
       className="flex flex-col flex-1"
       style={{
         backgroundColor: tokens.component.card.bg,
-        border: `1px solid ${tokens.component.card.border}`,
+        border: `1px solid ${tokens.color.border.secondary}`,
         borderRadius: tokens.component.card.radius,
         minWidth: 0,
         overflow: 'hidden',
@@ -244,6 +245,7 @@ export function ActorsCard({ actors, subtitle }: ActorsCardProps) {
         style={{
           height: LIST_HEIGHT,
           overflowY: 'auto',
+          scrollBehavior: 'smooth',
           padding: tokens.spacing.md,
           display: 'flex',
           flexDirection: 'column',

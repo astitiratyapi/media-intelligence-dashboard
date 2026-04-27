@@ -1,14 +1,12 @@
-import { Heart, ChevronRight, TrendingDown, TrendingUp } from 'lucide-react'
+import { useState } from 'react'
+import { Heart, ChevronRight, TrendingDown, TrendingUp, X } from 'lucide-react'
 import { tokens, foundation } from '../tokens'
 
 // ─── Gauge SVG ────────────────────────────────────────────────────────────────
-// Resizing: fixed 160×160px (hug content)
-// Auto Layout equivalent: self-contained visual, centered in card body
 
 interface GaugeProps {
   score: number
   max?: number
-  /** Gauge color tier: resolved by score range outside */
   color: string
 }
 
@@ -16,25 +14,16 @@ function GaugeArc({ score, max = 100, color }: GaugeProps) {
   const RADIUS = 36
   const CX = 50
   const CY = 50
-  const CIRCUMFERENCE = 2 * Math.PI * RADIUS   // ≈226.19
+  const CIRCUMFERENCE = 2 * Math.PI * RADIUS
   const GAUGE_DEGREES = 270
-  const GAUGE_ARC = (GAUGE_DEGREES / 360) * CIRCUMFERENCE // ≈169.65
-  const GAP = CIRCUMFERENCE - GAUGE_ARC         // ≈56.55
+  const GAUGE_ARC = (GAUGE_DEGREES / 360) * CIRCUMFERENCE
+  const GAP = CIRCUMFERENCE - GAUGE_ARC
 
   const filled = Math.min(Math.max(score / max, 0), 1) * GAUGE_ARC
-
-  // rotate(135) starts arc at 7:30 o'clock in SVG (y-axis down)
-  // The 270° arc sweeps through 12 o'clock, ending at 4:30 o'clock
   const rotation = `rotate(135, ${CX}, ${CY})`
 
   return (
-    <svg
-      viewBox="0 0 100 100"
-      width={96}
-      height={96}
-      aria-hidden="true"
-    >
-      {/* Background track */}
+    <svg viewBox="0 0 100 100" width={96} height={96} aria-hidden="true">
       <circle
         cx={CX} cy={CY} r={RADIUS}
         fill="none"
@@ -44,7 +33,6 @@ function GaugeArc({ score, max = 100, color }: GaugeProps) {
         strokeDasharray={`${GAUGE_ARC} ${GAP}`}
         transform={rotation}
       />
-      {/* Score fill */}
       <circle
         cx={CX} cy={CY} r={RADIUS}
         fill="none"
@@ -62,25 +50,193 @@ function GaugeArc({ score, max = 100, color }: GaugeProps) {
 // ─── Score color helper ───────────────────────────────────────────────────────
 
 function resolveScoreColor(score: number): { gauge: string; label: string; status: string } {
-  if (score >= 70) {
-    return {
-      gauge: tokens.color.surface.success,
-      label: tokens.color.text.success,
-      status: 'Good',
-    }
-  }
-  if (score >= 40) {
-    return {
-      gauge: foundation.color.yellow[500],   // warning / needs attention
-      label: foundation.color.yellow[700],
-      status: 'Needs Attention',
-    }
-  }
-  return {
-    gauge: tokens.color.surface.error,
-    label: tokens.color.text.error,
-    status: 'Critical',
-  }
+  if (score >= 70) return { gauge: tokens.color.surface.success, label: tokens.color.text.success, status: 'Good' }
+  if (score >= 40) return { gauge: foundation.color.yellow[500], label: foundation.color.yellow[700], status: 'Needs Attention' }
+  return { gauge: tokens.color.surface.error, label: tokens.color.text.error, status: 'Critical' }
+}
+
+// ─── Score Drivers modal data ─────────────────────────────────────────────────
+
+const FONT = "'Plus Jakarta Sans', system-ui, -apple-system, sans-serif"
+
+const SCORE_DRIVERS = [
+  { name: 'Sentiment Balance',  desc: '12% positive, 24% negative',          score: 44,   weight: 'w: 60%' },
+  { name: 'Volume Volatility',  desc: 'Volatility index: 0.8',               score: 92.1, weight: 'w: 20%' },
+  { name: 'Tier-1 Media Share', desc: '53% of mentions in Tier-1 outlets',   score: 100,  weight: 'w: 20%' },
+]
+
+// ─── Driver card ──────────────────────────────────────────────────────────────
+
+function DriverCard({ name, desc, score, weight }: typeof SCORE_DRIVERS[0]) {
+  const isHigh   = score >= 60
+  const scoreColor = isHigh ? tokens.color.text.success : tokens.color.text.error
+
+  return (
+    <div
+      style={{
+        backgroundColor: tokens.color.surface.secondary,
+        borderRadius: tokens.radius.lg,
+        padding: tokens.spacing.default,
+        display: 'flex',
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        gap: tokens.spacing.sm,
+      }}
+    >
+      {/* Left: name + description */}
+      <div style={{ display: 'flex', flexDirection: 'column', gap: 2, minWidth: 0 }}>
+        <span
+          style={{
+            fontFamily: FONT,
+            fontSize: tokens.typography.size['body-base'],
+            fontWeight: tokens.typography.weight.bold,
+            color: tokens.color.text.primary,
+          }}
+        >
+          {name}
+        </span>
+        <span
+          style={{
+            fontFamily: FONT,
+            fontSize: tokens.typography.size['body-sm'],
+            color: tokens.color.text.tertiary,
+          }}
+        >
+          {desc}
+        </span>
+      </div>
+
+      {/* Right: score + weight */}
+      <div
+        style={{
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'flex-end',
+          gap: 2,
+          flexShrink: 0,
+        }}
+      >
+        <span
+          style={{
+            fontFamily: FONT,
+            fontSize: tokens.typography.size['heading-md'],
+            fontWeight: tokens.typography.weight.bold,
+            color: scoreColor,
+            lineHeight: 1,
+          }}
+        >
+          {score}
+        </span>
+        <span
+          style={{
+            fontFamily: FONT,
+            fontSize: tokens.typography.size['body-sm'],
+            color: tokens.color.text.tertiary,
+          }}
+        >
+          {weight}
+        </span>
+      </div>
+    </div>
+  )
+}
+
+// ─── Score Drivers modal ──────────────────────────────────────────────────────
+
+function ScoreDriversModal({ score, onClose }: { score: number; onClose: () => void }) {
+  return (
+    /* Overlay */
+    <div
+      style={{
+        position: 'fixed',
+        inset: 0,
+        backgroundColor: 'rgba(0, 0, 0, 0.4)',
+        zIndex: 50,
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+      }}
+      onClick={onClose}
+      aria-modal="true"
+      role="dialog"
+      aria-labelledby="modal-title"
+    >
+      {/* Modal card — stop propagation so clicks inside don't close */}
+      <div
+        onClick={(e) => e.stopPropagation()}
+        style={{
+          backgroundColor: tokens.color.surface.primary,
+          borderRadius: tokens.radius.xl,
+          padding: tokens.spacing.xl,
+          width: 420,
+          boxShadow: '0 20px 60px rgba(0,0,0,0.2)',
+          display: 'flex',
+          flexDirection: 'column',
+          gap: tokens.spacing.default,
+          maxHeight: '90vh',
+          overflowY: 'auto',
+        }}
+      >
+        {/* Header row: title + X */}
+        <div
+          style={{
+            display: 'flex',
+            flexDirection: 'row',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+          }}
+        >
+          <h2
+            id="modal-title"
+            style={{
+              fontFamily: FONT,
+              fontSize: tokens.typography.size['heading-sm'],
+              fontWeight: tokens.typography.weight.bold,
+              color: tokens.color.text.primary,
+              margin: 0,
+            }}
+          >
+            Score Drivers
+          </h2>
+          <button
+            onClick={onClose}
+            aria-label="Close modal"
+            style={{
+              background: 'none',
+              border: 'none',
+              cursor: 'pointer',
+              color: tokens.color.icon.secondary,
+              display: 'flex',
+              alignItems: 'center',
+              padding: 4,
+              borderRadius: tokens.radius.sm,
+            }}
+          >
+            <X size={18} />
+          </button>
+        </div>
+
+        {/* Divider */}
+        <div style={{ height: 1, backgroundColor: tokens.color.border.secondary }} />
+
+        {/* Health score sub-label */}
+        <p style={{ fontFamily: FONT, fontSize: tokens.typography.size['body-base'], color: tokens.color.text.secondary, margin: 0 }}>
+          Health Score:{' '}
+          <strong style={{ color: tokens.color.text.primary, fontWeight: tokens.typography.weight.bold }}>
+            {score}
+          </strong>
+        </p>
+
+        {/* Driver cards */}
+        <div style={{ display: 'flex', flexDirection: 'column', gap: tokens.spacing.sm }}>
+          {SCORE_DRIVERS.map((d) => (
+            <DriverCard key={d.name} {...d} />
+          ))}
+        </div>
+      </div>
+    </div>
+  )
 }
 
 // ─── Props ────────────────────────────────────────────────────────────────────
@@ -93,8 +249,6 @@ export interface ReputationHealthProps {
 }
 
 // ─── Component ────────────────────────────────────────────────────────────────
-// Resizing: fill container horizontally (flex-1), hug content vertically
-// Auto Layout: flex-col, gap = spacing/md (12px)
 
 export function ReputationHealthCard({
   score,
@@ -102,124 +256,122 @@ export function ReputationHealthCard({
   previousScore,
   onViewDrivers,
 }: ReputationHealthProps) {
+  const [isOpen, setIsOpen] = useState(false)
+
   const delta = score - previousScore
   const isPositive = delta >= 0
   const scoreStyle = resolveScoreColor(score)
 
-  return (
-    // Card container: fill × hug, flex-col, border, radius/default
-    <article
-      className="flex flex-col flex-1 bg-surface-primary border border-edge-primary rounded-token-default shadow-xs overflow-hidden"
-      style={{ minWidth: 0 }}
-    >
-      {/* Card header: flex-row, gap/md, padding = headerPaddingX × headerPaddingTop */}
-      <div
-        className="flex flex-row items-center gap-2"
-        style={{
-          paddingLeft: tokens.component.card.headerPaddingX,
-          paddingRight: tokens.component.card.headerPaddingX,
-          paddingTop: tokens.component.card.headerPaddingTop,
-          paddingBottom: tokens.component.card.headerPaddingBottom,
-        }}
-      >
-        <Heart
-          size={16}
-          style={{ color: tokens.color.icon.error, flexShrink: 0 }}
-          aria-hidden="true"
-        />
-        <h3
-          className="font-bold"
-          style={{
-            fontSize: tokens.typography.size['heading-xs'],
-            lineHeight: tokens.typography.lineHeight.tight,
-            color: tokens.color.text.primary,
-          }}
-        >
-          Reputation Health
-        </h3>
-      </div>
+  function handleViewDrivers() {
+    setIsOpen(true)
+    onViewDrivers?.()
+  }
 
-      {/* Card body: flex-col, centered, flex-1 so it grows to fill stretch height */}
-      <div
-        className="flex flex-col flex-1 items-center justify-center gap-2"
+  return (
+    <>
+      <article
+        className="flex flex-col flex-1"
         style={{
-          paddingLeft: tokens.component.card.contentPaddingX,
-          paddingRight: tokens.component.card.contentPaddingX,
-          paddingBottom: tokens.spacing.default,
+          backgroundColor: tokens.component.card.bg,
+          border: `2px solid ${tokens.color.border.primary}`,
+          borderRadius: tokens.component.card.radius,
+          minWidth: 0,
+          overflow: 'hidden',
         }}
       >
-        {/* Previous score row: flex-row, gap/xs */}
+        {/* Card header */}
         <div
-          className="flex flex-row items-center gap-1 self-center"
+          className="flex flex-row items-center gap-2"
           style={{
-            fontSize: tokens.typography.size['body-sm'],
-            color: tokens.color.text.tertiary,
+            paddingLeft: tokens.component.card.headerPaddingX,
+            paddingRight: tokens.component.card.headerPaddingX,
+            paddingTop: tokens.component.card.headerPaddingTop,
+            paddingBottom: tokens.component.card.headerPaddingBottom,
           }}
         >
-          <span>Previous: {previousScore}</span>
-          {isPositive ? (
-            <TrendingUp size={12} style={{ color: tokens.color.text.success }} />
-          ) : (
-            <TrendingDown size={12} style={{ color: tokens.color.text.error }} />
-          )}
-          <span style={{ color: isPositive ? tokens.color.text.success : tokens.color.text.error }}>
-            {isPositive ? '+' : ''}{delta.toFixed(1)}
-          </span>
+          <Heart size={16} style={{ color: tokens.color.icon.error, flexShrink: 0 }} aria-hidden="true" />
+          <h3
+            className="font-bold"
+            style={{
+              fontSize: tokens.typography.size['heading-xs'],
+              lineHeight: tokens.typography.lineHeight.tight,
+              color: tokens.color.text.primary,
+            }}
+          >
+            Reputation Health
+          </h3>
         </div>
 
-        {/* Gauge + score overlay: relative container, hug content */}
-        <div className="relative flex items-center justify-center" style={{ width: 96, height: 96 }}>
-          <GaugeArc score={score} max={maxScore} color={scoreStyle.gauge} />
-          {/* Score label: absolute centered inside gauge */}
-          <div className="absolute inset-0 flex flex-col items-center justify-center">
-            <span
-              className="font-bold leading-none"
-              style={{
-                fontSize: tokens.typography.size['heading-lg'],
-                color: tokens.color.text.primary,
-              }}
-            >
-              {score}
-            </span>
-            <span
-              style={{
-                fontSize: tokens.typography.size['body-sm'],
-                color: tokens.color.text.tertiary,
-              }}
-            >
-              /{maxScore}
+        {/* Card body */}
+        <div
+          className="flex flex-col flex-1 items-center justify-center gap-2"
+          style={{
+            paddingLeft: tokens.component.card.contentPaddingX,
+            paddingRight: tokens.component.card.contentPaddingX,
+            paddingBottom: tokens.spacing.default,
+          }}
+        >
+          {/* Previous score */}
+          <div
+            className="flex flex-row items-center gap-1 self-center"
+            style={{ fontSize: tokens.typography.size['body-sm'], color: tokens.color.text.tertiary }}
+          >
+            <span>Previous: {previousScore}</span>
+            {isPositive
+              ? <TrendingUp size={12} style={{ color: tokens.color.text.success }} />
+              : <TrendingDown size={12} style={{ color: tokens.color.text.error }} />}
+            <span style={{ color: isPositive ? tokens.color.text.success : tokens.color.text.error }}>
+              {isPositive ? '+' : ''}{delta.toFixed(1)}
             </span>
           </div>
+
+          {/* Gauge */}
+          <div className="relative flex items-center justify-center" style={{ width: 96, height: 96 }}>
+            <GaugeArc score={score} max={maxScore} color={scoreStyle.gauge} />
+            <div className="absolute inset-0 flex flex-col items-center justify-center">
+              <span
+                className="font-bold leading-none"
+                style={{ fontSize: tokens.typography.size['heading-lg'], color: tokens.color.text.primary }}
+              >
+                {score}
+              </span>
+              <span style={{ fontSize: tokens.typography.size['body-sm'], color: tokens.color.text.tertiary }}>
+                /{maxScore}
+              </span>
+            </div>
+          </div>
+
+          {/* Status */}
+          <span
+            className="font-semibold"
+            style={{ fontSize: tokens.typography.size['body-base'], color: scoreStyle.label }}
+          >
+            {scoreStyle.status}
+          </span>
+
+          {/* View Drivers link */}
+          <button
+            onClick={handleViewDrivers}
+            className="flex flex-row items-center gap-1 hover:underline focus:outline-none"
+            style={{
+              fontSize: tokens.typography.size['body-sm'],
+              color: tokens.color.text.brand,
+              background: 'none',
+              border: 'none',
+              padding: 0,
+              cursor: 'pointer',
+            }}
+          >
+            View Drivers
+            <ChevronRight size={12} />
+          </button>
         </div>
+      </article>
 
-        {/* Status label: hug content, centered */}
-        <span
-          className="font-semibold"
-          style={{
-            fontSize: tokens.typography.size['body-base'],
-            color: scoreStyle.label,
-          }}
-        >
-          {scoreStyle.status}
-        </span>
-
-        {/* View Drivers link: flex-row, gap/xs, inline */}
-        <button
-          onClick={onViewDrivers}
-          className="flex flex-row items-center gap-1 hover:underline focus:outline-none"
-          style={{
-            fontSize: tokens.typography.size['body-sm'],
-            color: tokens.color.text.brand,
-            background: 'none',
-            border: 'none',
-            padding: 0,
-            cursor: 'pointer',
-          }}
-        >
-          View Drivers
-          <ChevronRight size={12} />
-        </button>
-      </div>
-    </article>
+      {/* Score Drivers modal */}
+      {isOpen && (
+        <ScoreDriversModal score={score} onClose={() => setIsOpen(false)} />
+      )}
+    </>
   )
 }

@@ -1,9 +1,11 @@
 import { AlertTriangle } from 'lucide-react'
 import { tokens, foundation } from '../tokens'
 
-// ─── Badge ────────────────────────────────────────────────────────────────────
-// Resizing: hug content, inline-flex
-// Auto Layout: flex-row, gap/xs, paddingX = badge.paddingX, paddingY = badge.paddingY
+// ─── Constants ────────────────────────────────────────────────────────────────
+
+const FONT = "'Plus Jakarta Sans', system-ui, -apple-system, sans-serif"
+
+// ─── Solid filled badge ───────────────────────────────────────────────────────
 
 type BadgeVariant = 'warning' | 'error' | 'success' | 'info' | 'default'
 
@@ -13,23 +15,33 @@ interface BadgeProps {
 }
 
 function Badge({ label, variant = 'warning' }: BadgeProps) {
-  const v = tokens.component.badge.variants[variant]
+  // Solid filled pill — white text on colored background, no border
+  const bgMap: Record<BadgeVariant, string> = {
+    warning:  foundation.color.yellow[500],
+    error:    tokens.color.surface.error,
+    success:  tokens.color.surface.success,
+    info:     tokens.color.surface.info,
+    default:  foundation.color.neutral[400],
+  }
+
   return (
     <span
-      className="inline-flex items-center font-semibold tracking-wide uppercase"
       style={{
-        fontSize: tokens.component.badge.fontSize,
-        fontWeight: tokens.component.badge.fontWeight,
+        display: 'inline-flex',
+        alignItems: 'center',
+        fontFamily: FONT,
+        fontSize: tokens.typography.size['label-xs'],
+        fontWeight: tokens.typography.weight.bold,
+        letterSpacing: '0.07em',
         lineHeight: 1,
-        color: v.text,
-        backgroundColor: v.bg,
-        border: `${tokens.component.badge.borderWidth}px solid ${v.border}`,
-        borderRadius: tokens.component.badge.radius,
-        paddingLeft: tokens.component.badge.paddingX,
-        paddingRight: tokens.component.badge.paddingX,
-        paddingTop: tokens.component.badge.paddingY + 2,
-        paddingBottom: tokens.component.badge.paddingY + 2,
-        letterSpacing: '0.05em',
+        color: '#FFFFFF',
+        backgroundColor: bgMap[variant],
+        borderRadius: tokens.radius.full,
+        paddingLeft: 10,
+        paddingRight: 10,
+        paddingTop: 5,
+        paddingBottom: 5,
+        textTransform: 'uppercase',
       }}
     >
       {label}
@@ -50,130 +62,165 @@ export interface RiskLevelProps {
 
 function riskToBadgeVariant(level: RiskLevelProps['riskLevel']): BadgeVariant {
   const map: Record<RiskLevelProps['riskLevel'], BadgeVariant> = {
-    LOW: 'success',
-    MEDIUM: 'warning',
-    HIGH: 'error',
+    LOW:      'success',
+    MEDIUM:   'warning',
+    HIGH:     'error',
     CRITICAL: 'error',
   }
   return map[level]
 }
 
 // ─── Component ────────────────────────────────────────────────────────────────
-// Resizing: fill container horizontally (flex-1), hug content vertically
-// Auto Layout: flex-col, gap = spacing/md, background = surface/warning-subtle
 
 export function RiskLevelCard({
   riskLevel,
   description,
   thresholds,
-  period,
   negativeSentimentPct,
   totalMentions,
 }: RiskLevelProps) {
-  const isWarning = riskLevel === 'MEDIUM' || riskLevel === 'HIGH' || riskLevel === 'CRITICAL'
+  const isWarning  = riskLevel === 'MEDIUM' || riskLevel === 'HIGH' || riskLevel === 'CRITICAL'
 
-  const bgColor = isWarning
-    ? tokens.color.surface.warningSubtle
-    : tokens.color.surface.successSubtle
+  const bgColor     = isWarning ? tokens.color.surface.warningSubtle : tokens.color.surface.successSubtle
+  const borderColor = isWarning ? tokens.color.border.warning        : tokens.color.border.success
+  const iconColor   = isWarning ? foundation.color.yellow[500]       : tokens.color.icon.success
+  const metricColor = isWarning ? foundation.color.yellow[700]       : tokens.color.text.success
 
-  const borderColor = isWarning
-    ? tokens.color.border.warning
-    : tokens.color.border.success
+  // Round negativeSentimentPct to nearest integer for display
+  const pctDisplay = negativeSentimentPct !== undefined
+    ? `${Math.round(negativeSentimentPct)}%`
+    : null
 
-  const iconColor = isWarning
-    ? foundation.color.yellow[500]
-    : tokens.color.icon.success
+  const mentionsDisplay = totalMentions !== undefined
+    ? totalMentions.toLocaleString()
+    : null
 
   return (
-    // Card container: fill × hug, flex-col, status-tinted background
     <article
       className="flex flex-col flex-1"
       style={{
         backgroundColor: bgColor,
-        border: `${tokens.component.card.borderWidth}px solid ${borderColor}`,
+        border: `2px solid ${borderColor}`,
         borderRadius: tokens.component.card.radius,
         minWidth: 0,
       }}
     >
-      {/* Card header row: flex-row, space-between, align-center */}
+      {/* ── Card header: icon + title / badge ── */}
       <div
-        className="flex flex-row items-center justify-between gap-3"
+        className="flex flex-row items-center justify-between"
         style={{
-          paddingLeft: tokens.component.card.headerPaddingX,
-          paddingRight: tokens.component.card.headerPaddingX,
-          paddingTop: tokens.component.card.headerPaddingTop,
+          paddingLeft:   tokens.component.card.headerPaddingX,
+          paddingRight:  tokens.component.card.headerPaddingX,
+          paddingTop:    tokens.component.card.headerPaddingTop,
           paddingBottom: tokens.component.card.headerPaddingBottom,
+          gap: tokens.spacing.sm,
         }}
       >
         {/* Left: icon + title */}
-        <div className="flex flex-row items-center gap-2">
+        <div className="flex flex-row items-center" style={{ gap: tokens.spacing.sm }}>
           <AlertTriangle
             size={16}
             style={{ color: iconColor, flexShrink: 0 }}
             aria-hidden="true"
           />
           <h3
-            className="font-bold"
             style={{
+              fontFamily: FONT,
               fontSize: tokens.typography.size['heading-xs'],
+              fontWeight: tokens.typography.weight.bold,
               lineHeight: tokens.typography.lineHeight.tight,
               color: tokens.color.text.primary,
+              margin: 0,
             }}
           >
             Risk Level
           </h3>
         </div>
 
-        {/* Right: risk badge */}
+        {/* Right: solid filled badge */}
         <Badge label={riskLevel} variant={riskToBadgeVariant(riskLevel)} />
       </div>
 
-      {/* Card body: flex-col, gap/md */}
+      {/* ── Card body ── */}
       <div
-        className="flex flex-col gap-3"
+        className="flex flex-col"
         style={{
-          paddingLeft: tokens.component.card.contentPaddingX,
-          paddingRight: tokens.component.card.contentPaddingX,
-          paddingBottom: tokens.component.card.contentPaddingBottom,
+          paddingLeft:   tokens.component.card.contentPaddingX,
+          paddingRight:  tokens.component.card.contentPaddingX,
+          paddingBottom: tokens.spacing.default,
+          gap: tokens.spacing.sm,
         }}
       >
-        {/* Description paragraph: body-base, primary text */}
+        {/* Large metric row */}
+        {pctDisplay && mentionsDisplay && (
+          <div
+            className="flex flex-row items-baseline"
+            style={{ gap: tokens.spacing.sm }}
+          >
+            <span
+              style={{
+                fontFamily: FONT,
+                fontSize: '2.25rem',   // ≈ text-4xl = 36px
+                fontWeight: tokens.typography.weight.bold,
+                lineHeight: 1,
+                color: metricColor,
+              }}
+            >
+              {pctDisplay}
+            </span>
+            <span
+              style={{
+                fontFamily: FONT,
+                fontSize: tokens.typography.size['body-base'],
+                fontWeight: tokens.typography.weight.medium,
+                color: metricColor,
+                opacity: 0.8,
+              }}
+            >
+              of {mentionsDisplay} mentions
+            </span>
+          </div>
+        )}
+
+        {/* Description */}
         <p
           style={{
-            fontSize: tokens.typography.size['body-base'],
+            fontFamily: FONT,
+            fontSize: tokens.typography.size['body-sm'],
             lineHeight: tokens.typography.lineHeight.normal,
             color: tokens.color.text.primary,
+            margin: 0,
           }}
         >
           {description}
-          {negativeSentimentPct !== undefined && totalMentions !== undefined && (
-            <span>
-              {' '}({negativeSentimentPct}% of {totalMentions.toLocaleString()} mentions)
-            </span>
-          )}
         </p>
 
-        {/* Thresholds section: flex-col, gap/xs */}
+        {/* Thresholds section */}
         {thresholds.length > 0 && (
-          <div className="flex flex-col gap-1">
+          <div className="flex flex-col" style={{ gap: tokens.spacing.xs }}>
             <span
-              className="uppercase tracking-wide"
               style={{
+                fontFamily: FONT,
                 fontSize: tokens.typography.size['label-xs'],
                 fontWeight: tokens.typography.weight.semibold,
                 color: tokens.color.text.tertiary,
                 letterSpacing: '0.06em',
+                textTransform: 'uppercase',
               }}
             >
               Thresholds
             </span>
-            {/* Threshold list: flex-col, gap/xs */}
-            <ul className="flex flex-col gap-1" style={{ paddingLeft: 0, listStyle: 'none' }}>
+            <ul
+              className="flex flex-col"
+              style={{ paddingLeft: 0, listStyle: 'none', margin: 0, gap: tokens.spacing.xs }}
+            >
               {thresholds.map((t, i) => (
                 <li
                   key={i}
-                  className="flex flex-row items-start gap-1"
+                  className="flex flex-row items-start"
                   style={{
+                    gap: 4,
+                    fontFamily: FONT,
                     fontSize: tokens.typography.size['body-sm'],
                     color: tokens.color.text.secondary,
                   }}
@@ -185,16 +232,6 @@ export function RiskLevelCard({
             </ul>
           </div>
         )}
-
-        {/* Period row: body-sm, tertiary text */}
-        <p
-          style={{
-            fontSize: tokens.typography.size['body-sm'],
-            color: tokens.color.text.tertiary,
-          }}
-        >
-          Period: {period.from} to {period.to}
-        </p>
       </div>
     </article>
   )
