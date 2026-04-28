@@ -393,6 +393,7 @@ const demoEvidenceAndComms = {
 // Auto Layout: flex-row, align-center, padding from tokens
 
 function PageHeader() {
+  const FONT = "'Plus Jakarta Sans', system-ui, -apple-system, sans-serif"
   return (
     <header
       className="w-full flex flex-row items-center"
@@ -404,6 +405,7 @@ function PageHeader() {
         backgroundColor: tokens.color.surface.primary,
         borderBottom: `1px solid ${tokens.color.border.secondary}`,
         flexShrink: 0,
+        gap: tokens.spacing.md,
       }}
     >
       <h1
@@ -412,11 +414,45 @@ function PageHeader() {
           fontSize: tokens.typography.size['heading-xl'],
           lineHeight: tokens.typography.lineHeight.tight,
           color: tokens.color.text.primary,
-          fontFamily: tokens.typography.family.body,
+          fontFamily: FONT,
         }}
       >
         Media Intelligence
       </h1>
+
+      {/* Program badge */}
+      <div
+        className="flex flex-row items-center"
+        style={{ gap: tokens.spacing.xs }}
+      >
+        <span
+          style={{
+            fontFamily: FONT,
+            fontSize: tokens.typography.size['body-sm'],
+            color: tokens.color.text.tertiary,
+          }}
+        >
+          Program:
+        </span>
+        <span
+          style={{
+            fontFamily: FONT,
+            fontSize: tokens.typography.size['label-xs'],
+            fontWeight: tokens.typography.weight.semibold,
+            color: tokens.color.text.brand,
+            backgroundColor: tokens.color.surface.infoSubtle,
+            border: `1px solid ${tokens.color.border.info}`,
+            borderRadius: tokens.radius.full,
+            paddingLeft: 10,
+            paddingRight: 10,
+            paddingTop: 3,
+            paddingBottom: 3,
+            letterSpacing: '0.04em',
+          }}
+        >
+          MBG
+        </span>
+      </div>
     </header>
   )
 }

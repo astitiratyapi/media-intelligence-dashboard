@@ -52,21 +52,36 @@ export function ShareOfVoiceCard({
         </span>
       </div>
 
-      {/* Top media bars */}
-      <div className="flex flex-col" style={{ gap: tokens.spacing.xs }}>
+      {/* Top media bars — single row: name | bar | percent */}
+      <div className="flex flex-col" style={{ gap: tokens.spacing.sm }}>
         {topMedia.slice(0, 3).map((media) => (
-          <div key={media.name} className="flex flex-col" style={{ gap: 4 }}>
-            <div className="flex flex-row items-center justify-between">
-              <span style={{ fontSize: kpiCard.sublabel.fontSize, color: tokens.color.text.secondary }}>
-                {media.name}
-              </span>
-              <span style={{ fontSize: kpiCard.sublabel.fontSize, color: kpiCard.sublabel.color }}>
-                {media.percent.toFixed(1)}%
-              </span>
-            </div>
+          <div
+            key={media.name}
+            className="flex flex-row items-center"
+            style={{ gap: tokens.spacing.sm }}
+          >
+            {/* Name */}
+            <span
+              style={{
+                fontFamily: kpiCard.fontFamily,
+                fontSize: kpiCard.sublabel.fontSize,
+                color: tokens.color.text.secondary,
+                minWidth: 80,
+                maxWidth: 96,
+                overflow: 'hidden',
+                textOverflow: 'ellipsis',
+                whiteSpace: 'nowrap',
+                flexShrink: 0,
+              }}
+            >
+              {media.name}
+            </span>
+
+            {/* Bar track */}
             <div
               style={{
-                height: 4,
+                flex: 1,
+                height: 6,
                 backgroundColor: tokens.color.border.secondary,
                 borderRadius: tokens.radius.full,
                 overflow: 'hidden',
@@ -78,9 +93,25 @@ export function ShareOfVoiceCard({
                   height: '100%',
                   backgroundColor: PURPLE.color,
                   borderRadius: tokens.radius.full,
+                  transition: 'width 0.4s ease-out',
                 }}
               />
             </div>
+
+            {/* Percentage */}
+            <span
+              style={{
+                fontFamily: kpiCard.fontFamily,
+                fontSize: kpiCard.sublabel.fontSize,
+                fontWeight: tokens.typography.weight.medium,
+                color: tokens.color.text.secondary,
+                minWidth: 36,
+                textAlign: 'right',
+                flexShrink: 0,
+              }}
+            >
+              {media.percent.toFixed(1)}%
+            </span>
           </div>
         ))}
       </div>

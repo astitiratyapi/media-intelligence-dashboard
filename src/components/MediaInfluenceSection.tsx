@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { TrendingUp, Info } from 'lucide-react'
-import { PieChart, Pie, Cell, Tooltip, ResponsiveContainer, type PieLabelRenderProps } from 'recharts'
+import { PieChart, Pie, Cell, Tooltip, ResponsiveContainer } from 'recharts'
 import { tokens, foundation } from '../tokens'
 
 // ─── Types ────────────────────────────────────────────────────────────────────
@@ -91,9 +91,9 @@ function DonutChart({ data }: { data: SentimentData }) {
   ]
 
   const legendItems = [
-    { label: 'Positif', count: data.positif, color: SENTIMENT_COLORS.positif },
-    { label: 'Netral',  count: data.netral,  color: SENTIMENT_COLORS.netral  },
-    { label: 'Negatif', count: data.negatif, color: SENTIMENT_COLORS.negatif },
+    { label: 'Positif', count: data.positif, pct: total > 0 ? Math.round((data.positif / total) * 100) : 0, color: SENTIMENT_COLORS.positif },
+    { label: 'Netral',  count: data.netral,  pct: total > 0 ? Math.round((data.netral  / total) * 100) : 0, color: SENTIMENT_COLORS.netral  },
+    { label: 'Negatif', count: data.negatif, pct: total > 0 ? Math.round((data.negatif / total) * 100) : 0, color: SENTIMENT_COLORS.negatif },
   ]
 
   return (
@@ -101,7 +101,7 @@ function DonutChart({ data }: { data: SentimentData }) {
       className="flex flex-col items-center justify-center flex-1"
       style={{ gap: tokens.spacing.lg, paddingTop: tokens.spacing.lg, paddingBottom: tokens.spacing.lg }}
     >
-      {/* Donut + center overlay */}
+      {/* Donut + center overlay — no external labels, percentages moved to legend */}
       <div style={{ width: 220, height: 220, position: 'relative' }}>
         <ResponsiveContainer width="100%" height="100%">
           <PieChart>
@@ -115,29 +115,7 @@ function DonutChart({ data }: { data: SentimentData }) {
               dataKey="value"
               startAngle={90}
               endAngle={-270}
-              label={({ cx, cy, midAngle, outerRadius, percent }: PieLabelRenderProps) => {
-                const RADIAN = Math.PI / 180
-                const _cx       = Number(cx ?? 0)
-                const _cy       = Number(cy ?? 0)
-                const _mid      = Number(midAngle ?? 0)
-                const _outer    = Number(outerRadius ?? 0)
-                const _pct      = Number(percent ?? 0)
-                if (_pct < 0.04) return null  // skip tiny slices
-                const r  = _outer + 22
-                const x  = _cx + r * Math.cos(-_mid * RADIAN)
-                const y  = _cy + r * Math.sin(-_mid * RADIAN)
-                return (
-                  <text
-                    x={x}
-                    y={y}
-                    textAnchor={x > _cx ? 'start' : 'end'}
-                    dominantBaseline="central"
-                    style={{ fontFamily: FONT, fontSize: 11, fontWeight: 600, fill: tokens.color.text.secondary }}
-                  >
-                    {`${(_pct * 100).toFixed(0)}%`}
-                  </text>
-                )
-              }}
+              label={false}
               labelLine={false}
             >
               {chartData.map((entry) => (
@@ -160,7 +138,7 @@ function DonutChart({ data }: { data: SentimentData }) {
           </PieChart>
         </ResponsiveContainer>
 
-        {/* Center label — absolutely positioned over the SVG hole */}
+        {/* Center label */}
         <div
           style={{
             position: 'absolute',
@@ -198,35 +176,58 @@ function DonutChart({ data }: { data: SentimentData }) {
         </div>
       </div>
 
-      {/* Legend */}
+      {/* Enhanced legend — dot · label · large % · count */}
       <div
-        className="flex flex-row items-center justify-center"
-        style={{ gap: tokens.spacing.xl }}
+        className="flex flex-row items-start justify-center"
+        style={{ gap: tokens.spacing['2xl'] }}
       >
         {legendItems.map((item) => (
           <div
             key={item.label}
-            className="flex flex-row items-center"
-            style={{ gap: 6 }}
+            className="flex flex-col items-center"
+            style={{ gap: tokens.spacing.xs }}
           >
-            <div
+            {/* Dot + label row */}
+            <div className="flex flex-row items-center" style={{ gap: 6 }}>
+              <div
+                style={{
+                  width: 10,
+                  height: 10,
+                  borderRadius: tokens.radius.full,
+                  backgroundColor: item.color,
+                  flexShrink: 0,
+                }}
+              />
+              <span
+                style={{
+                  fontFamily: FONT,
+                  fontSize: tokens.typography.size['body-sm'],
+                  color: tokens.color.text.secondary,
+                }}
+              >
+                {item.label}
+              </span>
+            </div>
+
+            {/* Large percentage */}
+            <span
               style={{
-                width: 10,
-                height: 10,
-                borderRadius: tokens.radius.full,
-                backgroundColor: item.color,
-                flexShrink: 0,
+                fontFamily: FONT,
+                fontSize: tokens.typography.size['heading-sm'],  // 18px
+                fontWeight: tokens.typography.weight.bold,
+                color: item.color,
+                lineHeight: 1,
               }}
-            />
-            <span style={{ fontFamily: FONT, fontSize: tokens.typography.size['body-sm'], color: tokens.color.text.secondary }}>
-              {item.label}
+            >
+              {item.pct}%
             </span>
+
+            {/* Count */}
             <span
               style={{
                 fontFamily: FONT,
                 fontSize: tokens.typography.size['body-sm'],
-                fontWeight: tokens.typography.weight.semibold,
-                color: tokens.color.text.primary,
+                color: tokens.color.text.tertiary,
               }}
             >
               ({item.count.toLocaleString()})

@@ -237,21 +237,6 @@ export function IssueHeatmap({ rowsByTab, onCellClick }: IssueHeatmapProps) {
               >
                 Issue / Topic
               </th>
-              <th
-                style={{
-                  fontFamily: FONT,
-                  fontSize: tokens.typography.size['label-xs'],
-                  fontWeight: tokens.typography.weight.semibold,
-                  color: tokens.color.text.tertiary,
-                  textTransform: 'uppercase',
-                  letterSpacing: '0.07em',
-                  padding: `${tokens.spacing.sm}px ${tokens.spacing.sm}px`,
-                  textAlign: 'center',
-                  borderBottom: `1px solid ${tokens.color.border.secondary}`,
-                }}
-              >
-                %
-              </th>
               <ColHeader label="Positive" color={foundation.color.green[600]} />
               <ColHeader label="Neutral"  color={tokens.color.text.tertiary}  />
               <ColHeader label="Negative" color={foundation.color.red[600]}   />
@@ -266,27 +251,39 @@ export function IssueHeatmap({ rowsByTab, onCellClick }: IssueHeatmapProps) {
                   backgroundColor: i % 2 === 1 ? tokens.color.surface.secondary : 'transparent',
                 }}
               >
-                {/* Issue name */}
+                {/* Issue name + inline share % */}
                 <td
                   style={{
-                    fontFamily: FONT,
-                    fontSize: tokens.typography.size['body-sm'],
-                    color: tokens.color.text.primary,
                     padding: `${tokens.spacing.sm}px ${tokens.spacing.xl}px`,
-                    maxWidth: 200,
-                    overflow: 'hidden',
-                    textOverflow: 'ellipsis',
-                    whiteSpace: 'nowrap',
+                    maxWidth: 240,
                   }}
                 >
-                  {row.issue}
-                </td>
-
-                {/* % Share */}
-                <td style={{ textAlign: 'center', padding: `${tokens.spacing.sm}px ${tokens.spacing.sm}px` }}>
-                  <span style={{ fontFamily: FONT, fontSize: tokens.typography.size['label-xs'], color: tokens.color.text.tertiary }}>
-                    {row.share.toFixed(1)}%
-                  </span>
+                  <div className="flex flex-row items-baseline" style={{ gap: 6, minWidth: 0 }}>
+                    <span
+                      style={{
+                        fontFamily: FONT,
+                        fontSize: tokens.typography.size['body-sm'],
+                        color: tokens.color.text.primary,
+                        overflow: 'hidden',
+                        textOverflow: 'ellipsis',
+                        whiteSpace: 'nowrap',
+                        minWidth: 0,
+                      }}
+                    >
+                      {row.issue}
+                    </span>
+                    <span
+                      style={{
+                        fontFamily: FONT,
+                        fontSize: tokens.typography.size['label-xs'],
+                        color: tokens.color.text.tertiary,
+                        flexShrink: 0,
+                        whiteSpace: 'nowrap',
+                      }}
+                    >
+                      {row.share.toFixed(1)}%
+                    </span>
+                  </div>
                 </td>
 
                 {/* Positive */}
