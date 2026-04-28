@@ -1,4 +1,4 @@
-import { Eye, FileText, Heart, Share2, MessageCircle } from 'lucide-react'
+import { Eye } from 'lucide-react'
 import { tokens } from '../../tokens'
 import { KPICardBase, IconBadge, kpiCard } from './KPICardBase'
 
@@ -25,51 +25,6 @@ function fmt(n: number): string {
   return String(n)
 }
 
-// ─── Sub-metric row ───────────────────────────────────────────────────────────
-
-function SubMetric({
-  icon: Icon,
-  label,
-  value,
-}: {
-  icon: React.ElementType
-  label: string
-  value: string
-}) {
-  return (
-    <div
-      className="flex flex-row items-center"
-      style={{ gap: tokens.spacing.xs }}
-    >
-      <Icon
-        size={13}
-        style={{ color: tokens.color.icon.secondary, flexShrink: 0 }}
-        strokeWidth={2}
-      />
-      <span
-        style={{
-          fontFamily: FONT,
-          fontSize: tokens.typography.size['body-sm'],
-          color: tokens.color.text.tertiary,
-          whiteSpace: 'nowrap',
-        }}
-      >
-        {value}
-      </span>
-      <span
-        style={{
-          fontFamily: FONT,
-          fontSize: tokens.typography.size['body-sm'],
-          color: tokens.color.text.secondary,
-          whiteSpace: 'nowrap',
-        }}
-      >
-        {label}
-      </span>
-    </div>
-  )
-}
-
 // ─── Component ────────────────────────────────────────────────────────────────
 
 export function EstimatedReachCard({
@@ -78,30 +33,25 @@ export function EstimatedReachCard({
   postCount,
   engaged,
 }: EstimatedReachCardProps) {
+  const subMetrics = [
+    `Posts: ${fmt(postCount)}`,
+    `Likes: ${fmt(engaged.likes)}`,
+    `Shares: ${fmt(engaged.shares)}`,
+    `Replies: ${fmt(engaged.replies)}`,
+  ].join(' · ')
+
   return (
     <KPICardBase>
-      {/* Header row: icon + label */}
-      <div className="flex flex-row items-center" style={{ gap: tokens.spacing.sm }}>
-        <IconBadge icon={Eye} bg={BLUE.bg} color={BLUE.color} />
-        <span
-          style={{
-            fontFamily: FONT,
-            fontSize: kpiCard.label.fontSize,
-            fontWeight: kpiCard.label.weight,
-            color: kpiCard.label.color,
-          }}
-        >
-          {label}
-        </span>
-      </div>
+      {/* Icon — alone on top row */}
+      <IconBadge icon={Eye} bg={BLUE.bg} color={BLUE.color} />
 
-      {/* Main value + sublabel */}
+      {/* Main value + label */}
       <div className="flex flex-col" style={{ gap: 2 }}>
         <p
           style={{
             fontFamily: FONT,
-            fontSize: kpiCard.value.fontSize,
-            fontWeight: kpiCard.value.weight,
+            fontSize: kpiCard.value.fontSize,   // heading-xl = 30px
+            fontWeight: kpiCard.value.weight,   // bold
             color: kpiCard.value.color,
             lineHeight: tokens.typography.lineHeight.tight,
             margin: 0,
@@ -113,26 +63,25 @@ export function EstimatedReachCard({
           style={{
             fontFamily: FONT,
             fontSize: tokens.typography.size['body-sm'],
-            color: tokens.color.text.tertiary,
+            fontWeight: tokens.typography.weight.regular,
+            color: tokens.color.text.secondary,
           }}
         >
-          Total estimated reach
+          {label}
         </span>
       </div>
 
-      {/* Sub-metrics: 2-column grid */}
-      <div
+      {/* Sub-metrics — single muted line */}
+      <span
         style={{
-          display: 'grid',
-          gridTemplateColumns: '1fr 1fr',
-          gap: `${tokens.spacing.xs}px ${tokens.spacing.md}px`,
+          fontFamily: FONT,
+          fontSize: tokens.typography.size['body-sm'],
+          color: tokens.color.text.tertiary,
+          lineHeight: tokens.typography.lineHeight.normal,
         }}
       >
-        <SubMetric icon={FileText}       label="Posts"   value={fmt(postCount)}       />
-        <SubMetric icon={Heart}          label="Likes"   value={fmt(engaged.likes)}   />
-        <SubMetric icon={Share2}         label="Shares"  value={fmt(engaged.shares)}  />
-        <SubMetric icon={MessageCircle}  label="Replies" value={fmt(engaged.replies)} />
-      </div>
+        {subMetrics}
+      </span>
     </KPICardBase>
   )
 }

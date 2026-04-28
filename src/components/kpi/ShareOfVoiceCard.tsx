@@ -1,5 +1,5 @@
 import { BarChart2 } from 'lucide-react'
-import { tokens } from '../../tokens'
+import { tokens, foundation } from '../../tokens'
 import { KPICardBase, IconBadge, kpiCard } from './KPICardBase'
 
 export interface ShareOfVoiceCardProps {
@@ -10,6 +10,14 @@ export interface ShareOfVoiceCardProps {
 }
 
 const PURPLE = { bg: '#EDE9FE', color: '#7C3AED' }
+const FONT   = kpiCard.fontFamily
+
+// Bar fill: primary brand blue
+const BAR_FILL  = foundation.color.brand.polynesianBlue[600]
+// Bar track: neutral light surface
+const BAR_TRACK = tokens.color.surface.tertiary
+
+// ─── Component ────────────────────────────────────────────────────────────────
 
 export function ShareOfVoiceCard({
   sharePercent,
@@ -27,6 +35,7 @@ export function ShareOfVoiceCard({
         <span
           className="flex-1"
           style={{
+            fontFamily: FONT,
             fontSize: kpiCard.label.fontSize,
             fontWeight: kpiCard.label.weight,
             color: kpiCard.label.color,
@@ -36,6 +45,7 @@ export function ShareOfVoiceCard({
         </span>
         <span
           style={{
+            fontFamily: FONT,
             fontSize: tokens.typography.size['label-xs'],
             fontWeight: tokens.typography.weight.semibold,
             color: PURPLE.color,
@@ -52,7 +62,7 @@ export function ShareOfVoiceCard({
         </span>
       </div>
 
-      {/* Top media bars — single row: name | bar | percent */}
+      {/* Media bar rows — name | bar | percent */}
       <div className="flex flex-col" style={{ gap: tokens.spacing.sm }}>
         {topMedia.slice(0, 3).map((media) => (
           <div
@@ -60,18 +70,17 @@ export function ShareOfVoiceCard({
             className="flex flex-row items-center"
             style={{ gap: tokens.spacing.sm }}
           >
-            {/* Name */}
+            {/* Name — fixed width, truncated */}
             <span
               style={{
-                fontFamily: kpiCard.fontFamily,
+                fontFamily: FONT,
                 fontSize: kpiCard.sublabel.fontSize,
                 color: tokens.color.text.secondary,
-                minWidth: 80,
-                maxWidth: 96,
+                width: 88,
+                flexShrink: 0,
                 overflow: 'hidden',
                 textOverflow: 'ellipsis',
                 whiteSpace: 'nowrap',
-                flexShrink: 0,
               }}
             >
               {media.name}
@@ -81,8 +90,8 @@ export function ShareOfVoiceCard({
             <div
               style={{
                 flex: 1,
-                height: 6,
-                backgroundColor: tokens.color.border.secondary,
+                height: 10,           // h-2.5 = 10px
+                backgroundColor: BAR_TRACK,
                 borderRadius: tokens.radius.full,
                 overflow: 'hidden',
               }}
@@ -91,21 +100,21 @@ export function ShareOfVoiceCard({
                 style={{
                   width: `${(media.percent / maxPercent) * 100}%`,
                   height: '100%',
-                  backgroundColor: PURPLE.color,
+                  backgroundColor: BAR_FILL,
                   borderRadius: tokens.radius.full,
                   transition: 'width 0.4s ease-out',
                 }}
               />
             </div>
 
-            {/* Percentage */}
+            {/* Percentage — right-aligned, fixed width */}
             <span
               style={{
-                fontFamily: kpiCard.fontFamily,
+                fontFamily: FONT,
                 fontSize: kpiCard.sublabel.fontSize,
                 fontWeight: tokens.typography.weight.medium,
-                color: tokens.color.text.secondary,
-                minWidth: 36,
+                color: tokens.color.text.primary,
+                width: 36,
                 textAlign: 'right',
                 flexShrink: 0,
               }}
