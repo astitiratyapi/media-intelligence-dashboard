@@ -88,7 +88,7 @@ export function NarrativeCards({ cards, generatedAt }: NarrativeCardsProps) {
             Key story frames — comms strategy is about frames, not keywords
           </span>
         </div>
-        <TooltipIcon text="Key story frames currently circulating in media coverage" />
+        <TooltipIcon text="Key story frames currently circulating across media coverage." />
       </div>
 
       {/* Sentiment filter */}

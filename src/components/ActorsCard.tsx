@@ -226,7 +226,7 @@ export function ActorsCard({ actors, subtitle }: ActorsCardProps) {
               Actors
             </h3>
           </div>
-          <TooltipIcon text="Most mentioned people and organizations in recent media coverage" />
+          <TooltipIcon text="Most mentioned people and organizations in recent media coverage." />
         </div>
         {subtitle && (
           <p

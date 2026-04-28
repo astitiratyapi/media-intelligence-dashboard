@@ -31,7 +31,7 @@ export function TopIssueCard({ issue, mentions, label = 'Top Issue', onClick }: 
           >
             {mentions.toLocaleString()} mentions
           </span>
-          <TooltipIcon text="Most frequently discussed issue in the monitored period" />
+          <TooltipIcon text="Most frequently discussed issue in monitored media coverage." />
         </div>
       </div>
 

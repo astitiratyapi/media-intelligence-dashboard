@@ -294,7 +294,7 @@ export function MediaInfluenceSection({ sentimentByTab }: MediaInfluenceSectionP
           >
             Media Influence
           </span>
-          <TooltipIcon text="Sentiment distribution (positive, neutral, negative) across media sources" />
+          <TooltipIcon text="Sentiment distribution — positive, neutral, and negative — across media sources." />
         </div>
 
         {/* Tab filter */}

@@ -181,7 +181,7 @@ export function DataDistributionSection({ total, totalLabel = 'Total Mention', c
         >
           Data Distribution
         </span>
-        <TooltipIcon text="Breakdown of mentions by media type, tier, and social platform" />
+        <TooltipIcon text="Breakdown of mentions by media type, tier, and social media platform." />
       </div>
 
       {/* Chart body */}

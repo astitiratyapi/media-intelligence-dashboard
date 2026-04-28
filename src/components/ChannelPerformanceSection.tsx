@@ -119,7 +119,7 @@ export function ChannelPerformanceSection({ platforms }: ChannelPerformanceSecti
             Live engagement metrics &amp; top content from your key accounts
           </p>
         </div>
-        <TooltipIcon text="Engagement metrics and top content from monitored social media accounts" />
+        <TooltipIcon text="Engagement metrics and top content from monitored social media accounts." />
       </div>
 
       {/* Card shell */}

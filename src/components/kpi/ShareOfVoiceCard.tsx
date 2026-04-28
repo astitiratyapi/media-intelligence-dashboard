@@ -47,7 +47,7 @@ export function ShareOfVoiceCard({
           >
             {sharePercent.toFixed(1)}% share
           </span>
-          <TooltipIcon text="Top media outlets by volume share in the selected period" />
+          <TooltipIcon text="Top 3 media outlets ranked by volume share in the selected period." />
         </div>
       </div>
 

@@ -62,7 +62,7 @@ export function ExecutiveSummary({ summaryText }: ExecutiveSummaryProps) {
             Executive Summary
           </span>
         </div>
-        <TooltipIcon text="AI-generated narrative summary of the current media landscape" />
+        <TooltipIcon text="AI-generated summary of the current media landscape for this program." />
       </div>
 
       {/* Body text */}

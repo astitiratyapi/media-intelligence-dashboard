@@ -129,7 +129,7 @@ export function TrendsMovementSection({
             Coverage volume and negative mention trends over time
           </p>
         </div>
-        <TooltipIcon text="Volume trends over time for all scraped data, coverage, and negative mentions" />
+        <TooltipIcon text="Volume trends over time across all scraped data, coverage, and negative mentions." />
       </div>
 
       {/* Card shell */}

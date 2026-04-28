@@ -141,7 +141,7 @@ export function RiskLevelCard({
         {/* Right: solid filled badge + tooltip */}
         <div className="flex flex-row items-center" style={{ gap: 6 }}>
           <Badge label={riskLevel} variant={riskToBadgeVariant(riskLevel)} />
-          <TooltipIcon text="Current risk level based on negative sentiment share and volume volatility" />
+          <TooltipIcon text="Risk level calculated from negative sentiment share and volume volatility." />
         </div>
       </div>
 

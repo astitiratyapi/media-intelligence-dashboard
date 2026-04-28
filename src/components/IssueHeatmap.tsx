@@ -213,7 +213,7 @@ export function IssueHeatmap({ rowsByTab, onCellClick }: IssueHeatmapProps) {
               Issue × Sentiment — click a cell to filter
             </span>
           </div>
-          <TooltipIcon text="Sentiment breakdown per issue — click a cell to filter" />
+          <TooltipIcon text="Sentiment breakdown per issue — positive, neutral, and negative counts." />
         </div>
         <TabBar active={activeTab} onChange={setActiveTab} />
       </div>

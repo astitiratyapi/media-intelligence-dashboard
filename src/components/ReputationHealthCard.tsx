@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { Heart, ChevronRight, TrendingDown, TrendingUp, X } from 'lucide-react'
 import { tokens, foundation } from '../tokens'
+import { TooltipIcon } from './TooltipIcon'
 
 // ─── Gauge SVG ────────────────────────────────────────────────────────────────
 
@@ -337,8 +338,9 @@ export function ReputationHealthCard({
             </h3>
           </div>
 
-          {/* Right: status badge pill */}
+          {/* Right: status badge + tooltip */}
           <StatusBadge status={scoreStyle.status} />
+          <TooltipIcon text="Health score based on sentiment balance and media coverage quality." />
         </div>
 
         {/* ── Card body: vertically centered content ── */}

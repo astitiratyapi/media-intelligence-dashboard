@@ -18,7 +18,7 @@ export function TotalMentionsCard({ value, label = 'Total Mentions', onClick }: 
       {/* Top row: icon left | tooltip right */}
       <div className="flex flex-row justify-between items-start">
         <IconBadge icon={MessageSquare} bg={BLUE.bg} color={BLUE.color} />
-        <TooltipIcon text="Total number of scraped mentions across all media sources" />
+        <TooltipIcon text="Total scraped mentions across all media and social sources." />
       </div>
 
       {/* Card title */}

@@ -42,7 +42,7 @@ export function EstimatedReachCard({
       {/* Top row: icon left | tooltip right */}
       <div className="flex flex-row justify-between items-start">
         <IconBadge icon={Eye} bg={BLUE.bg} color={BLUE.color} />
-        <TooltipIcon text="Estimated total audience reach from social media posts and engagement" />
+        <TooltipIcon text="Estimated total audience reached from posts, likes, shares, and replies." />
       </div>
 
       {/* Card title */}

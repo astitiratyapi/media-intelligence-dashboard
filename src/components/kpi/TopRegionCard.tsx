@@ -18,7 +18,7 @@ export function TopRegionCard({ region, label = 'Top Region', sublabel }: TopReg
       {/* Top row: icon left | tooltip right */}
       <div className="flex flex-row justify-between items-start">
         <IconBadge icon={MapPin} bg={GREEN.bg} color={GREEN.color} />
-        <TooltipIcon text="Region with the highest volume of mentions" />
+        <TooltipIcon text="Region with the highest volume of mentions in the selected period." />
       </div>
 
       {/* Card title */}

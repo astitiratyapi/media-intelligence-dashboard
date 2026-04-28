@@ -211,7 +211,7 @@ export function CommsActionsSection({ data }: CommsActionsSectionProps) {
             AI-generated suggestions — Opportunities, Risks, Checklist
           </span>
         </div>
-        <TooltipIcon text="AI-generated communication recommendations based on current media analysis" />
+        <TooltipIcon text="AI-generated communication recommendations based on latest media analysis." />
       </div>
 
       {/* ── Tab filter + source label ── */}
