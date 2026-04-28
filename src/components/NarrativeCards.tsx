@@ -17,9 +17,6 @@ type SentimentFilter = 'all' | 'positive' | 'negative'
 
 const FONT   = "'Plus Jakarta Sans', system-ui, -apple-system, sans-serif"
 const PURPLE = { bg: '#EDE9FE', icon: '#7C3AED' }
-// Fixed height = 3 cards × 96px + 2 gaps × 8px + container padding 32px = 320px
-// Card breakdown: 16px pad-top + 18px title + 8px gap + 36px desc(2-line) + 16px pad-bottom + 2px border
-const LIST_HEIGHT = 320
 
 const FILTERS: { id: SentimentFilter; label: string }[] = [
   { id: 'all',      label: 'All'      },
@@ -44,7 +41,6 @@ export function NarrativeCards({ cards, generatedAt }: NarrativeCardsProps) {
         border: `1px solid ${tokens.component.card.border}`,
         borderRadius: 10,
         minWidth: 0,
-        overflow: 'hidden',
       }}
     >
       {/* Card header */}
@@ -143,11 +139,10 @@ export function NarrativeCards({ cards, generatedAt }: NarrativeCardsProps) {
         </div>
       </div>
 
-      {/* Card list — min-height shows 3 cards, flex-1 fills equal height, smooth-scroll */}
+      {/* Card list — flex-1 fills remaining height, scroll for items beyond view */}
       <div
         style={{
           flex: 1,
-          minHeight: LIST_HEIGHT,
           overflowY: 'auto',
           scrollBehavior: 'smooth',
           padding: tokens.spacing.default,

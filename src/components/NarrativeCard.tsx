@@ -40,6 +40,7 @@ export function NarrativeCard({ title, sentiment, description }: NarrativeCardDa
         padding: tokens.spacing.default,
         gap: tokens.spacing.sm,
         minWidth: 0,
+        minHeight: 96,
       }}
     >
       {/* Title + sentiment badge */}
