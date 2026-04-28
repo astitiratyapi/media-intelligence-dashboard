@@ -13,12 +13,8 @@ export interface ShareOfVoiceCardProps {
 const PURPLE = { bg: '#EDE9FE', color: '#7C3AED' }
 const FONT   = kpiCard.fontFamily
 
-// Bar fill: primary brand blue
 const BAR_FILL  = foundation.color.brand.polynesianBlue[600]
-// Bar track: neutral light surface
 const BAR_TRACK = tokens.color.surface.tertiary
-
-// ─── Component ────────────────────────────────────────────────────────────────
 
 export function ShareOfVoiceCard({
   sharePercent,
@@ -30,39 +26,42 @@ export function ShareOfVoiceCard({
 
   return (
     <KPICardBase onClick={onClick}>
-      {/* Header row: icon + label + share pill + tooltip */}
-      <div className="flex flex-row items-center" style={{ gap: tokens.spacing.sm }}>
+      {/* Top row: icon left | share badge + tooltip right */}
+      <div className="flex flex-row justify-between items-start">
         <IconBadge icon={BarChart2} bg={PURPLE.bg} color={PURPLE.color} />
-        <span
-          className="flex-1"
-          style={{
-            fontFamily: FONT,
-            fontSize: kpiCard.label.fontSize,
-            fontWeight: kpiCard.label.weight,
-            color: kpiCard.label.color,
-          }}
-        >
-          {label}
-        </span>
-        <span
-          style={{
-            fontFamily: FONT,
-            fontSize: tokens.typography.size['label-xs'],
-            fontWeight: tokens.typography.weight.semibold,
-            color: PURPLE.color,
-            backgroundColor: PURPLE.bg,
-            borderRadius: tokens.radius.full,
-            paddingLeft: 8,
-            paddingRight: 8,
-            paddingTop: 2,
-            paddingBottom: 2,
-            whiteSpace: 'nowrap',
-          }}
-        >
-          {sharePercent.toFixed(1)}% share
-        </span>
-        <TooltipIcon text="Top media outlets by volume share in the selected period" />
+        <div className="flex flex-row items-center" style={{ gap: tokens.spacing.xs }}>
+          <span
+            style={{
+              fontFamily: FONT,
+              fontSize: tokens.typography.size['label-xs'],
+              fontWeight: tokens.typography.weight.semibold,
+              color: PURPLE.color,
+              backgroundColor: PURPLE.bg,
+              borderRadius: tokens.radius.full,
+              paddingLeft: 8,
+              paddingRight: 8,
+              paddingTop: 2,
+              paddingBottom: 2,
+              whiteSpace: 'nowrap',
+            }}
+          >
+            {sharePercent.toFixed(1)}% share
+          </span>
+          <TooltipIcon text="Top media outlets by volume share in the selected period" />
+        </div>
       </div>
+
+      {/* Card title */}
+      <span
+        style={{
+          fontFamily: FONT,
+          fontSize: kpiCard.label.fontSize,
+          fontWeight: kpiCard.label.weight,
+          color: kpiCard.label.color,
+        }}
+      >
+        {label}
+      </span>
 
       {/* Media bar rows — name | bar | percent */}
       <div className="flex flex-col" style={{ gap: tokens.spacing.sm }}>
@@ -72,13 +71,12 @@ export function ShareOfVoiceCard({
             className="flex flex-row items-center"
             style={{ gap: tokens.spacing.sm }}
           >
-            {/* Name — fixed width, truncated */}
             <span
               style={{
                 fontFamily: FONT,
                 fontSize: kpiCard.sublabel.fontSize,
                 color: tokens.color.text.secondary,
-                width: 88,
+                width: 64,
                 flexShrink: 0,
                 overflow: 'hidden',
                 textOverflow: 'ellipsis',
@@ -88,11 +86,10 @@ export function ShareOfVoiceCard({
               {media.name}
             </span>
 
-            {/* Bar track */}
             <div
               style={{
                 flex: 1,
-                height: 10,           // h-2.5 = 10px
+                height: 8,
                 backgroundColor: BAR_TRACK,
                 borderRadius: tokens.radius.full,
                 overflow: 'hidden',
@@ -109,7 +106,6 @@ export function ShareOfVoiceCard({
               />
             </div>
 
-            {/* Percentage — right-aligned, fixed width */}
             <span
               style={{
                 fontFamily: FONT,

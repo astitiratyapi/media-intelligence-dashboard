@@ -6,7 +6,7 @@ import type { LucideIcon } from 'lucide-react'
 export const kpiCard = {
   radius: 10,                                   // card/radius → theme/radius/container
   padding: tokens.spacing.xl,                   // card/stat/padding → spacing/xl = 24px
-  gap: tokens.spacing.md,                       // card/content/gap → 12px
+  gap: tokens.spacing.sm,                        // card/content/gap → 8px (gap-2)
   bg: tokens.component.card.bg,                 // white
   bgHover: tokens.color.surface.secondary,      // #F9FAFB
   border: `1px solid ${tokens.component.card.border}`,  // 1px #D1D5DB

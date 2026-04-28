@@ -10,29 +10,33 @@ export interface TopRegionCardProps {
 }
 
 const GREEN = { bg: '#F0FDF4', color: '#16A34A' }
+const FONT  = kpiCard.fontFamily
 
 export function TopRegionCard({ region, label = 'Top Region', sublabel }: TopRegionCardProps) {
   return (
     <KPICardBase>
-      {/* Header row */}
-      <div className="flex flex-row items-center" style={{ gap: tokens.spacing.sm }}>
+      {/* Top row: icon left | tooltip right */}
+      <div className="flex flex-row justify-between items-start">
         <IconBadge icon={MapPin} bg={GREEN.bg} color={GREEN.color} />
-        <span
-          className="flex-1"
-          style={{
-            fontSize: kpiCard.label.fontSize,
-            fontWeight: kpiCard.label.weight,
-            color: kpiCard.label.color,
-          }}
-        >
-          {label}
-        </span>
         <TooltipIcon text="Region with the highest volume of mentions" />
       </div>
 
-      {/* Value */}
+      {/* Card title */}
+      <span
+        style={{
+          fontFamily: FONT,
+          fontSize: kpiCard.label.fontSize,
+          fontWeight: kpiCard.label.weight,
+          color: kpiCard.label.color,
+        }}
+      >
+        {label}
+      </span>
+
+      {/* Big number */}
       <p
         style={{
+          fontFamily: FONT,
           fontSize: kpiCard.value.fontSize,
           fontWeight: kpiCard.value.weight,
           color: kpiCard.value.color,
@@ -44,7 +48,13 @@ export function TopRegionCard({ region, label = 'Top Region', sublabel }: TopReg
       </p>
 
       {sublabel && (
-        <span style={{ fontSize: kpiCard.sublabel.fontSize, color: kpiCard.sublabel.color }}>
+        <span
+          style={{
+            fontFamily: FONT,
+            fontSize: tokens.typography.size['label-xs'],
+            color: kpiCard.sublabel.color,
+          }}
+        >
           {sublabel}
         </span>
       )}

@@ -18,15 +18,11 @@ export interface EstimatedReachCardProps {
 const BLUE = { bg: tokens.color.surface.infoSubtle, color: tokens.color.surface.info }
 const FONT = kpiCard.fontFamily
 
-// ─── Format helper ────────────────────────────────────────────────────────────
-
 function fmt(n: number): string {
   if (n >= 1_000_000) return `${(n / 1_000_000).toFixed(1)}M`
   if (n >= 1_000)     return `${(n / 1_000).toFixed(1)}K`
   return String(n)
 }
-
-// ─── Component ────────────────────────────────────────────────────────────────
 
 export function EstimatedReachCard({
   value,
@@ -43,43 +39,43 @@ export function EstimatedReachCard({
 
   return (
     <KPICardBase>
-      {/* Icon + tooltip row */}
-      <div className="flex flex-row items-center justify-between">
+      {/* Top row: icon left | tooltip right */}
+      <div className="flex flex-row justify-between items-start">
         <IconBadge icon={Eye} bg={BLUE.bg} color={BLUE.color} />
         <TooltipIcon text="Estimated total audience reach from social media posts and engagement" />
       </div>
 
-      {/* Main value + label */}
-      <div className="flex flex-col" style={{ gap: 2 }}>
-        <p
-          style={{
-            fontFamily: FONT,
-            fontSize: kpiCard.value.fontSize,   // heading-xl = 30px
-            fontWeight: kpiCard.value.weight,   // bold
-            color: kpiCard.value.color,
-            lineHeight: tokens.typography.lineHeight.tight,
-            margin: 0,
-          }}
-        >
-          {value}
-        </p>
-        <span
-          style={{
-            fontFamily: FONT,
-            fontSize: tokens.typography.size['body-sm'],
-            fontWeight: tokens.typography.weight.regular,
-            color: tokens.color.text.secondary,
-          }}
-        >
-          {label}
-        </span>
-      </div>
+      {/* Card title */}
+      <span
+        style={{
+          fontFamily: FONT,
+          fontSize: kpiCard.label.fontSize,
+          fontWeight: kpiCard.label.weight,
+          color: kpiCard.label.color,
+        }}
+      >
+        {label}
+      </span>
+
+      {/* Big number */}
+      <p
+        style={{
+          fontFamily: FONT,
+          fontSize: kpiCard.value.fontSize,
+          fontWeight: kpiCard.value.weight,
+          color: kpiCard.value.color,
+          lineHeight: tokens.typography.lineHeight.tight,
+          margin: 0,
+        }}
+      >
+        {value}
+      </p>
 
       {/* Sub-metrics — single muted line */}
       <span
         style={{
           fontFamily: FONT,
-          fontSize: tokens.typography.size['body-sm'],
+          fontSize: tokens.typography.size['label-xs'],
           color: tokens.color.text.tertiary,
           lineHeight: tokens.typography.lineHeight.normal,
         }}
