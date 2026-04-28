@@ -2,13 +2,12 @@ import { useState } from 'react'
 import { Sidebar, defaultNavItems } from './components/Sidebar'
 import { FilterBar } from './components/FilterBar'
 import { SituationOverview } from './components/SituationOverview'
+import { ExecAndCommsRow } from './components/ExecAndCommsRow'
 import { KPISection } from './components/KPISection'
 import { DistributionAndInfluenceRow } from './components/DistributionAndInfluenceRow'
-import { ChannelPerformanceSection } from './components/ChannelPerformanceSection'
 import { TrendsMovementSection } from './components/TrendsMovementSection'
 import { IssuesNarrativesSection } from './components/IssuesNarrativesSection'
-import { EvidenceAndCommsRow } from './components/EvidenceAndCommsRow'
-import { ExecutiveSummary } from './components/ExecutiveSummary'
+import { ChannelPerformanceSection } from './components/ChannelPerformanceSection'
 import { Facebook, Instagram, Music2 } from 'lucide-react'
 import { tokens } from './tokens'
 
@@ -366,22 +365,11 @@ const demoIssuesNarratives = {
   },
 }
 
-// ─── Demo Evidence & Comms data ──────────────────────────────────────────────
+// ─── Demo Exec + Comms data ───────────────────────────────────────────────────
 
-const demoEvidenceAndComms = {
-  evidence: {
-    items: [
-      { title: 'MBG: Menjaga Kepercayaan Publik',                                         source: 'media_indonesia',      sourceType: 'NEWS' as const, tier: 'No Tier' as const, sentiment: 'positive' as const, date: '2 Apr 2026'  },
-      { title: 'DPR RI: Program MBG berdayakan ekonomi lokal',                            source: 'antara__terkini',      sourceType: 'NEWS' as const, tier: 'Tier 2'  as const, sentiment: 'positive' as const, date: '31 Mar 2026' },
-      { title: 'SDN Cipulir 05 Pagi Jaksel terima MBG pascalibur Lebaran',                source: 'antara__terkini',      sourceType: 'NEWS' as const, tier: 'Tier 2'  as const, sentiment: 'positive' as const, date: '31 Mar 2026' },
-      { title: 'MBG Jadi 5 Hari dalam Seminggu, Purbaya: Efisien dan Tidak Kurangi Kualitas', source: 'okezone',          sourceType: 'NEWS' as const, tier: 'Tier 2'  as const, sentiment: 'positive' as const, date: '27 Mar 2026' },
-      { title: 'BRIN topang kesuksesan Program MBG lewat inovasi dan riset peternakan',   source: 'antara__terkini',      sourceType: 'NEWS' as const, tier: 'Tier 2'  as const, sentiment: 'positive' as const, date: '27 Mar 2026' },
-      { title: 'Khatib Salat Id di Istiqlal: Koperasi Merah Putih-MBG Perlu Diapresiasi', source: 'detik',               sourceType: 'NEWS' as const, tier: 'Tier 1'  as const, sentiment: 'positive' as const, date: '21 Mar 2026' },
-      { title: 'Video: Mentan Amran Sebut Program MBG Bikin Harga Telur Ayam Stabil',     source: 'cnbc_indonesia__news', sourceType: 'NEWS' as const, tier: 'No Tier' as const, sentiment: 'positive' as const, date: '3 Mar 2026'  },
-      { title: 'Lapor Pak Prabowo! Bos Honda Bilang MBG Bikin Penjualan Motor Naik',      source: 'cnbc_indonesia__news', sourceType: 'NEWS' as const, tier: 'No Tier' as const, sentiment: 'positive' as const, date: '26 Feb 2026' },
-      { title: 'Ajwa, Medjool, hingga Sukari, Kurma Apa yang Paling Laku di Tanah Abang?', source: 'detik_finance',      sourceType: 'NEWS' as const, tier: 'Tier 1'  as const, sentiment: 'neutral'  as const, date: '25 Feb 2026' },
-      { title: 'Mengupas Lingkar Manfaat Program Makan Bergizi Gratis',                   source: 'kumparan.com',         sourceType: 'NEWS' as const, tier: 'Tier 1'  as const, sentiment: 'positive' as const, date: '23 Feb 2026' },
-    ],
+const demoExecAndComms = {
+  executiveSummary: {
+    summaryText: 'Analisis terhadap topik MBG menunjukkan adanya perdebatan sengit seputar implementasi program, mulai dari kualitas makanan, pengawasan, hingga isu pengadaan barang dan dampaknya terhadap perekonomian. Narasi negatif didominasi oleh kekhawatiran akan kualitas dan keamanan makanan, potensi penyalahgunaan anggaran, serta dampak inflasi. Sementara itu, narasi positif menyoroti potensi manfaat program dan upaya pemerintah dalam mengatasi permasalahan. Kontroversi utama berkisar pada standar menu, pengawasan, dan pengadaan motor listrik.',
   },
   commsActions: {
     data: {
@@ -543,13 +531,12 @@ export default function App() {
             riskLevel={demoRiskLevel}
             actors={demoActors}
           />
-          <ExecutiveSummary summaryText="Analisis terhadap topik MBG menunjukkan adanya perdebatan sengit seputar implementasi program, mulai dari kualitas makanan, pengawasan, hingga isu pengadaan barang dan dampaknya terhadap perekonomian. Narasi negatif didominasi oleh kekhawatiran akan kualitas dan keamanan makanan, potensi penyalahgunaan anggaran, serta dampak inflasi. Sementara itu, narasi positif menyoroti potensi manfaat program dan upaya pemerintah dalam mengatasi permasalahan. Kontroversi utama berkisar pada standar menu, pengawasan, dan pengadaan motor listrik." />
+          <ExecAndCommsRow {...demoExecAndComms} />
           <KPISection {...demoKPI} />
           <DistributionAndInfluenceRow {...demoDistributionAndInfluence} />
-          <ChannelPerformanceSection {...demoChannelPerformance} />
           <TrendsMovementSection {...demoTrends} />
           <IssuesNarrativesSection {...demoIssuesNarratives} />
-          <EvidenceAndCommsRow {...demoEvidenceAndComms} />
+          <ChannelPerformanceSection {...demoChannelPerformance} />
         </main>
       </div>
     </div>
