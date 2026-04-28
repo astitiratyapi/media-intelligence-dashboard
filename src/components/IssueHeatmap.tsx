@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { Grid2x2, Globe, MessageCircle } from 'lucide-react'
 import { tokens, foundation } from '../tokens'
+import { TooltipIcon } from './TooltipIcon'
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
@@ -212,6 +213,7 @@ export function IssueHeatmap({ rowsByTab, onCellClick }: IssueHeatmapProps) {
               Issue × Sentiment — click a cell to filter
             </span>
           </div>
+          <TooltipIcon text="Sentiment breakdown per issue — click a cell to filter" />
         </div>
         <TabBar active={activeTab} onChange={setActiveTab} />
       </div>

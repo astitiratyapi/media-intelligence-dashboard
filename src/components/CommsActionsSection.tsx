@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { Lightbulb, AlertTriangle, ListChecks, FileText, AlertCircle, type LucideIcon } from 'lucide-react'
 import { tokens, foundation } from '../tokens'
+import { TooltipIcon } from './TooltipIcon'
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
@@ -168,7 +169,7 @@ export function CommsActionsSection({ data }: CommsActionsSectionProps) {
         >
           <Lightbulb size={16} />
         </div>
-        <div className="flex flex-col" style={{ gap: 2 }}>
+        <div className="flex flex-col" style={{ gap: 2, flex: 1 }}>
           <span style={{ fontFamily: FONT, fontSize: tokens.typography.size['body-md'], fontWeight: tokens.typography.weight.bold, color: tokens.color.text.primary }}>
             Comms Actions
           </span>
@@ -176,6 +177,7 @@ export function CommsActionsSection({ data }: CommsActionsSectionProps) {
             AI-generated opportunities, risks, and weekly checklist
           </span>
         </div>
+        <TooltipIcon text="AI-generated communication recommendations based on current media analysis" />
       </div>
 
       {/* Tab filter + source label */}
@@ -202,9 +204,16 @@ export function CommsActionsSection({ data }: CommsActionsSectionProps) {
         </div>
       </div>
 
-      {/* Scrollable action list */}
+      {/* Scrollable action list — height shows ~3 items, scroll for rest */}
+      {/* 3 items × 90px + 2 gaps × 8px + padding 32px = 318px → 320px */}
       <div
-        style={{ overflowY: 'auto', flex: 1, minHeight: 0, padding: tokens.spacing.default }}
+        style={{
+          height: 320,
+          overflowY: 'auto',
+          scrollBehavior: 'smooth',
+          padding: tokens.spacing.default,
+          flexShrink: 0,
+        }}
       >
         <div className="flex flex-col" style={{ gap: tokens.spacing.sm }}>
           {actions.map((action, i) => (

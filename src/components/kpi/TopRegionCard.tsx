@@ -1,6 +1,7 @@
 import { MapPin } from 'lucide-react'
 import { tokens } from '../../tokens'
 import { KPICardBase, IconBadge, kpiCard } from './KPICardBase'
+import { TooltipIcon } from '../TooltipIcon'
 
 export interface TopRegionCardProps {
   region: string       // e.g. "N/A" or "Jakarta"
@@ -17,6 +18,7 @@ export function TopRegionCard({ region, label = 'Top Region', sublabel }: TopReg
       <div className="flex flex-row items-center" style={{ gap: tokens.spacing.sm }}>
         <IconBadge icon={MapPin} bg={GREEN.bg} color={GREEN.color} />
         <span
+          className="flex-1"
           style={{
             fontSize: kpiCard.label.fontSize,
             fontWeight: kpiCard.label.weight,
@@ -25,6 +27,7 @@ export function TopRegionCard({ region, label = 'Top Region', sublabel }: TopReg
         >
           {label}
         </span>
+        <TooltipIcon text="Region with the highest volume of mentions" />
       </div>
 
       {/* Value */}

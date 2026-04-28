@@ -1,6 +1,7 @@
 import { BarChart2 } from 'lucide-react'
 import { tokens, foundation } from '../../tokens'
 import { KPICardBase, IconBadge, kpiCard } from './KPICardBase'
+import { TooltipIcon } from '../TooltipIcon'
 
 export interface ShareOfVoiceCardProps {
   sharePercent: number   // e.g. 5.9
@@ -29,7 +30,7 @@ export function ShareOfVoiceCard({
 
   return (
     <KPICardBase onClick={onClick}>
-      {/* Header row: icon + label + share pill */}
+      {/* Header row: icon + label + share pill + tooltip */}
       <div className="flex flex-row items-center" style={{ gap: tokens.spacing.sm }}>
         <IconBadge icon={BarChart2} bg={PURPLE.bg} color={PURPLE.color} />
         <span
@@ -60,6 +61,7 @@ export function ShareOfVoiceCard({
         >
           {sharePercent.toFixed(1)}% share
         </span>
+        <TooltipIcon text="Top media outlets by volume share in the selected period" />
       </div>
 
       {/* Media bar rows — name | bar | percent */}

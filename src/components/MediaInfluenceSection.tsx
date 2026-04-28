@@ -1,7 +1,8 @@
 import { useState } from 'react'
-import { TrendingUp, Info } from 'lucide-react'
+import { TrendingUp } from 'lucide-react'
 import { PieChart, Pie, Cell, Tooltip, ResponsiveContainer } from 'recharts'
 import { tokens, foundation } from '../tokens'
+import { TooltipIcon } from './TooltipIcon'
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
@@ -293,7 +294,7 @@ export function MediaInfluenceSection({ sentimentByTab }: MediaInfluenceSectionP
           >
             Media Influence
           </span>
-          <Info size={14} color={tokens.color.icon.secondary} style={{ cursor: 'pointer' }} />
+          <TooltipIcon text="Sentiment distribution (positive, neutral, negative) across media sources" />
         </div>
 
         {/* Tab filter */}

@@ -1,5 +1,6 @@
 import { Newspaper, Share2, Users } from 'lucide-react'
 import { tokens, foundation } from '../tokens'
+import { TooltipIcon } from './TooltipIcon'
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
@@ -205,24 +206,27 @@ export function ActorsCard({ actors, subtitle }: ActorsCardProps) {
           flexShrink: 0,
         }}
       >
-        <div className="flex flex-row items-center" style={{ gap: tokens.spacing.sm }}>
-          <Users
-            size={16}
-            style={{ color: tokens.color.icon.brand, flexShrink: 0 }}
-            aria-hidden="true"
-          />
-          <h3
-            style={{
-              fontFamily: FONT,
-              fontSize: tokens.typography.size['heading-xs'],
-              fontWeight: tokens.typography.weight.bold,
-              color: tokens.color.text.primary,
-              lineHeight: tokens.typography.lineHeight.tight,
-              margin: 0,
-            }}
-          >
-            Actors
-          </h3>
+        <div className="flex flex-row items-center justify-between w-full" style={{ gap: tokens.spacing.sm }}>
+          <div className="flex flex-row items-center" style={{ gap: tokens.spacing.sm }}>
+            <Users
+              size={16}
+              style={{ color: tokens.color.icon.brand, flexShrink: 0 }}
+              aria-hidden="true"
+            />
+            <h3
+              style={{
+                fontFamily: FONT,
+                fontSize: tokens.typography.size['heading-xs'],
+                fontWeight: tokens.typography.weight.bold,
+                color: tokens.color.text.primary,
+                lineHeight: tokens.typography.lineHeight.tight,
+                margin: 0,
+              }}
+            >
+              Actors
+            </h3>
+          </div>
+          <TooltipIcon text="Most mentioned people and organizations in recent media coverage" />
         </div>
         {subtitle && (
           <p

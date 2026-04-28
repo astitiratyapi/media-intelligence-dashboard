@@ -1,6 +1,7 @@
 import { Eye } from 'lucide-react'
 import { tokens } from '../../tokens'
 import { KPICardBase, IconBadge, kpiCard } from './KPICardBase'
+import { TooltipIcon } from '../TooltipIcon'
 
 export interface EstimatedReachCardProps {
   value: string          // e.g. "1.1M"
@@ -42,8 +43,11 @@ export function EstimatedReachCard({
 
   return (
     <KPICardBase>
-      {/* Icon — alone on top row */}
-      <IconBadge icon={Eye} bg={BLUE.bg} color={BLUE.color} />
+      {/* Icon + tooltip row */}
+      <div className="flex flex-row items-center justify-between">
+        <IconBadge icon={Eye} bg={BLUE.bg} color={BLUE.color} />
+        <TooltipIcon text="Estimated total audience reach from social media posts and engagement" />
+      </div>
 
       {/* Main value + label */}
       <div className="flex flex-col" style={{ gap: 2 }}>

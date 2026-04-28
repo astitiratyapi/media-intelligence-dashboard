@@ -1,6 +1,7 @@
 import { MessageSquare } from 'lucide-react'
 import { tokens } from '../../tokens'
 import { KPICardBase, IconBadge, kpiCard } from './KPICardBase'
+import { TooltipIcon } from '../TooltipIcon'
 
 export interface TotalMentionsCardProps {
   value: string        // e.g. "1.1K"
@@ -13,7 +14,7 @@ const BLUE = { bg: tokens.color.surface.infoSubtle, color: tokens.color.surface.
 export function TotalMentionsCard({ value, label = 'Total Mentions', onClick }: TotalMentionsCardProps) {
   return (
     <KPICardBase onClick={onClick}>
-      {/* Header row: icon badge + label + clickable pill */}
+      {/* Header row: icon badge + label + clickable pill + tooltip */}
       <div className="flex flex-row items-center" style={{ gap: tokens.spacing.sm }}>
         <IconBadge icon={MessageSquare} bg={BLUE.bg} color={BLUE.color} />
         <span
@@ -43,6 +44,7 @@ export function TotalMentionsCard({ value, label = 'Total Mentions', onClick }: 
             click
           </span>
         )}
+        <TooltipIcon text="Total number of scraped mentions across all media sources" />
       </div>
 
       {/* Value */}

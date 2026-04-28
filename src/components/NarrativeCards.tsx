@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { BookOpen } from 'lucide-react'
 import { tokens } from '../tokens'
 import { NarrativeCard, type NarrativeCardData } from './NarrativeCard'
+import { TooltipIcon } from './TooltipIcon'
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
@@ -16,9 +17,9 @@ type SentimentFilter = 'all' | 'positive' | 'negative'
 
 const FONT   = "'Plus Jakarta Sans', system-ui, -apple-system, sans-serif"
 const PURPLE = { bg: '#EDE9FE', icon: '#7C3AED' }
-// Fixed height = 5 cards × 96px + 4 gaps × 8px + container padding 32px = 544px
+// Fixed height = 3 cards × 96px + 2 gaps × 8px + container padding 32px = 320px
 // Card breakdown: 16px pad-top + 18px title + 8px gap + 36px desc(2-line) + 16px pad-bottom + 2px border
-const LIST_HEIGHT = 544
+const LIST_HEIGHT = 320
 
 const FILTERS: { id: SentimentFilter; label: string }[] = [
   { id: 'all',      label: 'All'      },
@@ -66,7 +67,7 @@ export function NarrativeCards({ cards, generatedAt }: NarrativeCardsProps) {
         >
           <BookOpen size={16} />
         </div>
-        <div className="flex flex-col" style={{ gap: 2 }}>
+        <div className="flex flex-col flex-1" style={{ gap: 2 }}>
           <span
             style={{
               fontFamily: FONT,
@@ -87,6 +88,7 @@ export function NarrativeCards({ cards, generatedAt }: NarrativeCardsProps) {
             Key story frames — comms strategy is about frames, not keywords
           </span>
         </div>
+        <TooltipIcon text="Key story frames currently circulating in media coverage" />
       </div>
 
       {/* Sentiment filter */}
@@ -141,14 +143,14 @@ export function NarrativeCards({ cards, generatedAt }: NarrativeCardsProps) {
         </div>
       </div>
 
-      {/* Card list — fixed height shows 5 cards, smooth-scroll for the rest */}
+      {/* Card list — min-height shows 3 cards, flex-1 fills equal height, smooth-scroll */}
       <div
         style={{
-          height: LIST_HEIGHT,
+          flex: 1,
+          minHeight: LIST_HEIGHT,
           overflowY: 'auto',
           scrollBehavior: 'smooth',
           padding: tokens.spacing.default,
-          flexShrink: 0,
         }}
       >
         {visible.length === 0 ? (

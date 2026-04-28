@@ -1,5 +1,6 @@
 import { BarChart2, Newspaper, MessageCircle } from 'lucide-react'
 import { tokens, foundation } from '../tokens'
+import { TooltipIcon } from './TooltipIcon'
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
@@ -180,6 +181,7 @@ export function DataDistributionSection({ total, totalLabel = 'Total Mention', c
         >
           Data Distribution
         </span>
+        <TooltipIcon text="Breakdown of mentions by media type, tier, and social platform" />
       </div>
 
       {/* Chart body */}

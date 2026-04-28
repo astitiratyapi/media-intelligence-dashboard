@@ -1,5 +1,6 @@
 import { AlignLeft } from 'lucide-react'
 import { foundation, tokens } from '../tokens'
+import { TooltipIcon } from './TooltipIcon'
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
@@ -34,31 +35,34 @@ export function ExecutiveSummary({ summaryText }: ExecutiveSummaryProps) {
         gap: tokens.spacing.xs,
       }}
     >
-      {/* Header row: icon badge + label */}
-      <div className="flex flex-row items-center" style={{ gap: tokens.spacing.sm }}>
-        <div
-          className="flex items-center justify-center flex-shrink-0"
-          style={{
-            width: 28,
-            height: 28,
-            backgroundColor: ICON_BG,
-            borderRadius: tokens.radius.sm,
-            color: '#FFFFFF',
-          }}
-        >
-          <AlignLeft size={14} />
+      {/* Header row: icon badge + label + tooltip */}
+      <div className="flex flex-row items-center justify-between" style={{ gap: tokens.spacing.sm }}>
+        <div className="flex flex-row items-center" style={{ gap: tokens.spacing.sm }}>
+          <div
+            className="flex items-center justify-center flex-shrink-0"
+            style={{
+              width: 28,
+              height: 28,
+              backgroundColor: ICON_BG,
+              borderRadius: tokens.radius.sm,
+              color: '#FFFFFF',
+            }}
+          >
+            <AlignLeft size={14} />
+          </div>
+          <span
+            style={{
+              fontFamily: FONT,
+              fontSize: tokens.typography.size['body-sm'],
+              fontWeight: tokens.typography.weight.semibold,
+              color: TEXT,
+              lineHeight: tokens.typography.lineHeight.tight,
+            }}
+          >
+            Executive Summary
+          </span>
         </div>
-        <span
-          style={{
-            fontFamily: FONT,
-            fontSize: tokens.typography.size['body-sm'],
-            fontWeight: tokens.typography.weight.semibold,
-            color: TEXT,
-            lineHeight: tokens.typography.lineHeight.tight,
-          }}
-        >
-          Executive Summary
-        </span>
+        <TooltipIcon text="AI-generated narrative summary of the current media landscape" />
       </div>
 
       {/* Body text */}

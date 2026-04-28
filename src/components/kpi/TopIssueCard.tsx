@@ -1,6 +1,7 @@
 import { Flame } from 'lucide-react'
 import { tokens } from '../../tokens'
 import { KPICardBase, IconBadge, kpiCard } from './KPICardBase'
+import { TooltipIcon } from '../TooltipIcon'
 
 export interface TopIssueCardProps {
   issue: string         // e.g. "MBG"
@@ -14,7 +15,7 @@ const ORANGE = { bg: '#FFF7ED', color: '#F97316' }
 export function TopIssueCard({ issue, mentions, label = 'Top Issue', onClick }: TopIssueCardProps) {
   return (
     <KPICardBase onClick={onClick}>
-      {/* Header row: icon + label + mentions pill */}
+      {/* Header row: icon + label + mentions pill + tooltip */}
       <div className="flex flex-row items-center" style={{ gap: tokens.spacing.sm }}>
         <IconBadge icon={Flame} bg={ORANGE.bg} color={ORANGE.color} />
         <span
@@ -43,6 +44,7 @@ export function TopIssueCard({ issue, mentions, label = 'Top Issue', onClick }: 
         >
           {mentions.toLocaleString()} mentions
         </span>
+        <TooltipIcon text="Most frequently discussed issue in the monitored period" />
       </div>
 
       {/* Value */}

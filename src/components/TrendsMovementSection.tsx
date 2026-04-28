@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { TrendingUp } from 'lucide-react'
 import { tokens } from '../tokens'
+import { TooltipIcon } from './TooltipIcon'
 import { AllScrapedChart, type AllScrapedDataPoint } from './AllScrapedChart'
 import { CoverageTrendChart, type DataPoint as CoveragePoint } from './CoverageTrendChart'
 import { NegativeTrendChart, type DataPoint as NegativePoint } from './NegativeTrendChart'
@@ -103,7 +104,7 @@ export function TrendsMovementSection({
         >
           <TrendingUp size={16} />
         </div>
-        <div className="flex flex-col" style={{ gap: 2 }}>
+        <div className="flex flex-col flex-1" style={{ gap: 2 }}>
           <h2
             id="trends-heading"
             style={{
@@ -128,6 +129,7 @@ export function TrendsMovementSection({
             Coverage volume and negative mention trends over time
           </p>
         </div>
+        <TooltipIcon text="Volume trends over time for all scraped data, coverage, and negative mentions" />
       </div>
 
       {/* Card shell */}

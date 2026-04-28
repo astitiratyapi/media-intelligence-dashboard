@@ -2,6 +2,7 @@ import { useState, type ReactNode } from 'react'
 import { MessageSquare } from 'lucide-react'
 import { tokens } from '../tokens'
 import { AccountCard, type Account } from './AccountCard'
+import { TooltipIcon } from './TooltipIcon'
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
@@ -93,7 +94,7 @@ export function ChannelPerformanceSection({ platforms }: ChannelPerformanceSecti
         >
           <MessageSquare size={16} />
         </div>
-        <div className="flex flex-col" style={{ gap: 2 }}>
+        <div className="flex flex-col flex-1" style={{ gap: 2 }}>
           <h2
             id="channel-perf-heading"
             style={{
@@ -118,6 +119,7 @@ export function ChannelPerformanceSection({ platforms }: ChannelPerformanceSecti
             Live engagement metrics &amp; top content from your key accounts
           </p>
         </div>
+        <TooltipIcon text="Engagement metrics and top content from monitored social media accounts" />
       </div>
 
       {/* Card shell */}
