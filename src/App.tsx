@@ -2,7 +2,8 @@ import { useState } from 'react'
 import { Sidebar, defaultNavItems } from './components/Sidebar'
 import { FilterBar } from './components/FilterBar'
 import { SituationOverview } from './components/SituationOverview'
-import { ExecAndCommsRow } from './components/ExecAndCommsRow'
+import { ExecutiveSummary } from './components/ExecutiveSummary'
+import { CommsActionsSection } from './components/CommsActionsSection'
 import { KPISection } from './components/KPISection'
 import { DistributionAndInfluenceRow } from './components/DistributionAndInfluenceRow'
 import { TrendsMovementSection } from './components/TrendsMovementSection'
@@ -374,11 +375,11 @@ const demoExecAndComms = {
   commsActions: {
     data: {
       opportunities: [
-        { title: 'Inspeksi Mendadak dan Penertiban Dapur MBG',           description: 'Segera lakukan inspeksi mendadak ke semua dapur MBG untuk memastikan kualitas, kebersihan, dan kesesuaian dengan standar gizi yang telah ditetapkan.' },
-        { title: 'Edukasi dan Sosialisasi Standar Menu',                 description: 'Berikan panduan yang jelas dan edukasi berkelanjutan kepada pengelola SPPG dan mitra dapur tentang standar menu, kebersihan, dan penanganan bahan makanan.' },
-        { title: 'Transparansi Anggaran dan Mekanisme Pengawasan',       description: 'Publikasikan detail anggaran dan mekanisme penyaluran dana secara transparan melalui portal publik untuk memperkuat kepercayaan masyarakat.' },
-        { title: 'Penyusunan Standardisasi Menu Nasional',               description: 'Kembangkan standardisasi menu MBG yang mempertimbangkan aspek gizi, keamanan pangan, dan keberagaman pangan lokal di setiap daerah.', highlighted: true },
-        { title: 'Evaluasi Dampak Ekonomi Program',                      description: 'Lakukan studi komprehensif mengenai dampak program MBG terhadap harga komoditas pangan dan kondisi petani lokal secara berkala.' },
+        { title: 'Publikasi Standar Menu MBG yang Jelas',  description: 'BGN harus menerbitkan pedoman menu standar yang terukur, transparan, dan dapat diakses publik. Sertakan informasi nutrisi, harga per porsi, dan protokol quality control.' },
+        { title: 'Audit Lapangan Independen untuk MBG',    description: 'Lakukan audit independen terhadap implementasi MBG di 50–100 sekolah sampel untuk mengidentifikasi gap antara kebijakan dan eksekusi.' },
+        { title: 'Klarifikasi Publik Kasus Lele Mentah',   description: 'Terbitkan pernyataan resmi yang menjelaskan kronologi kasus lele mentah, identifikasi pihak yang bertanggung jawab, dan tindakan korektif yang telah diambil.' },
+        { title: 'Transparansi Data MSCI Compliance',      description: 'OJK dan Kementerian Keuangan harus mempublikasikan roadmap detail untuk memenuhi persyaratan MSCI, termasuk timeline dan indikator kinerja.' },
+        { title: 'Evaluasi Dampak Ekonomi Program',        description: 'Lakukan studi komprehensif mengenai dampak program MBG terhadap harga komoditas pangan, khususnya telur.' },
       ],
       risks: [
         { title: 'Risiko Keracunan Massal dan Reputasi',                 description: 'Insiden keracunan makanan berpotensi viral dan merusak kepercayaan publik secara masif — siapkan protokol respons krisis yang terstandar.' },
@@ -394,7 +395,7 @@ const demoExecAndComms = {
         { title: 'Perbarui FAQ dan materi edukasi publik',               description: 'Pastikan halaman FAQ dan konten edukasi di kanal resmi selalu aktual sesuai perkembangan terbaru program.', highlighted: true },
         { title: 'Evaluasi kinerja mitra dapur bermasalah',              description: 'Tinjau dan tindaklanjuti laporan mitra dapur yang mendapat sorotan negatif, lengkap dengan tindakan korektif terukur.' },
       ],
-      source: 'Laporan AI — 9 Apr 2026, 23.13',
+      source: 'Laporan AI — 21 Apr 2026, 10.10',
     },
   },
 }
@@ -531,7 +532,8 @@ export default function App() {
             riskLevel={demoRiskLevel}
             actors={demoActors}
           />
-          <ExecAndCommsRow {...demoExecAndComms} />
+          <ExecutiveSummary {...demoExecAndComms.executiveSummary} />
+          <CommsActionsSection {...demoExecAndComms.commsActions} />
           <KPISection {...demoKPI} />
           <DistributionAndInfluenceRow {...demoDistributionAndInfluence} />
           <TrendsMovementSection {...demoTrends} />
