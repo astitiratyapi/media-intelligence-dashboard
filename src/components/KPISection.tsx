@@ -3,7 +3,6 @@ import { tokens } from '../tokens'
 import { TotalMentionsCard, type TotalMentionsCardProps } from './kpi/TotalMentionsCard'
 import { EstimatedReachCard, type EstimatedReachCardProps } from './kpi/EstimatedReachCard'
 import { ShareOfVoiceCard, type ShareOfVoiceCardProps } from './kpi/ShareOfVoiceCard'
-import { Tier1MentionsCard, type Tier1MentionsCardProps } from './kpi/Tier1MentionsCard'
 import { TopIssueCard, type TopIssueCardProps } from './kpi/TopIssueCard'
 import { TopRegionCard, type TopRegionCardProps } from './kpi/TopRegionCard'
 
@@ -33,7 +32,6 @@ export interface KPISectionProps {
   totalMentions: TotalMentionsCardProps
   estimatedReach: EstimatedReachCardProps
   shareOfVoice: ShareOfVoiceCardProps
-  tier1Mentions: Tier1MentionsCardProps
   topIssue: TopIssueCardProps
   topRegion: TopRegionCardProps
 }
@@ -44,7 +42,6 @@ export function KPISection({
   totalMentions,
   estimatedReach,
   shareOfVoice,
-  tier1Mentions,
   topIssue,
   topRegion,
 }: KPISectionProps) {
@@ -80,21 +77,13 @@ export function KPISection({
         </div>
       </div>
 
-      {/* Row 1: 4 cards */}
+      {/* Single row — all 5 cards, equal width */}
       <div className="flex flex-row items-stretch" style={{ gap: tokens.spacing.default }}>
-        <TotalMentionsCard {...totalMentions} />
+        <TotalMentionsCard  {...totalMentions}  />
         <EstimatedReachCard {...estimatedReach} />
-        <ShareOfVoiceCard {...shareOfVoice} />
-        <Tier1MentionsCard {...tier1Mentions} />
-      </div>
-
-      {/* Row 2: 2 cards (fill left, rest is empty space) */}
-      <div className="flex flex-row items-stretch" style={{ gap: tokens.spacing.default }}>
-        <TopIssueCard {...topIssue} />
-        <TopRegionCard {...topRegion} />
-        {/* Two empty flex-1 spacers to maintain 4-column grid alignment */}
-        <div className="flex-1" />
-        <div className="flex-1" />
+        <ShareOfVoiceCard   {...shareOfVoice}   />
+        <TopIssueCard       {...topIssue}        />
+        <TopRegionCard      {...topRegion}       />
       </div>
     </section>
   )
