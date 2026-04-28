@@ -22,56 +22,52 @@ const sidebarTokens = {
   // ── Layout ────────────────────────────────────────────────────────────────
   width: 256,                  // fixed sidebar width (px)
 
-  // ── Colors — dark variant ─────────────────────────────────────────────────
-  bg: '#111827',               // sidebar/bg-dark → surface/default/inverse → neutral/900
-  borderRight: '#374151',      // sidebar/border (dark adapted) → border/default/primary dark → neutral/700
+  // ── Colors — light variant ────────────────────────────────────────────────
+  bg: '#F9FAFB',               // surface/default/secondary → neutral/50
+  borderRight: '#E5E7EB',      // border/default/secondary → neutral/200
 
   // ── Font — explicitly set by Figma ───────────────────────────────────────
   fontFamily: "'Plus Jakarta Sans', system-ui, -apple-system, sans-serif",
-  //   sidebar/font-family → theme/font/body → "Plus Jakarta Sans"
 
   // ── Header ────────────────────────────────────────────────────────────────
   header: {
-    paddingX: 16,              // sidebar/header/padding-x → spacing/md → 8; bumped to 16 for visual breathing room
-    paddingY: 20,              // visual balance with logo height
-    borderBottom: '#1F2937',   // sidebar/header/border dark adapted → neutral/800 (subtle separator)
+    paddingX: 16,
+    paddingY: 20,
+    borderBottom: '#E5E7EB',   // border/default/secondary → neutral/200
   },
 
   // ── Nav section wrapper ───────────────────────────────────────────────────
   section: {
-    paddingX: 8,               // sidebar/section/padding-x → spacing/md → 8 (Figma exact)
-    paddingY: 8,               // sidebar/section/padding-y → spacing/md → 8 (Figma exact)
-    labelText: '#4B5563',      // sidebar/section/text dark adapted → neutral/600
-    labelSize: 11,             // typography/size/label-xs
+    paddingX: 8,
+    paddingY: 8,
+    labelText: '#6B7280',      // text/default/tertiary → neutral/500
+    labelSize: 11,
   },
 
   // ── Nav items ─────────────────────────────────────────────────────────────
   item: {
-    paddingX: 8,               // sidebar/item/padding-x → spacing/md → 8 (Figma exact)
-    paddingY: 8,               // sidebar/item/padding-y → spacing/md → 8 (Figma exact)
-    gap: 8,                    // sidebar/item/gap → theme/spacing/inline-gap → 8 (Figma exact)
-    radius: 8,                 // sidebar/item/radius → border/radius/default → 8 (Figma exact)
-    minHeight: 36,             // visual target height for touch / readability
+    paddingX: 8,
+    paddingY: 8,
+    gap: 8,
+    radius: 8,
+    minHeight: 36,
 
     // Default state
-    text: '#9CA3AF',           // sidebar/item/text dark adapted → text/default/secondary (dark) → neutral/400
-    icon: '#6B7280',           // sidebar/item/icon → icon/default/secondary → neutral/500
-    textDisabled: '#4B5563',   // sidebar/item/text-disabled dark adapted → neutral/600
+    text: '#374151',           // text/default/primary → neutral/700 (readable on light bg)
+    icon: '#6B7280',           // icon/default/secondary → neutral/500
+    textDisabled: '#9CA3AF',   // text/state/disabled → neutral/400
 
-    // Active state
-    // Light: sidebar/item/bg-active → surface/state/active → #E2F3FC (picton-blue/100)
-    // Dark:  surface/state/active (dark mode) → #124B68 (picton-blue/900)
-    bgActive: 'rgba(27, 168, 223, 0.15)',  // brand tint on dark bg — visually reads as active
-    bgActiveSolid: '#124B68',              // sidebar/item/bg-active dark mode exact Figma value
-    textActive: '#FFFFFF',                 // sidebar/item/text-active dark adapted → text/default/primary (dark)
-    iconActive: '#43BEED',                 // sidebar/item/icon-active dark adapted → picton-blue/400
+    // Active state — soft blue on light bg
+    bgActive: 'rgba(2, 135, 245, 0.08)',   // brand blue tint on light bg
+    bgActiveSolid: '#EFF6FF',              // blue/50 — info-subtle surface
+    textActive: '#004990',                 // text/default/brand → polynesianBlue/800
+    iconActive: '#0069D2',                 // brand/polynesianBlue/600
 
     // Hover state
-    // sidebar/item/bg-hover → surface/state/hover → #0069D2 (light); dark adaptation:
-    bgHover: 'rgba(255, 255, 255, 0.06)', // subtle white tint on dark bg
+    bgHover: 'rgba(0, 0, 0, 0.04)',        // subtle dark tint on light bg
 
-    // Active left-edge indicator (brand accent stripe)
-    activeIndicatorColor: '#1BA8DF',       // brand/picton-blue/500 → surface/default/brand-secondary
+    // Active left-edge indicator
+    activeIndicatorColor: '#0287F5',       // brand/polynesianBlue/500
     activeIndicatorWidth: 2,
   },
 
@@ -79,26 +75,26 @@ const sidebarTokens = {
   footer: {
     paddingX: 16,
     paddingY: 16,
-    borderTop: '#1F2937',       // sidebar/footer/border dark adapted → neutral/800
-    poweredByText: '#4B5563',   // tertiary label color
-    poweredBySize: 11,          // typography/size/label-xs
-    brandText: '#9CA3AF',       // sidebar/footer/name dark adapted → neutral/400
-    brandSize: 12,              // typography/size/body-sm
+    borderTop: '#E5E7EB',      // border/default/secondary → neutral/200
+    poweredByText: '#9CA3AF',  // text/default/tertiary → neutral/400
+    poweredBySize: 11,
+    brandText: '#374151',      // text/default/secondary → neutral/700
+    brandSize: 12,
   },
 
   // ── Logo area ─────────────────────────────────────────────────────────────
   logo: {
-    badrText: '#FFFFFF',        // sidebar/logo/text dark adapted → text/default/primary (dark) → #F9FAFB
-    badrSize: 18,               // heading-xs equivalent for the brand wordmark
-    badrWeight: 700,            // bold
-    interactiveText: '#9CA3AF', // secondary label color for tagline
-    interactiveSize: 10,        // label-xs for the tagline beneath brand name
-    dividerColor: '#374151',    // subtle vertical rule between logo and page title
-    pageTitleText: '#FFFFFF',   // page title — text/default/primary (dark)
-    pageTitleSize: 14,          // body-base — "Dashboard"
-    pageTitleWeight: 600,       // semibold
-    pageSubtitleText: '#6B7280', // text/default/tertiary (dark) → neutral/500
-    pageSubtitleSize: 11,        // label-xs
+    badrText: '#111827',        // text/default/primary → neutral/900
+    badrSize: 18,
+    badrWeight: 700,
+    interactiveText: '#6B7280', // text/default/tertiary → neutral/500
+    interactiveSize: 10,
+    dividerColor: '#E5E7EB',    // border/default/secondary → neutral/200
+    pageTitleText: '#111827',   // text/default/primary → neutral/900
+    pageTitleSize: 14,
+    pageTitleWeight: 600,
+    pageSubtitleText: '#9CA3AF', // text/default/tertiary → neutral/400
+    pageSubtitleSize: 11,
   },
 } as const
 
@@ -429,15 +425,15 @@ export function Sidebar({
             width: 28,
             height: 28,
             borderRadius: '50%',
-            backgroundColor: '#1F2937',
-            border: '1px solid #374151',
+            backgroundColor: '#E5E7EB',
+            border: '1px solid #D1D5DB',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
             flexShrink: 0,
           }}
         >
-          <User size={14} style={{ color: '#6B7280' }} />
+          <User size={14} style={{ color: '#9CA3AF' }} />
         </div>
 
         {/* "Powered by" + brand: flex-col, gap 0 */}
