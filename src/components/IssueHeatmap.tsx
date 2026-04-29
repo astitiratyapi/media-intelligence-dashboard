@@ -8,12 +8,12 @@ import { TooltipIcon } from './TooltipIcon'
 type HeatmapTabId = 'all' | 'news' | 'social'
 
 export interface HeatmapRow {
-  issue: string
-  share: number        // percentage, e.g. 39.7
+  issue:    string
+  mentions: number
+  pct:      string   // e.g. "47%"
   positive: number
-  neutral: number
+  neutral:  number
   negative: number
-  total: number
 }
 
 export interface IssueHeatmapProps {
@@ -27,12 +27,19 @@ const FONT   = "'Plus Jakarta Sans', system-ui, -apple-system, sans-serif"
 const PURPLE = { bg: '#EDE9FE', icon: '#7C3AED' }
 
 const TABS: { id: HeatmapTabId; label: string; icon?: React.ReactNode }[] = [
-  { id: 'all',    label: 'Semua'  },
-  { id: 'news',   label: 'Berita', icon: <Globe   size={13} /> },
-  { id: 'social', label: 'Sosial', icon: <MessageCircle size={13} /> },
+  { id: 'all',    label: 'All'    },
+  { id: 'news',   label: 'News',   icon: <Globe          size={13} /> },
+  { id: 'social', label: 'Social', icon: <MessageCircle  size={13} /> },
 ]
 
-// ─── Pill color intensity ──────────────────────────────────────────────────────
+// ─── Scroll height ────────────────────────────────────────────────────────────
+// thead:     ~40px (sticky header)
+// each row:  10px pad-top + 20px issue-name + 3px gap + 15px mentions + 10px pad-bottom ≈ 58px
+// 7 rows:    7 × 58 = 406px
+// total:     406 + 40 = 446px
+const SCROLL_HEIGHT = 446
+
+// ─── Pill color intensity ─────────────────────────────────────────────────────
 
 function pillStyle(value: number, max: number, type: 'positive' | 'neutral' | 'negative') {
   if (value === 0 || max === 0) {
@@ -45,21 +52,21 @@ function pillStyle(value: number, max: number, type: 'positive' | 'neutral' | 'n
     if (r < 0.35) return { bg: foundation.color.green[100], text: foundation.color.green[700] }
     if (r < 0.6 ) return { bg: foundation.color.green[200], text: foundation.color.green[800] }
     if (r < 0.8 ) return { bg: foundation.color.green[400], text: '#fff' }
-    return                { bg: foundation.color.green[500], text: '#fff' }
+    return               { bg: foundation.color.green[500], text: '#fff' }
   }
   if (type === 'neutral') {
     if (r < 0.15) return { bg: foundation.color.neutral[100], text: foundation.color.neutral[600] }
     if (r < 0.35) return { bg: foundation.color.neutral[200], text: foundation.color.neutral[700] }
     if (r < 0.6 ) return { bg: foundation.color.neutral[300], text: foundation.color.neutral[800] }
     if (r < 0.8 ) return { bg: foundation.color.neutral[400], text: '#fff' }
-    return                { bg: foundation.color.neutral[500], text: '#fff' }
+    return               { bg: foundation.color.neutral[500], text: '#fff' }
   }
   // negative
   if (r < 0.15) return { bg: foundation.color.red[50],  text: foundation.color.red[600] }
   if (r < 0.35) return { bg: foundation.color.red[100], text: foundation.color.red[700] }
   if (r < 0.6 ) return { bg: foundation.color.red[200], text: foundation.color.red[800] }
   if (r < 0.8 ) return { bg: foundation.color.red[400], text: '#fff' }
-  return              { bg: foundation.color.red[500],  text: '#fff' }
+  return               { bg: foundation.color.red[500],  text: '#fff' }
 }
 
 // ─── Pill ─────────────────────────────────────────────────────────────────────
@@ -75,23 +82,23 @@ function Pill({
     <div
       onClick={onClick}
       style={{
-        display: 'inline-flex',
-        alignItems: 'center',
-        justifyContent: 'center',
+        display:         'inline-flex',
+        alignItems:      'center',
+        justifyContent:  'center',
         backgroundColor: style.bg,
-        color: style.text,
-        borderRadius: tokens.radius.full,
-        paddingLeft: tokens.spacing.sm,
-        paddingRight: tokens.spacing.sm,
-        paddingTop: 2,
-        paddingBottom: 2,
-        fontFamily: FONT,
-        fontSize: tokens.typography.size['label-xs'],
-        fontWeight: tokens.typography.weight.semibold,
-        minWidth: 36,
-        cursor: onClick ? 'pointer' : 'default',
-        transition: 'opacity 150ms ease',
-        userSelect: 'none',
+        color:           style.text,
+        borderRadius:    tokens.radius.lg,   // rounded-lg — matches screenshot
+        fontFamily:      FONT,
+        fontSize:        tokens.typography.size['body-sm'],
+        fontWeight:      tokens.typography.weight.semibold,
+        minWidth:        52,
+        height:          36,
+        paddingLeft:     tokens.spacing.sm,
+        paddingRight:    tokens.spacing.sm,
+        cursor:          onClick ? 'pointer' : 'default',
+        transition:      'opacity 150ms ease',
+        userSelect:      'none',
+        whiteSpace:      'nowrap',
       }}
       onMouseEnter={(e) => { if (onClick) (e.currentTarget as HTMLDivElement).style.opacity = '0.8' }}
       onMouseLeave={(e) => { if (onClick) (e.currentTarget as HTMLDivElement).style.opacity = '1' }}
@@ -114,21 +121,21 @@ function TabBar({ active, onChange }: { active: HeatmapTabId; onChange: (id: Hea
             onClick={() => onChange(tab.id)}
             className="flex flex-row items-center"
             style={{
-              fontFamily: FONT,
-              fontSize: tokens.typography.size['label-xs'],
-              fontWeight: isActive ? tokens.typography.weight.bold : tokens.typography.weight.medium,
-              color: isActive ? tokens.color.text.brand : tokens.color.text.secondary,
+              fontFamily:      FONT,
+              fontSize:        tokens.typography.size['label-xs'],
+              fontWeight:      isActive ? tokens.typography.weight.bold : tokens.typography.weight.medium,
+              color:           isActive ? tokens.color.text.brand : tokens.color.text.secondary,
               backgroundColor: isActive ? tokens.color.surface.infoSubtle : 'transparent',
-              border: isActive ? `1px solid ${tokens.color.border.info}` : '1px solid transparent',
-              borderRadius: tokens.radius.default,
-              paddingLeft: tokens.spacing.sm,
-              paddingRight: tokens.spacing.sm,
-              paddingTop: 4,
-              paddingBottom: 4,
-              gap: 4,
-              cursor: 'pointer',
-              transition: 'all 150ms ease',
-              whiteSpace: 'nowrap',
+              border:          isActive ? `1px solid ${tokens.color.border.info}` : '1px solid transparent',
+              borderRadius:    tokens.radius.default,
+              paddingLeft:     tokens.spacing.sm,
+              paddingRight:    tokens.spacing.sm,
+              paddingTop:      4,
+              paddingBottom:   4,
+              gap:             4,
+              cursor:          'pointer',
+              transition:      'all 150ms ease',
+              whiteSpace:      'nowrap',
             }}
           >
             {tab.icon}
@@ -146,16 +153,16 @@ function ColHeader({ label, color }: { label: string; color?: string }) {
   return (
     <th
       style={{
-        fontFamily: FONT,
-        fontSize: tokens.typography.size['label-xs'],
-        fontWeight: tokens.typography.weight.semibold,
-        color: color ?? tokens.color.text.tertiary,
-        textTransform: 'uppercase',
-        letterSpacing: '0.07em',
-        padding: `${tokens.spacing.sm}px ${tokens.spacing.sm}px`,
-        textAlign: 'center',
-        whiteSpace: 'nowrap',
-        borderBottom: `1px solid ${tokens.color.border.secondary}`,
+        fontFamily:     FONT,
+        fontSize:       tokens.typography.size['label-xs'],
+        fontWeight:     tokens.typography.weight.semibold,
+        color:          color ?? tokens.color.text.tertiary,
+        textTransform:  'uppercase',
+        letterSpacing:  '0.07em',
+        padding:        `${tokens.spacing.sm}px ${tokens.spacing.sm}px`,
+        textAlign:      'center',
+        whiteSpace:     'nowrap',
+        borderBottom:   `1px solid ${tokens.color.border.secondary}`,
       }}
     >
       {label}
@@ -178,23 +185,23 @@ export function IssueHeatmap({ rowsByTab, onCellClick }: IssueHeatmapProps) {
       className="flex flex-col flex-1"
       style={{
         backgroundColor: tokens.component.card.bg,
-        border: `1px solid ${tokens.component.card.border}`,
-        borderRadius: 10,
-        minWidth: 0,
-        overflow: 'hidden',
+        border:          `1px solid ${tokens.component.card.border}`,
+        borderRadius:    10,
+        minWidth:        0,
+        overflow:        'hidden',
       }}
     >
       {/* Card header */}
       <div
         className="flex flex-row items-center justify-between"
         style={{
-          paddingLeft: tokens.spacing.xl,
-          paddingRight: tokens.spacing.xl,
-          paddingTop: tokens.spacing.default,
+          paddingLeft:   tokens.spacing.xl,
+          paddingRight:  tokens.spacing.xl,
+          paddingTop:    tokens.spacing.default,
           paddingBottom: tokens.spacing.default,
-          borderBottom: `1px solid ${tokens.color.border.secondary}`,
-          gap: tokens.spacing.sm,
-          flexShrink: 0,
+          borderBottom:  `1px solid ${tokens.color.border.secondary}`,
+          gap:           tokens.spacing.sm,
+          flexShrink:    0,
         }}
       >
         <div className="flex flex-row items-center" style={{ gap: tokens.spacing.sm }}>
@@ -218,23 +225,37 @@ export function IssueHeatmap({ rowsByTab, onCellClick }: IssueHeatmapProps) {
         <TabBar active={activeTab} onChange={setActiveTab} />
       </div>
 
-      {/* Table */}
-      <div style={{ overflowY: 'auto', flex: 1 }}>
+      {/* Table — fixed height shows 7 rows, scroll for the rest */}
+      <div
+        style={{
+          height:         SCROLL_HEIGHT,
+          overflowY:      'auto',
+          scrollBehavior: 'smooth',
+          flexShrink:     0,
+        }}
+      >
         <table style={{ width: '100%', borderCollapse: 'collapse' }}>
           <thead style={{ position: 'sticky', top: 0, backgroundColor: tokens.component.card.bg, zIndex: 1 }}>
             <tr>
+              {/* Row number col */}
+              <th style={{
+                width:        32,
+                padding:      `${tokens.spacing.sm}px ${tokens.spacing.sm}px ${tokens.spacing.sm}px ${tokens.spacing.xl}px`,
+                borderBottom: `1px solid ${tokens.color.border.secondary}`,
+              }} />
+              {/* Issue / Topic */}
               <th
                 style={{
-                  fontFamily: FONT,
-                  fontSize: tokens.typography.size['label-xs'],
-                  fontWeight: tokens.typography.weight.semibold,
-                  color: tokens.color.text.tertiary,
-                  textTransform: 'uppercase',
-                  letterSpacing: '0.07em',
-                  padding: `${tokens.spacing.sm}px ${tokens.spacing.xl}px`,
-                  textAlign: 'left',
+                  fontFamily:   FONT,
+                  fontSize:     tokens.typography.size['label-xs'],
+                  fontWeight:   tokens.typography.weight.semibold,
+                  color:        tokens.color.text.tertiary,
+                  textTransform:'uppercase',
+                  letterSpacing:'0.07em',
+                  padding:      `${tokens.spacing.sm}px ${tokens.spacing.sm}px`,
+                  textAlign:    'left',
                   borderBottom: `1px solid ${tokens.color.border.secondary}`,
-                  whiteSpace: 'nowrap',
+                  whiteSpace:   'nowrap',
                 }}
               >
                 Issue / Topic
@@ -242,34 +263,48 @@ export function IssueHeatmap({ rowsByTab, onCellClick }: IssueHeatmapProps) {
               <ColHeader label="Positive" color={foundation.color.green[600]} />
               <ColHeader label="Neutral"  color={tokens.color.text.tertiary}  />
               <ColHeader label="Negative" color={foundation.color.red[600]}   />
-              <ColHeader label="Total"    />
             </tr>
           </thead>
           <tbody>
             {rows.map((row, i) => (
               <tr
-                key={row.issue}
+                key={`${row.issue}-${i}`}
                 style={{
                   backgroundColor: i % 2 === 1 ? tokens.color.surface.secondary : 'transparent',
                 }}
               >
-                {/* Issue name + inline share % */}
+                {/* Row number */}
                 <td
                   style={{
-                    padding: `${tokens.spacing.sm}px ${tokens.spacing.xl}px`,
-                    maxWidth: 240,
+                    padding:   `${tokens.spacing.sm}px ${tokens.spacing.sm}px ${tokens.spacing.sm}px ${tokens.spacing.xl}px`,
+                    verticalAlign: 'middle',
+                    width:     32,
                   }}
                 >
-                  <div className="flex flex-row items-baseline" style={{ gap: 6, minWidth: 0 }}>
+                  <span
+                    style={{
+                      fontFamily: FONT,
+                      fontSize:   tokens.typography.size['label-xs'],
+                      color:      tokens.color.text.tertiary,
+                      fontWeight: tokens.typography.weight.medium,
+                    }}
+                  >
+                    {i + 1}
+                  </span>
+                </td>
+
+                {/* Issue name + mentions/pct */}
+                <td style={{ padding: `${tokens.spacing.sm}px ${tokens.spacing.sm}px` }}>
+                  <div className="flex flex-col" style={{ gap: 2, minWidth: 0 }}>
                     <span
                       style={{
-                        fontFamily: FONT,
-                        fontSize: tokens.typography.size['body-sm'],
-                        color: tokens.color.text.primary,
-                        overflow: 'hidden',
+                        fontFamily:   FONT,
+                        fontSize:     tokens.typography.size['body-sm'],
+                        fontWeight:   tokens.typography.weight.bold,
+                        color:        tokens.color.text.primary,
+                        overflow:     'hidden',
                         textOverflow: 'ellipsis',
-                        whiteSpace: 'nowrap',
-                        minWidth: 0,
+                        whiteSpace:   'nowrap',
                       }}
                     >
                       {row.issue}
@@ -277,13 +312,12 @@ export function IssueHeatmap({ rowsByTab, onCellClick }: IssueHeatmapProps) {
                     <span
                       style={{
                         fontFamily: FONT,
-                        fontSize: tokens.typography.size['label-xs'],
-                        color: tokens.color.text.tertiary,
-                        flexShrink: 0,
+                        fontSize:   tokens.typography.size['label-xs'],
+                        color:      tokens.color.text.tertiary,
                         whiteSpace: 'nowrap',
                       }}
                     >
-                      {row.share.toFixed(1)}%
+                      {row.mentions.toLocaleString()} mentions ({row.pct})
                     </span>
                   </div>
                 </td>
@@ -313,13 +347,6 @@ export function IssueHeatmap({ rowsByTab, onCellClick }: IssueHeatmapProps) {
                     style={pillStyle(row.negative, maxNegative, 'negative')}
                     onClick={onCellClick ? () => onCellClick(row, 'negative') : undefined}
                   />
-                </td>
-
-                {/* Total */}
-                <td style={{ textAlign: 'center', padding: `${tokens.spacing.sm}px ${tokens.spacing.xl}px` }}>
-                  <span style={{ fontFamily: FONT, fontSize: tokens.typography.size['body-sm'], fontWeight: tokens.typography.weight.semibold, color: tokens.color.text.primary }}>
-                    {row.total}
-                  </span>
                 </td>
               </tr>
             ))}

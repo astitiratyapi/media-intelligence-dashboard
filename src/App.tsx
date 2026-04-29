@@ -306,20 +306,33 @@ const demoTrends = {
 // ─── Demo Issues & Narratives data ───────────────────────────────────────────
 
 const HEATMAP_ROWS = [
-  { issue: 'MBG',                            share: 39.7, positive: 83, neutral: 165, negative: 196, total: 444 },
-  { issue: 'Makan Bergizi Gratis',           share:  7.4, positive: 18, neutral:  73, negative:   9, total:  84 }, // fixed: 84 not 47
-  { issue: 'program_makan_bergizi_gratis',   share:  4.5, positive:  7, neutral:  28, negative:   4, total:  39 },
-  { issue: 'makan_bergizi_gratis',           share:  1.6, positive:  1, neutral:  13, negative:   0, total:  14 },
-  { issue: 'efisiensi_anggaran',             share:  1.3, positive:  0, neutral:  11, negative:   0, total:  11 },
-  { issue: 'program_pemerintah',             share:  0.9, positive:  1, neutral:   7, negative:   0, total:   8 },
-  { issue: 'program_mbg',                    share:  0.9, positive:  1, neutral:   7, negative:   0, total:   8 },
+  { issue: 'Makan Bergizi Gratis (MBG)', mentions: 405, pct: '47%', positive: 92,  neutral: 113, negative: 200 },
+  { issue: 'Makan Bergizi Gratis',       mentions:  66, pct:  '8%', positive: 19,  neutral:   8, negative:  39 },
+  { issue: 'Efisiensi Anggaran',         mentions:  12, pct:  '1%', positive:  0,  neutral:  12, negative:   0 },
+  { issue: 'Program Pemerintah',         mentions:   9, pct:  '1%', positive:  1,  neutral:   8, negative:   0 },
+  { issue: 'Ramadan',                    mentions:   7, pct:  '1%', positive:  0,  neutral:   7, negative:   0 },
+  { issue: 'Ketahanan Pangan',           mentions:   7, pct:  '1%', positive:  1,  neutral:   4, negative:   2 },
+  { issue: 'Penghematan Anggaran',       mentions:   6, pct:  '1%', positive:  0,  neutral:   6, negative:   0 },
+  { issue: 'Kualitas Menu MBG',          mentions:  18, pct:  '2%', positive:  2,  neutral:   6, negative:  10 },
+  { issue: 'Distribusi Program',         mentions:  14, pct:  '2%', positive:  3,  neutral:   8, negative:   3 },
+  { issue: 'Dapur MBG',                  mentions:  11, pct:  '1%', positive:  1,  neutral:   5, negative:   5 },
+  { issue: 'Motor Listrik MBG',          mentions:   9, pct:  '1%', positive:  0,  neutral:   3, negative:   6 },
+  { issue: 'Transparansi Anggaran',      mentions:   8, pct:  '1%', positive:  0,  neutral:   4, negative:   4 },
+  { issue: 'Prabowo Subianto',           mentions:  21, pct:  '2%', positive:  4,  neutral:  14, negative:   3 },
+  { issue: 'BGN',                        mentions:  28, pct:  '3%', positive:  1,  neutral:  24, negative:   3 },
+  { issue: 'Keracunan Makanan',          mentions:   7, pct:  '1%', positive:  0,  neutral:   1, negative:   6 },
+  { issue: 'Lele Mentah',                mentions:   5, pct:  '1%', positive:  0,  neutral:   0, negative:   5 },
+  { issue: 'SPPG',                       mentions:   6, pct:  '1%', positive:  1,  neutral:   3, negative:   2 },
+  { issue: 'Stunting',                   mentions:   4, pct:  '0%', positive:  3,  neutral:   1, negative:   0 },
+  { issue: 'Inflasi Pangan',             mentions:   6, pct:  '1%', positive:  0,  neutral:   2, negative:   4 },
+  { issue: 'Pengadaan Barang',           mentions:   5, pct:  '1%', positive:  0,  neutral:   2, negative:   3 },
 ]
 
 const demoIssuesNarratives = {
   heatmap: {
     rowsByTab: {
       all:    HEATMAP_ROWS,
-      news:   HEATMAP_ROWS.map((r) => ({ ...r, social: undefined, positive: Math.round(r.positive * 0.6), neutral: Math.round(r.neutral * 0.65), negative: Math.round(r.negative * 0.58) })),
+      news:   HEATMAP_ROWS.map((r) => ({ ...r, positive: Math.round(r.positive * 0.6), neutral: Math.round(r.neutral * 0.65), negative: Math.round(r.negative * 0.58) })),
       social: HEATMAP_ROWS.map((r) => ({ ...r, positive: Math.round(r.positive * 0.4), neutral: Math.round(r.neutral * 0.35), negative: Math.round(r.negative * 0.42) })),
     },
     onCellClick: (row: { issue: string }, field: string) => console.log('Heatmap cell:', row.issue, field),
@@ -327,19 +340,44 @@ const demoIssuesNarratives = {
   narratives: {
     cards: [
       {
-        title: 'Kualitas dan Keamanan Makanan MBG',
+        title: null,
         sentiment: 'negative' as const,
-        description: 'Berbagai laporan mengungkap kasus keracunan makanan dan standar kebersihan yang tidak memadai dalam pelaksanaan program MBG di sejumlah daerah, menimbulkan kekhawatiran serius tentang pengawasan kualitas.',
+        description: 'Narasi tentang insiden menu MBG yang tidak sesuai standar (lele mentah, porsi tidak jelas, variasi menu selama Ramadan tidak ada standar). Muncul juga kasus kematian siswa di Bengkulu Utara yang dikaitkan dengan MBG (meski BGN membantah). Publik khawatir tentang pengawasan kualitas secara menyeluruh.',
+      },
+      {
+        title: 'Ketidakjelasan Mekanisme Distribusi & Ketepatan Sasaran',
+        sentiment: 'negative' as const,
+        description: 'Narasi tentang kurangnya transparansi dalam cara MBG didistribusikan, siapa yang berhak menerima, dan bagaimana verifikasi penerima manfaat dilakukan. Publik mempertanyakan apakah bantuan benar-benar sampai ke anak-anak yang paling membutuhkan atau ada kebocoran di rantai distribusi.',
+      },
+      {
+        title: 'Persepsi Program Sebagai Beban Fiskal Daripada Investasi Sosial',
+        sentiment: 'negative' as const,
+        description: 'Narasi yang memposisikan MBG sebagai pengeluaran besar (Rp36,6 triliun per Februari 2026) yang perlu dihemat, bukan sebagai investasi dalam pengurangan stunting dan pemberdayaan masyarakat. Diskusi tentang \'efisiensi\' dan \'realokasi anggaran\' membuat program terkesan tidak efisien.',
+      },
+      {
+        title: 'Ketidakpercayaan pada Kapasitas Implementasi Lokal',
+        sentiment: 'negative' as const,
+        description: 'Meski Kabupaten Bandung dipuji sebagai success story, narasi umum menunjukkan keraguan apakah semua daerah mampu mengimplementasikan MBG dengan standar sama. Pertanyaan tentang kapasitas dapur lokal, tenaga, dan logistik menjadi tema berulang.',
+      },
+      {
+        title: 'Optimalisasi Pengawasan dan Penertiban',
+        sentiment: 'positive' as const,
+        description: 'Upaya pemerintah memperketat pengawasan distribusi dan standar operasional program MBG mulai menunjukkan hasil positif dengan penertiban dapur yang tidak memenuhi syarat.',
+      },
+      {
+        title: 'Potensi Manfaat Program bagi Gizi Anak',
+        sentiment: 'positive' as const,
+        description: 'Data awal menunjukkan dampak positif program MBG terhadap tingkat kehadiran siswa dan penurunan angka stunting di wilayah percontohan.',
+      },
+      {
+        title: 'Dampak Ekonomi Positif pada Sektor Lokal',
+        sentiment: 'positive' as const,
+        description: 'Pengadaan bahan makanan lokal untuk MBG memberikan dampak positif bagi petani dan UMKM di sekitar sekolah penerima program.',
       },
       {
         title: 'Potensi Penyalahgunaan Anggaran dan Markup',
         sentiment: 'negative' as const,
-        description: 'Muncul dugaan adanya markup harga dan penyimpangan anggaran dalam pengadaan bahan makanan untuk program MBG, memunculkan tuntutan audit menyeluruh dari berbagai pihak.',
-      },
-      {
-        title: 'Dampak Ekonomi dan Inflasi',
-        sentiment: 'negative' as const,
-        description: 'Program MBG dinilai berpotensi mendorong inflasi pangan lokal akibat lonjakan permintaan yang tidak diimbangi kapasitas produksi domestik yang memadai.',
+        description: 'Muncul dugaan adanya markup harga dan penyimpangan anggaran dalam pengadaan bahan makanan untuk program MBG.',
       },
       {
         title: 'Kontroversi Pengadaan Motor Listrik',
@@ -347,22 +385,12 @@ const demoIssuesNarratives = {
         description: 'Rencana pengadaan motor listrik sebagai armada distribusi MBG menuai kritik terkait harga yang dianggap tidak wajar dan proses tender yang kurang transparan.',
       },
       {
-        title: 'Optimalisasi Pengawasan dan Penertiban',
-        sentiment: 'positive' as const,
-        description: 'Upaya pemerintah memperketat pengawasan distribusi dan standar operasional program MBG mulai menunjukkan hasil positif dengan berkurangnya keluhan di beberapa wilayah.',
-      },
-      {
-        title: 'Potensi Manfaat Program',
-        sentiment: 'positive' as const,
-        description: 'Data awal menunjukkan dampak positif program MBG terhadap tingkat kehadiran siswa dan penurunan angka stunting di wilayah percontohan.',
-      },
-      {
         title: 'Komitmen Anggaran dan Efisiensi',
         sentiment: 'positive' as const,
-        description: 'Pemerintah menegaskan komitmen anggaran jangka panjang untuk program MBG disertai upaya efisiensi rantai pasok guna memastikan keberlanjutan dan ketepatan sasaran.',
+        description: 'Pernyataan pemerintah bahwa tidak ada pemangkasan dana MBG dan rencana efisiensi memastikan keberlanjutan program dengan standar kualitas terjaga.',
       },
     ],
-    generatedAt: '4/9/2026, 11:13:26 PM',
+    generatedAt: '4/28/2026, 1:15:20 PM',
   },
 }
 
