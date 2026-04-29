@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { Sidebar, defaultNavItems } from './components/Sidebar'
 import { FilterBar } from './components/FilterBar'
+import { Breadcrumb } from './components/Breadcrumb'
 import { SituationOverview } from './components/SituationOverview'
 import { ExecutiveSummary } from './components/ExecutiveSummary'
 import { CommsActionsSection } from './components/CommsActionsSection'
@@ -446,7 +447,7 @@ function PageHeader() {
   const FONT = "'Plus Jakarta Sans', system-ui, -apple-system, sans-serif"
   return (
     <header
-      className="w-full flex flex-row items-center"
+      className="w-full flex flex-col"
       style={{
         paddingLeft: tokens.spacing['2xl'],
         paddingRight: tokens.spacing['2xl'],
@@ -455,7 +456,7 @@ function PageHeader() {
         backgroundColor: tokens.color.surface.primary,
         borderBottom: `1px solid ${tokens.color.border.secondary}`,
         flexShrink: 0,
-        gap: tokens.spacing.md,
+        gap: tokens.spacing.xs,
       }}
     >
       <h1
@@ -470,39 +471,12 @@ function PageHeader() {
         Media Intelligence
       </h1>
 
-      {/* Program badge */}
-      <div
-        className="flex flex-row items-center"
-        style={{ gap: tokens.spacing.xs }}
-      >
-        <span
-          style={{
-            fontFamily: FONT,
-            fontSize: tokens.typography.size['body-sm'],
-            color: tokens.color.text.tertiary,
-          }}
-        >
-          Program:
-        </span>
-        <span
-          style={{
-            fontFamily: FONT,
-            fontSize: tokens.typography.size['label-xs'],
-            fontWeight: tokens.typography.weight.semibold,
-            color: tokens.color.text.brand,
-            backgroundColor: tokens.color.surface.infoSubtle,
-            border: `1px solid ${tokens.color.border.info}`,
-            borderRadius: tokens.radius.full,
-            paddingLeft: 10,
-            paddingRight: 10,
-            paddingTop: 3,
-            paddingBottom: 3,
-            letterSpacing: '0.04em',
-          }}
-        >
-          MBG
-        </span>
-      </div>
+      <Breadcrumb
+        items={[
+          { label: 'Programs', href: '/programs' },
+          { label: 'MBG' },
+        ]}
+      />
     </header>
   )
 }
@@ -514,6 +488,14 @@ function PageHeader() {
 
 export default function App() {
   const [activeNavId, setActiveNavId] = useState('dashboard')
+
+  // ── Filter state ─────────────────────────────────────────────────────────────
+  const [timeRange,   setTimeRange]   = useState('last30')
+  const [topic,       setTopic]       = useState('all')
+  const [source,      setSource]      = useState('all')
+  const [keyword,     setKeyword]     = useState('keyword')
+  const [customFrom,  setCustomFrom]  = useState('')
+  const [customTo,    setCustomTo]    = useState('')
 
   return (
     // Root: flex-row, h-screen, min-width 1280px
@@ -547,10 +529,18 @@ export default function App() {
 
         {/* Filter bar: fill width, hug height */}
         <FilterBar
-          timeRange="All Time"
-          topic="All Topics"
-          source="All Sources"
-          keyword="Keyword"
+          timeRange={timeRange}
+          topic={topic}
+          source={source}
+          keyword={keyword}
+          customFrom={customFrom}
+          customTo={customTo}
+          onTimeRangeChange={setTimeRange}
+          onTopicChange={setTopic}
+          onSourceChange={setSource}
+          onKeywordChange={setKeyword}
+          onCustomFromChange={setCustomFrom}
+          onCustomToChange={setCustomTo}
           onGenerateNarrative={() => console.log('Generate Narrative')}
           onDownloadDailyBriefPDF={() => console.log('Download Daily Brief PDF')}
           onDownloadMonthlyPDF={() => console.log('Download Monthly PDF')}
