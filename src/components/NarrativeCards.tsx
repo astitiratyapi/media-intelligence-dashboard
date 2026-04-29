@@ -139,13 +139,16 @@ export function NarrativeCards({ cards, generatedAt }: NarrativeCardsProps) {
         </div>
       </div>
 
-      {/* Card list — flex-1 fills remaining height, scroll for items beyond view */}
+      {/* Card list — maxHeight shows ~3 cards, scroll for the rest */}
+      {/* Card height: 2px border + 32px pad + 20px badge + 8px gap + 54px desc(3-line) = 116px */}
+      {/* 3 × 116 + 2 × 8 gaps + 32 container pad = 396px → 420px with buffer               */}
       <div
         style={{
-          flex: 1,
+          maxHeight: 420,
           overflowY: 'auto',
           scrollBehavior: 'smooth',
           padding: tokens.spacing.default,
+          flexShrink: 0,
         }}
       >
         {visible.length === 0 ? (
