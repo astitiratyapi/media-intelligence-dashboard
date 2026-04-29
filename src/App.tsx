@@ -381,19 +381,29 @@ const demoExecAndComms = {
         { title: 'Transparansi Data MSCI Compliance',      description: 'OJK dan Kementerian Keuangan harus mempublikasikan roadmap detail untuk memenuhi persyaratan MSCI, termasuk timeline dan indikator kinerja.' },
         { title: 'Evaluasi Dampak Ekonomi Program',        description: 'Lakukan studi komprehensif mengenai dampak program MBG terhadap harga komoditas pangan, khususnya telur.' },
       ],
-      risks: [
+      mitigation: [
         { title: 'Risiko Keracunan Massal dan Reputasi',                 description: 'Insiden keracunan makanan berpotensi viral dan merusak kepercayaan publik secara masif — siapkan protokol respons krisis yang terstandar.' },
         { title: 'Eksposur Dugaan Markup Anggaran',                      description: 'Laporan investigasi tentang penggelembungan harga dapat menjadi krisis komunikasi besar — pantau media dan siapkan klarifikasi berbasis data.' },
         { title: 'Polarisasi Opini di Media Sosial',                     description: 'Narasi negatif yang tersebar luas di media sosial dapat mempengaruhi dukungan publik — perkuat engagement positif secara proaktif.' },
         { title: 'Inflasi Pangan Akibat Program',                        description: 'Lonjakan permintaan tanpa penguatan sisi suplai berpotensi mendorong inflasi pangan yang kontraproduktif bagi program itu sendiri.' },
         { title: 'Risiko Politisasi Program',                            description: 'Program berpotensi dijadikan alat politik menjelang kontestasi — pastikan komunikasi tetap pada dampak nyata dan data terukur.' },
       ],
-      checklist: [
-        { title: 'Rilis laporan progres mingguan MBG',                   description: 'Terbitkan ringkasan pencapaian minggu ini: jumlah penerima manfaat, dapur aktif, dan insiden yang ditangani.' },
-        { title: 'Monitor sentimen media dan media sosial',              description: 'Lakukan pemantauan harian terhadap berita dan percakapan digital seputar MBG untuk deteksi dini isu yang berkembang.' },
-        { title: 'Koordinasi dengan KSP dan Kemenko PMK',               description: 'Sinkronisasi pesan dan narasi dengan kantor KSP dan Kemenko PMK untuk konsistensi komunikasi lintas kementerian.' },
-        { title: 'Perbarui FAQ dan materi edukasi publik',               description: 'Pastikan halaman FAQ dan konten edukasi di kanal resmi selalu aktual sesuai perkembangan terbaru program.', highlighted: true },
-        { title: 'Evaluasi kinerja mitra dapur bermasalah',              description: 'Tinjau dan tindaklanjuti laporan mitra dapur yang mendapat sorotan negatif, lengkap dengan tindakan korektif terukur.' },
+      recommendation: [
+        {
+          label: '1 Bulan ke Depan',
+          items: [
+            { title: 'Rilis Pernyataan Resmi Kualitas MBG',     description: 'Terbitkan pernyataan publik yang menjelaskan standar kualitas MBG, respons terhadap kasus keracunan, dan langkah perbaikan konkret dalam 30 hari ke depan.' },
+            { title: 'Aktivasi Media Sosial Positif',           description: 'Luncurkan kampanye konten yang menampilkan testimonial positif dari sekolah penerima MBG untuk mengimbangi narasi negatif yang beredar.' },
+            { title: 'Koordinasi dengan Tier-1 Media',          description: 'Jadwalkan briefing eksklusif dengan editor media Tier-1 (detik, kumparan, antara) untuk menyampaikan narasi resmi program MBG.' },
+          ],
+        },
+        {
+          label: '3 Bulan ke Depan',
+          items: [
+            { title: 'Publikasi Laporan Transparansi MBG',                    description: 'Terbitkan laporan kuartalan yang mencakup data distribusi, anggaran, kualitas menu, dan hasil audit lapangan secara terbuka kepada publik.' },
+            { title: 'Forum Evaluasi Program dengan Pemangku Kepentingan',    description: 'Selenggarakan forum evaluasi yang melibatkan sekolah, orang tua, LSM, dan media untuk mendapatkan masukan dan meningkatkan kepercayaan.' },
+          ],
+        },
       ],
       source: 'Laporan AI — 21 Apr 2026, 10.10',
     },
