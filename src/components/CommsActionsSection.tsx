@@ -335,6 +335,7 @@ function RecommendationContent({ groups }: { groups: RecommendationGroup[] }) {
 
 export function CommsActionsSection({ data }: CommsActionsSectionProps) {
   const [activeTab, setActiveTab] = useState<CommsTabId>('opportunities')
+  const [, setChecklistModalOpen] = useState(false)
 
   return (
     <div
@@ -347,7 +348,7 @@ export function CommsActionsSection({ data }: CommsActionsSectionProps) {
     >
       {/* ── Card header ── */}
       <div
-        className="flex flex-row items-center"
+        className="flex flex-row items-start"
         style={{
           paddingLeft:   tokens.spacing.xl,
           paddingRight:  tokens.spacing.xl,
@@ -384,6 +385,39 @@ export function CommsActionsSection({ data }: CommsActionsSectionProps) {
           >
             AI-generated suggestions — Opportunities, Mitigation, Recommendation
           </span>
+          <p
+            style={{
+              fontFamily: FONT,
+              fontSize:   tokens.typography.size['body-sm'],
+              color:      tokens.color.text.secondary,
+              margin:     0,
+              marginTop:  2,
+              lineHeight: tokens.typography.lineHeight.normal,
+            }}
+          >
+            Anda dapat membuat daftar checklist.{' '}
+            <button
+              type="button"
+              onClick={() => setChecklistModalOpen(true)}
+              style={{
+                fontFamily:      FONT,
+                fontSize:        tokens.typography.size['body-sm'],
+                fontWeight:      tokens.typography.weight.medium,
+                color:           tokens.color.text.brand,
+                background:      'none',
+                border:          'none',
+                padding:         0,
+                cursor:          'pointer',
+                textDecoration:  'underline',
+                textUnderlineOffset: '2px',
+                transition:      'opacity 150ms ease',
+              }}
+              onMouseEnter={(e) => { (e.currentTarget as HTMLButtonElement).style.opacity = '0.7' }}
+              onMouseLeave={(e) => { (e.currentTarget as HTMLButtonElement).style.opacity = '1' }}
+            >
+              Go to Checklist
+            </button>
+          </p>
         </div>
         <TooltipIcon text="AI-generated communication recommendations based on latest media analysis." />
       </div>
