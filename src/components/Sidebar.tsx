@@ -8,6 +8,7 @@ import {
   User,
   type LucideIcon,
 } from 'lucide-react'
+import badrLogo from '../assets/badr-logo.png'
 
 // ─── Sidebar Design Tokens ────────────────────────────────────────────────────
 // Source: A'raf DS - Development → Component collection → sidebar/*
@@ -266,43 +267,17 @@ export function Sidebar({
           flexShrink: 0,
         }}
       >
-        {/* Brand wordmark: flex-col, gap 0, hug content */}
-        <div
+        {/* Brand logo image */}
+        <img
+          src={badrLogo}
+          alt="BADR Interactive"
           style={{
-            display: 'flex',
-            flexDirection: 'column',
-            gap: 1,
+            height: 32,
+            width: 'auto',
+            objectFit: 'contain',
             flexShrink: 0,
           }}
-        >
-          {/* "BADR" — bold wordmark */}
-          <span
-            style={{
-              fontSize: sidebarTokens.logo.badrSize,
-              fontWeight: sidebarTokens.logo.badrWeight,
-              lineHeight: 1.2,
-              color: sidebarTokens.logo.badrText,
-              letterSpacing: '-0.01em',
-              fontFamily: sidebarTokens.fontFamily,
-            }}
-          >
-            BADR
-          </span>
-          {/* "interactive" — tagline below */}
-          <span
-            style={{
-              fontSize: sidebarTokens.logo.interactiveSize,
-              fontWeight: 400,
-              lineHeight: 1.2,
-              color: sidebarTokens.logo.interactiveText,
-              fontFamily: sidebarTokens.fontFamily,
-              letterSpacing: '0.02em',
-              textTransform: 'lowercase',
-            }}
-          >
-            interactive
-          </span>
-        </div>
+        />
 
         {/* Vertical divider between logo and page title */}
         <div
