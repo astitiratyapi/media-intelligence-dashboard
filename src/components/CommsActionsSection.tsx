@@ -395,7 +395,7 @@ export function CommsActionsSection({ data }: CommsActionsSectionProps) {
               lineHeight: tokens.typography.lineHeight.normal,
             }}
           >
-            Anda dapat membuat daftar checklist.{' '}
+            You can create a checklist.{' '}
             <button
               type="button"
               onClick={() => setChecklistModalOpen(true)}
