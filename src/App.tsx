@@ -404,11 +404,21 @@ const demoExecAndComms = {
   commsActions: {
     data: {
       opportunities: [
-        { title: 'Publikasi Standar Menu MBG yang Jelas',  description: 'BGN harus menerbitkan pedoman menu standar yang terukur, transparan, dan dapat diakses publik. Sertakan informasi nutrisi, harga per porsi, dan protokol quality control.' },
-        { title: 'Audit Lapangan Independen untuk MBG',    description: 'Lakukan audit independen terhadap implementasi MBG di 50–100 sekolah sampel untuk mengidentifikasi gap antara kebijakan dan eksekusi.' },
-        { title: 'Klarifikasi Publik Kasus Lele Mentah',   description: 'Terbitkan pernyataan resmi yang menjelaskan kronologi kasus lele mentah, identifikasi pihak yang bertanggung jawab, dan tindakan korektif yang telah diambil.' },
-        { title: 'Transparansi Data MSCI Compliance',      description: 'OJK dan Kementerian Keuangan harus mempublikasikan roadmap detail untuk memenuhi persyaratan MSCI, termasuk timeline dan indikator kinerja.' },
-        { title: 'Evaluasi Dampak Ekonomi Program',        description: 'Lakukan studi komprehensif mengenai dampak program MBG terhadap harga komoditas pangan, khususnya telur.' },
+        {
+          title:    "Kampanye 'MBG Economic Impact Amplification' untuk Business Community dan Policy Makers",
+          subtitle: "MBG Menciptakan Dampak Ekonomi Signifikan dengan Perputaran Dana Rp 6 Triliun per Bulan",
+          description: "Insight Audiens: Business leaders, farmers, rural communities, dan policy makers adalah receptive audience untuk narasi ekonomi MBG karena mereka melihat program sebagai economic stimulus, bukan sekadar charity. Mereka ingin bukti bahwa program ini menciptakan real economic value dan lapangan kerja. Taktik Amplifikasi: (1) Kolaborasi dengan Kadin dan asosiasi bisnis lainnya untuk amplify narasi tentang dampak ekonomi MBG; (2) Buat 'MBG Economic Impact Study' yang menunjukkan multiplier effect dari program (berapa rupiah yang diinvestasikan menjadi berapa rupiah economic output); (3) Showcase success stories dari SPPG operators dan farmers yang mendapat income dari program; (4) Engage media ekonomi (CNBC, Bisnis Indonesia, Detik Finance) untuk publikasi in-depth stories tentang dampak ekonomi MBG. Format Konten: (1) Infografis tentang 'Rp 6 Triliun Perputaran Dana MBG' dengan breakdown ke berbagai sektor ekonomi; (2) Video testimonial dari SPPG operators dan farmers. Metrik Sukses: Minimal 20 media stories tentang dampak ekonomi MBG dalam 3 bulan.",
+        },
+        {
+          title:    "Kampanye 'MBG Global Leadership' untuk Soft Power dan International Recognition",
+          subtitle: "MBG Menjadi Model Program yang Ditiru Negara Lain dan Meningkatkan Reputasi Indonesia",
+          description: "Insight Audiens: Nationalist groups, policy makers, educated urban population, dan media massa adalah receptive audience untuk narasi tentang MBG sebagai 'world-class program' yang meningkatkan reputasi Indonesia. Mereka ingin bukti bahwa Indonesia adalah innovator dan leader dalam social programs. Taktik: Koordinasi dengan Kemenlu untuk mempromosikan MBG dalam forum internasional, dokumentasi interest dari negara lain, dan partnership dengan organisasi internasional seperti WFP atau UNICEF untuk validasi program.",
+        },
+        {
+          title:    "Kampanye 'MBG Sustainability Guarantee' untuk Beneficiaries dan Potential Beneficiaries",
+          subtitle: "Komitmen Presiden Prabowo untuk Melanjutkan MBG Hingga Tuntas Memberikan Jaminan Sustainability",
+          description: "Insight Audiens: Beneficiaries, potential beneficiaries, dan kelompok yang concern tentang sustainability adalah receptive audience untuk narasi tentang komitmen Presiden. Mereka ingin jaminan bahwa program akan berlanjut dan mereka bisa mengandalkan program ini. Taktik: Amplifikasi pernyataan resmi Presiden, publikasi roadmap program jangka panjang, dan engagement langsung dengan komunitas penerima manfaat melalui media lokal.",
+        },
       ],
       mitigation: [
         { title: 'Risiko Keracunan Massal dan Reputasi',                 description: 'Insiden keracunan makanan berpotensi viral dan merusak kepercayaan publik secara masif — siapkan protokol respons krisis yang terstandar.' },

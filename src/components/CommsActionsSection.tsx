@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Lightbulb, Shield, CalendarDays, FileText, AlertTriangle, type LucideIcon } from 'lucide-react'
+import { Lightbulb, Shield, CalendarDays, FileText, AlertTriangle, ChevronDown, ChevronUp, type LucideIcon } from 'lucide-react'
 import { tokens, foundation } from '../tokens'
 import { TooltipIcon } from './TooltipIcon'
 
@@ -13,13 +13,19 @@ export interface CommsAction {
   highlighted?: boolean
 }
 
+export interface OpportunityItem {
+  title:       string
+  subtitle:    string
+  description: string
+}
+
 export interface RecommendationGroup {
   label: string          // e.g. "1 Bulan ke Depan"
   items: CommsAction[]
 }
 
 export interface CommsActionsData {
-  opportunities:  CommsAction[]
+  opportunities:  OpportunityItem[]
   mitigation:     CommsAction[]
   recommendation: RecommendationGroup[]
   source:         string
@@ -152,6 +158,128 @@ function ActionItem({ title, description, highlighted }: CommsAction) {
   )
 }
 
+// ─── Opportunity item (expandable) ───────────────────────────────────────────
+
+function OpportunityActionItem({
+  item,
+  isExpanded,
+  onToggle,
+}: {
+  item:       OpportunityItem
+  isExpanded: boolean
+  onToggle:   () => void
+}) {
+  return (
+    <div
+      className="flex flex-col"
+      style={{
+        backgroundColor: tokens.component.card.bg,
+        border:          `1px solid ${foundation.color.neutral[100]}`,
+        borderRadius:    tokens.radius.lg,
+        padding:         tokens.spacing.default,
+        gap:             tokens.spacing.xs,
+      }}
+    >
+      {/* Title */}
+      <span
+        style={{
+          fontFamily:  FONT,
+          fontSize:    tokens.typography.size['body-md'],
+          fontWeight:  tokens.typography.weight.bold,
+          color:       tokens.color.text.primary,
+          lineHeight:  tokens.typography.lineHeight.tight,
+        }}
+      >
+        {item.title}
+      </span>
+
+      {/* Subtitle */}
+      <span
+        style={{
+          fontFamily:  FONT,
+          fontSize:    tokens.typography.size['label-xs'],
+          fontStyle:   'italic',
+          color:       tokens.color.text.secondary,
+          lineHeight:  tokens.typography.lineHeight.normal,
+        }}
+      >
+        ↪ {item.subtitle}
+      </span>
+
+      {/* Description — only when expanded */}
+      {isExpanded && (
+        <p
+          style={{
+            fontFamily:  FONT,
+            fontSize:    tokens.typography.size['body-sm'],
+            color:       tokens.color.text.secondary,
+            lineHeight:  tokens.typography.lineHeight.relaxed,
+            margin:      0,
+            marginTop:   tokens.spacing.sm,
+          }}
+        >
+          {item.description}
+        </p>
+      )}
+
+      {/* Show Detail / Show Less button */}
+      <div className="flex justify-end" style={{ marginTop: tokens.spacing.xs }}>
+        <button
+          type="button"
+          onClick={onToggle}
+          className="flex flex-row items-center"
+          style={{
+            fontFamily:  FONT,
+            fontSize:    tokens.typography.size['label-xs'],
+            fontWeight:  tokens.typography.weight.medium,
+            color:       tokens.color.text.brand,
+            background:  'none',
+            border:      'none',
+            padding:     0,
+            cursor:      'pointer',
+            gap:         4,
+          }}
+        >
+          {isExpanded ? (
+            <>
+              <span>Show Less</span>
+              <ChevronUp size={12} aria-hidden="true" />
+            </>
+          ) : (
+            <>
+              <span>Show Detail</span>
+              <ChevronDown size={12} aria-hidden="true" />
+            </>
+          )}
+        </button>
+      </div>
+    </div>
+  )
+}
+
+// ─── Opportunity list (manages expand state) ──────────────────────────────────
+
+function OpportunityList({ items }: { items: OpportunityItem[] }) {
+  const [expandedItems, setExpandedItems] = useState<Record<number, boolean>>({})
+
+  const toggleExpand = (index: number) => {
+    setExpandedItems((prev) => ({ ...prev, [index]: !prev[index] }))
+  }
+
+  return (
+    <div className="flex flex-col" style={{ gap: tokens.spacing.md }}>
+      {items.map((item, i) => (
+        <OpportunityActionItem
+          key={i}
+          item={item}
+          isExpanded={!!expandedItems[i]}
+          onToggle={() => toggleExpand(i)}
+        />
+      ))}
+    </div>
+  )
+}
+
 // ─── Recommendation group header ──────────────────────────────────────────────
 
 function GroupHeader({ label }: { label: string }) {
@@ -207,11 +335,6 @@ function RecommendationContent({ groups }: { groups: RecommendationGroup[] }) {
 
 export function CommsActionsSection({ data }: CommsActionsSectionProps) {
   const [activeTab, setActiveTab] = useState<CommsTabId>('opportunities')
-
-  const flatActionMap: Record<'opportunities' | 'mitigation', CommsAction[]> = {
-    opportunities: data.opportunities,
-    mitigation:    data.mitigation,
-  }
 
   return (
     <div
@@ -304,11 +427,13 @@ export function CommsActionsSection({ data }: CommsActionsSectionProps) {
           flexShrink:     0,
         }}
       >
-        {activeTab === 'recommendation' ? (
+        {activeTab === 'opportunities' ? (
+          <OpportunityList items={data.opportunities} />
+        ) : activeTab === 'recommendation' ? (
           <RecommendationContent groups={data.recommendation} />
         ) : (
           <div className="flex flex-col" style={{ gap: tokens.spacing.md }}>
-            {flatActionMap[activeTab].map((action, i) => (
+            {data.mitigation.map((action, i) => (
               <ActionItem key={i} {...action} />
             ))}
           </div>
