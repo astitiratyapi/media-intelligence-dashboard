@@ -55,12 +55,12 @@ function pillStyle(value: number, max: number, type: 'positive' | 'neutral' | 'n
     return               { bg: foundation.color.green[500], text: '#fff' }
   }
   if (type === 'neutral') {
-    // Yellow-green / lime scale matching #A3C74B
-    if (r < 0.15) return { bg: '#F2F9E0', text: '#4D6B0F' }
-    if (r < 0.35) return { bg: '#DCEEB8', text: '#4D6B0F' }
-    if (r < 0.6 ) return { bg: '#C5E27E', text: '#3D5A0A' }
-    if (r < 0.8 ) return { bg: '#A3C74B', text: '#fff'    }
-    return               { bg: '#7EA336', text: '#fff'    }
+    // Yellow scale matching #FACC15 (yellow[400])
+    if (r < 0.15) return { bg: foundation.color.yellow[50],  text: foundation.color.yellow[700] }
+    if (r < 0.35) return { bg: foundation.color.yellow[100], text: foundation.color.yellow[700] }
+    if (r < 0.6 ) return { bg: foundation.color.yellow[200], text: foundation.color.yellow[800] }
+    if (r < 0.8 ) return { bg: foundation.color.yellow[400], text: '#fff'                       }
+    return               { bg: foundation.color.yellow[500], text: '#fff'                       }
   }
   // negative
   if (r < 0.15) return { bg: foundation.color.red[50],  text: foundation.color.red[600] }

@@ -21,7 +21,7 @@ const CARD_PADDING = tokens.spacing.xl   // 24px
 
 const SENTIMENT_COLOR = {
   positive: foundation.color.green[500],  // #22C55E
-  neutral:  '#A3C74B',                    // yellow-green / lime
+  neutral:  '#FACC15',                    // yellow-green / lime
   negative: foundation.color.red[500],   // #EF4444
 }
 
@@ -148,7 +148,7 @@ function SentimentBar({ positive, neutral, negative }: { positive: number; neutr
             fontFamily: FONT,
             fontSize: tokens.typography.size['label-xs'],
             fontWeight: tokens.typography.weight.medium,
-            color: SENTIMENT_COLOR.neutral,  // #A3C74B
+            color: SENTIMENT_COLOR.neutral,  // #FACC15
           }}
         >
           {neutral}% neutral

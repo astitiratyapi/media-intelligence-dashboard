@@ -72,7 +72,7 @@ function SentimentBar({
             style={{
               width: `${neuPct}%`,
               height: '100%',
-              backgroundColor: '#A3C74B',  // yellow-green / lime
+              backgroundColor: '#FACC15',  // yellow-green / lime
               flexShrink: 0,
             }}
           />
@@ -106,7 +106,7 @@ function SentimentBar({
             fontFamily: FONT,
             fontSize: tokens.typography.size['body-sm'],
             fontWeight: tokens.typography.weight.medium,
-            color: '#A3C74B',  // yellow-green / lime
+            color: '#FACC15',  // yellow-green / lime
           }}
         >
           {neutral}
