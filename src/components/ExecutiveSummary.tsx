@@ -87,10 +87,12 @@ export function ExecutiveSummary({ summaryText, generatedAt }: ExecutiveSummaryP
       {generatedAt && (
         <span
           style={{
-            fontFamily:  FONT,
-            fontSize:    tokens.typography.size['label-xs'],
-            color:       tokens.color.text.tertiary,
-            marginTop:   tokens.spacing.xs,
+            fontFamily: FONT,
+            fontSize:   tokens.typography.size['label-xs'],
+            color:      '#9333EA',   // purple-600 — readable on #F3E8FF bg
+            opacity:    0.7,
+            display:    'block',
+            marginTop:  tokens.spacing.xs,
           }}
         >
           Generated: {generatedAt}
