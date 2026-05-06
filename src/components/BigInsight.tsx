@@ -17,18 +17,16 @@ export function BigInsight({ text }: BigInsightProps) {
   return (
     <div
       style={{
-        flex:            1,
-        backgroundColor: tokens.color.surface.infoSubtle,          // blue[50] = #EFF6FF
-        border:          `1px solid ${foundation.color.blue[200]}`, // border-blue-200
-        borderRadius:    foundation.radius['2xl'],                  // 16px
-        boxShadow:       '0 1px 3px rgba(0,0,0,0.06)',
-        paddingLeft:     tokens.spacing.xl,
-        paddingRight:    tokens.spacing.xl,
-        paddingTop:      tokens.spacing.default,
-        paddingBottom:   tokens.spacing.default,
-        display:         'flex',
-        flexDirection:   'column',
-        gap:             tokens.spacing.xs,
+        width:         '100%',
+        backgroundColor: '#069568',
+        borderRadius:  foundation.radius['2xl'],  // 16px
+        paddingLeft:   tokens.spacing.xl,
+        paddingRight:  tokens.spacing.xl,
+        paddingTop:    tokens.spacing.default,
+        paddingBottom: tokens.spacing.default,
+        display:       'flex',
+        flexDirection: 'column',
+        gap:           tokens.spacing.xs,
       }}
     >
       {/* ── Label row ── */}
@@ -36,17 +34,13 @@ export function BigInsight({ text }: BigInsightProps) {
         className="flex flex-row items-center"
         style={{ gap: tokens.spacing.xs }}
       >
-        <Zap
-          size={13}
-          aria-hidden="true"
-          style={{ color: tokens.color.icon.info, flexShrink: 0 }}
-        />
+        <Zap size={13} aria-hidden="true" style={{ color: '#ffffff', flexShrink: 0 }} />
         <span
           style={{
             fontFamily:    FONT,
             fontSize:      tokens.typography.size['label-xs'],
             fontWeight:    tokens.typography.weight.semibold,
-            color:         tokens.color.text.brand,
+            color:         'rgba(255, 255, 255, 0.7)',
             textTransform: 'uppercase',
             letterSpacing: '0.1em',
           }}
@@ -55,15 +49,15 @@ export function BigInsight({ text }: BigInsightProps) {
         </span>
       </div>
 
-      {/* ── Main text ── */}
+      {/* ── Body text ── */}
       <p
         style={{
-          fontFamily: FONT,
-          fontSize:   tokens.typography.size['body-sm'],  // 14px
-          fontWeight: tokens.typography.weight.regular,
-          color:      tokens.color.text.primary,
-          lineHeight: tokens.typography.lineHeight.tight,
-          margin:     0,
+          fontFamily:  FONT,
+          fontSize:    tokens.typography.size['body-sm'],   // 14px
+          fontWeight:  tokens.typography.weight.semibold,
+          color:       '#ffffff',
+          lineHeight:  tokens.typography.lineHeight.tight,
+          margin:      0,
         }}
       >
         {text}

@@ -1,5 +1,5 @@
 import { AlignLeft } from 'lucide-react'
-import { foundation, tokens } from '../tokens'
+import { tokens, foundation } from '../tokens'
 import { TooltipIcon } from './TooltipIcon'
 
 // ─── Types ────────────────────────────────────────────────────────────────────
@@ -12,71 +12,71 @@ export interface ExecutiveSummaryProps {
 
 const FONT = "'Plus Jakarta Sans', system-ui, -apple-system, sans-serif"
 
-// Figma: status/green/200 = #DCFCE7 (banner bg)
-// Figma: secondary/caribbean green/700 = #069568 (icon badge bg on light green)
-// Figma: status/green/1000 = #14532D (deep green text — WCAG AA on #DCFCE7)
-const BG        = foundation.color.green[100]  // #DCFCE7
-const ICON_BG   = '#069568'                    // caribbean green/700 — icon badge on light green
-const TEXT      = '#14532D'                    // status/green/1000 — body text
-
 // ─── Component ────────────────────────────────────────────────────────────────
 
 export function ExecutiveSummary({ summaryText }: ExecutiveSummaryProps) {
   return (
     <div
-      className="flex flex-col"
       style={{
-        flex:            1,
-        backgroundColor: BG,
-        border:          `1px solid ${foundation.color.green[200]}`,  // border-green-200
-        borderRadius:    tokens.radius.default,
-        boxShadow:       '0 1px 3px rgba(0,0,0,0.06)',
-        paddingTop:      tokens.spacing.default,
-        paddingBottom:   tokens.spacing.default,
-        paddingLeft:     tokens.spacing['2xl'],
-        paddingRight:    tokens.spacing['2xl'],
-        gap:             tokens.spacing.xs,
+        width:           '100%',
+        backgroundColor: '#F3E8FF',
+        border:          '1px solid #DDD6FE',
+        borderRadius:    foundation.radius['2xl'],  // 16px
+        paddingLeft:     tokens.spacing.xl,
+        paddingRight:    tokens.spacing.xl,
+        paddingTop:      tokens.spacing.lg,
+        paddingBottom:   tokens.spacing.lg,
+        display:         'flex',
+        flexDirection:   'column',
+        gap:             tokens.spacing.sm,
       }}
     >
-      {/* Header row: icon badge + label + tooltip */}
-      <div className="flex flex-row items-center justify-between" style={{ gap: tokens.spacing.sm }}>
+      {/* ── Header row: icon badge + label + tooltip ── */}
+      <div
+        className="flex flex-row items-center justify-between"
+        style={{ gap: tokens.spacing.sm }}
+      >
         <div className="flex flex-row items-center" style={{ gap: tokens.spacing.sm }}>
+          {/* Icon badge */}
           <div
             className="flex items-center justify-center flex-shrink-0"
             style={{
-              width: 28,
-              height: 28,
-              backgroundColor: ICON_BG,
-              borderRadius: tokens.radius.sm,
-              color: '#FFFFFF',
+              width:           32,
+              height:          32,
+              backgroundColor: '#EDE9FE',
+              borderRadius:    tokens.radius.default,
+              color:           '#7C3AED',
             }}
           >
             <AlignLeft size={14} />
           </div>
+
+          {/* Label */}
           <span
             style={{
-              fontFamily: FONT,
-              fontSize: tokens.typography.size['body-sm'],
-              fontWeight: tokens.typography.weight.semibold,
-              color: TEXT,
-              lineHeight: tokens.typography.lineHeight.tight,
+              fontFamily:  FONT,
+              fontSize:    tokens.typography.size['body-sm'],
+              fontWeight:  tokens.typography.weight.semibold,
+              color:       '#7C3AED',
+              lineHeight:  tokens.typography.lineHeight.tight,
             }}
           >
             Executive Summary
           </span>
         </div>
+
         <TooltipIcon text="AI-generated summary of the current media landscape for this program." />
       </div>
 
-      {/* Body text */}
+      {/* ── Body text ── */}
       <p
         style={{
-          fontFamily: FONT,
-          fontSize: tokens.typography.size['body-sm'],
-          fontWeight: tokens.typography.weight.regular,
-          color: tokens.color.text.primary,
-          lineHeight: tokens.typography.lineHeight.normal,
-          margin: 0,
+          fontFamily:  FONT,
+          fontSize:    tokens.typography.size['body-sm'],  // 14px
+          fontWeight:  tokens.typography.weight.regular,
+          color:       '#18191F',
+          lineHeight:  tokens.typography.lineHeight.normal,
+          margin:      0,
         }}
       >
         {summaryText}

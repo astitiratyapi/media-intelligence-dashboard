@@ -9,7 +9,8 @@ import { DistributionAndInfluenceRow } from './components/DistributionAndInfluen
 import { TrendsMovementSection } from './components/TrendsMovementSection'
 import { IssuesNarrativesSection } from './components/IssuesNarrativesSection'
 import { ChannelPerformanceSection } from './components/ChannelPerformanceSection'
-import { BigInsightAndExecRow } from './components/BigInsightAndExecRow'
+import { BigInsight } from './components/BigInsight'
+import { ExecutiveSummary } from './components/ExecutiveSummary'
 import { Facebook, Instagram, Music2 } from 'lucide-react'
 import { tokens } from './tokens'
 
@@ -578,15 +579,13 @@ export default function App() {
             gap: tokens.spacing['2xl'],
           }}
         >
+          <BigInsight text="Awareness meningkat tetapi reputasi menurun akibat lonjakan sentimen negatif" />
           <SituationOverview
             reputationHealth={demoReputationHealth}
             riskLevel={demoRiskLevel}
             actors={demoActors}
           />
-          <BigInsightAndExecRow
-            bigInsight={{ text: 'Awareness meningkat tetapi reputasi menurun akibat lonjakan sentimen negatif' }}
-            executiveSummary={demoExecAndComms.executiveSummary}
-          />
+          <ExecutiveSummary {...demoExecAndComms.executiveSummary} />
           <CommsActionsSection {...demoExecAndComms.commsActions} />
           <KPISection
             {...demoKPI}
