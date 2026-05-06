@@ -1,6 +1,7 @@
 import { AlertTriangle } from 'lucide-react'
 import { tokens, foundation } from '../tokens'
 import { TooltipIcon } from './TooltipIcon'
+import { InsightBadge } from './InsightBadge'
 
 // ─── Constants ────────────────────────────────────────────────────────────────
 
@@ -59,6 +60,7 @@ export interface RiskLevelProps {
   period: { from: string; to: string }
   negativeSentimentPct?: number
   totalMentions?: number
+  insight?: string
 }
 
 function riskToBadgeVariant(level: RiskLevelProps['riskLevel']): BadgeVariant {
@@ -79,6 +81,7 @@ export function RiskLevelCard({
   thresholds,
   negativeSentimentPct,
   totalMentions,
+  insight,
 }: RiskLevelProps) {
   const isWarning  = riskLevel === 'MEDIUM' || riskLevel === 'HIGH' || riskLevel === 'CRITICAL'
 
@@ -234,6 +237,13 @@ export function RiskLevelCard({
                 </li>
               ))}
             </ul>
+          </div>
+        )}
+
+        {/* ── Insight badge — pinned to bottom ── */}
+        {insight && (
+          <div style={{ marginTop: 'auto', paddingTop: tokens.spacing.xs }}>
+            <InsightBadge text={insight} />
           </div>
         )}
       </div>

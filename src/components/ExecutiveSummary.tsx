@@ -24,15 +24,18 @@ const TEXT      = '#14532D'                    // status/green/1000 — body tex
 export function ExecutiveSummary({ summaryText }: ExecutiveSummaryProps) {
   return (
     <div
-      className="w-full flex flex-col"
+      className="flex flex-col"
       style={{
+        flex:            1,
         backgroundColor: BG,
-        borderRadius: tokens.radius.default,
-        paddingTop: tokens.spacing.default,
-        paddingBottom: tokens.spacing.default,
-        paddingLeft: tokens.spacing['2xl'],
-        paddingRight: tokens.spacing['2xl'],
-        gap: tokens.spacing.xs,
+        border:          `1px solid ${foundation.color.green[200]}`,  // border-green-200
+        borderRadius:    tokens.radius.default,
+        boxShadow:       '0 1px 3px rgba(0,0,0,0.06)',
+        paddingTop:      tokens.spacing.default,
+        paddingBottom:   tokens.spacing.default,
+        paddingLeft:     tokens.spacing['2xl'],
+        paddingRight:    tokens.spacing['2xl'],
+        gap:             tokens.spacing.xs,
       }}
     >
       {/* Header row: icon badge + label + tooltip */}

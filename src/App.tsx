@@ -3,14 +3,13 @@ import { Sidebar, defaultNavItems } from './components/Sidebar'
 import { FilterBar } from './components/FilterBar'
 import { Breadcrumb } from './components/Breadcrumb'
 import { SituationOverview } from './components/SituationOverview'
-import { ExecutiveSummary } from './components/ExecutiveSummary'
 import { CommsActionsSection } from './components/CommsActionsSection'
 import { KPISection } from './components/KPISection'
 import { DistributionAndInfluenceRow } from './components/DistributionAndInfluenceRow'
 import { TrendsMovementSection } from './components/TrendsMovementSection'
 import { IssuesNarrativesSection } from './components/IssuesNarrativesSection'
 import { ChannelPerformanceSection } from './components/ChannelPerformanceSection'
-import { BigInsight } from './components/BigInsight'
+import { BigInsightAndExecRow } from './components/BigInsightAndExecRow'
 import { Facebook, Instagram, Music2 } from 'lucide-react'
 import { tokens } from './tokens'
 
@@ -21,6 +20,7 @@ const demoReputationHealth = {
   maxScore: 100,
   previousScore: 70,
   onViewDrivers: () => console.log('View Drivers clicked'),
+  insight: 'Score dropped 21% from the previous period. Immediate communication action is needed.',
 }
 
 const demoRiskLevel = {
@@ -33,10 +33,12 @@ const demoRiskLevel = {
     'Volume volatility (daily spikes)',
   ],
   period: { from: '2016-04-24', to: '2026-04-22' },
+  insight: '25% negative sentiment exceeds threshold. Watch for daily volume spikes.',
 }
 
 const demoActors = {
   subtitle: 'Most mentioned actors in recent coverage',
+  insight: 'BGN and Prabowo Subianto dominate coverage with neutral sentiment.',
   actors: [
     {
       name: 'BGN',
@@ -566,13 +568,15 @@ export default function App() {
             gap: tokens.spacing['2xl'],
           }}
         >
-          <BigInsight text="Awareness meningkat tetapi reputasi menurun akibat lonjakan sentimen negatif" />
           <SituationOverview
             reputationHealth={demoReputationHealth}
             riskLevel={demoRiskLevel}
             actors={demoActors}
           />
-          <ExecutiveSummary {...demoExecAndComms.executiveSummary} />
+          <BigInsightAndExecRow
+            bigInsight={{ text: 'Awareness meningkat tetapi reputasi menurun akibat lonjakan sentimen negatif' }}
+            executiveSummary={demoExecAndComms.executiveSummary}
+          />
           <CommsActionsSection {...demoExecAndComms.commsActions} />
           <KPISection {...demoKPI} />
           <DistributionAndInfluenceRow {...demoDistributionAndInfluence} />

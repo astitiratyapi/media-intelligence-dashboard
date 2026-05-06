@@ -17,20 +17,24 @@ export function BigInsight({ text }: BigInsightProps) {
   return (
     <div
       style={{
-        // 2/3 of parent width, accounting for 1 gap between 3 cards (gap = spacing.lg = 24px)
-        width:           'calc((100% / 3) * 2 + 12px)',
-        backgroundColor: tokens.color.surface.infoSubtle,   // blue[50] = #EFF6FF
-        borderRadius:    foundation.radius['2xl'],           // 16px
+        flex:            1,
+        backgroundColor: tokens.color.surface.infoSubtle,          // blue[50] = #EFF6FF
+        border:          `1px solid ${foundation.color.blue[200]}`, // border-blue-200
+        borderRadius:    foundation.radius['2xl'],                  // 16px
+        boxShadow:       '0 1px 3px rgba(0,0,0,0.06)',
         paddingLeft:     tokens.spacing.xl,
         paddingRight:    tokens.spacing.xl,
         paddingTop:      tokens.spacing.default,
         paddingBottom:   tokens.spacing.default,
+        display:         'flex',
+        flexDirection:   'column',
+        gap:             tokens.spacing.xs,
       }}
     >
       {/* ── Label row ── */}
       <div
         className="flex flex-row items-center"
-        style={{ gap: tokens.spacing.xs, marginBottom: tokens.spacing.xs }}
+        style={{ gap: tokens.spacing.xs }}
       >
         <Zap
           size={13}
@@ -55,8 +59,8 @@ export function BigInsight({ text }: BigInsightProps) {
       <p
         style={{
           fontFamily: FONT,
-          fontSize:   tokens.typography.size['body-sm'],   // 14px
-          fontWeight: tokens.typography.weight.regular,    // normal weight
+          fontSize:   tokens.typography.size['body-sm'],  // 14px
+          fontWeight: tokens.typography.weight.regular,
           color:      tokens.color.text.primary,
           lineHeight: tokens.typography.lineHeight.tight,
           margin:     0,

@@ -1,6 +1,7 @@
 import { Newspaper, Share2, Users } from 'lucide-react'
 import { tokens, foundation } from '../tokens'
 import { TooltipIcon } from './TooltipIcon'
+import { InsightBadge } from './InsightBadge'
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
@@ -19,6 +20,7 @@ export interface Actor {
 export interface ActorsCardProps {
   actors: Actor[]
   subtitle?: string
+  insight?: string
 }
 
 // ─── Constants ────────────────────────────────────────────────────────────────
@@ -181,7 +183,7 @@ function ActorItem({ actor }: { actor: Actor }) {
 
 // ─── ActorsCard ───────────────────────────────────────────────────────────────
 
-export function ActorsCard({ actors, subtitle }: ActorsCardProps) {
+export function ActorsCard({ actors, subtitle, insight }: ActorsCardProps) {
   return (
     <article
       className="flex flex-col flex-1"
@@ -264,6 +266,19 @@ export function ActorsCard({ actors, subtitle }: ActorsCardProps) {
           </div>
         ))}
       </div>
+
+      {/* ── Insight badge ── */}
+      {insight && (
+        <div
+          style={{
+            paddingLeft:   tokens.spacing.md,
+            paddingRight:  tokens.spacing.md,
+            paddingBottom: tokens.spacing.md,
+          }}
+        >
+          <InsightBadge text={insight} />
+        </div>
+      )}
     </article>
   )
 }

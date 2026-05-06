@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { Heart, ChevronRight, TrendingDown, TrendingUp, X } from 'lucide-react'
 import { tokens, foundation } from '../tokens'
 import { TooltipIcon } from './TooltipIcon'
+import { InsightBadge } from './InsightBadge'
 
 // ─── Gauge SVG ────────────────────────────────────────────────────────────────
 
@@ -277,6 +278,7 @@ export interface ReputationHealthProps {
   maxScore?: number
   previousScore: number
   onViewDrivers?: () => void
+  insight?: string
 }
 
 // ─── Component ────────────────────────────────────────────────────────────────
@@ -286,6 +288,7 @@ export function ReputationHealthCard({
   maxScore = 100,
   previousScore,
   onViewDrivers,
+  insight,
 }: ReputationHealthProps) {
   const [isOpen, setIsOpen] = useState(false)
 
@@ -417,6 +420,20 @@ export function ReputationHealthCard({
             <ChevronRight size={12} />
           </button>
         </div>
+
+        {/* ── Insight badge — pinned to bottom ── */}
+        {insight && (
+          <div
+            style={{
+              paddingLeft:   tokens.component.card.contentPaddingX,
+              paddingRight:  tokens.component.card.contentPaddingX,
+              paddingBottom: tokens.spacing.default,
+              marginTop:     'auto',
+            }}
+          >
+            <InsightBadge text={insight} />
+          </div>
+        )}
       </article>
 
       {/* Score Drivers modal */}
