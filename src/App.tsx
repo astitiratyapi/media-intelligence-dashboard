@@ -565,9 +565,9 @@ export default function App() {
           onCustomFromChange={setCustomFrom}
           onCustomToChange={setCustomTo}
           onGenerateNarrative={() => console.log('Generate Narrative')}
-          onDownloadDailyBriefPDF={() => console.log('Download Daily Brief PDF')}
           onDownloadMonthlyPDF={() => console.log('Download Monthly PDF')}
           onDownloadMonthlyPPTX={() => console.log('Download Monthly PPTX')}
+          onDownloadRawDataXLSX={() => alert('Downloading raw data as XLSX...')}
         />
 
         {/* Scrollable main content: flex-col, gap/2xl, padding */}

@@ -136,7 +136,7 @@ export function FilterBar({
   onTimeRangeChange, onTopicChange, onSourceChange, onKeywordChange,
   onCustomFromChange, onCustomToChange,
   onGenerateNarrative,
-  onDownloadDailyBriefPDF, onDownloadMonthlyPDF, onDownloadMonthlyPPTX,
+  onDownloadMonthlyPDF, onDownloadMonthlyPPTX, onDownloadRawDataXLSX,
 }: FilterBarProps) {
   const isCustom = timeRange === 'custom'
 
@@ -210,9 +210,9 @@ export function FilterBar({
         {/* Right: Export + Generate Narrative */}
         <div className="flex flex-row items-center" style={{ gap: tokens.spacing.sm, flexShrink: 0 }}>
           <ExportButton
-            onDownloadDailyBriefPDF={onDownloadDailyBriefPDF}
             onDownloadMonthlyPDF={onDownloadMonthlyPDF}
             onDownloadMonthlyPPTX={onDownloadMonthlyPPTX}
+            onDownloadRawDataXLSX={onDownloadRawDataXLSX}
           />
           <PrimaryButton
             label="Generate Narrative"
