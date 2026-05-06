@@ -84,29 +84,25 @@ export function KPISection({
         </div>
       </div>
 
-      {/* Card row — 4 cards for News, 5 cards for Social Media */}
-      {/* key forces a remount (fade reset) when source changes             */}
+      {/* Card row
+          News   (4): Total Mentions | Share of Voice | Top Issue | Top Region
+          Social (4): Total Mentions | Estimated Reach | Top Accounts | Top Region */}
       <div
         key={selectedSource}
         className="flex flex-row items-stretch"
         style={{
           gap: tokens.spacing.default,
-          // Subtle fade-in on source switch via CSS animation
           animation: 'fadeIn 200ms ease',
         }}
       >
-        {/* Always visible */}
         <TotalMentionsCard {...totalMentions} />
 
-        {/* Social only */}
-        {isSocial && <EstimatedReachCard {...estimatedReach} />}
-
-        {/* News SOV vs Social SOV */}
         {isNews   && <ShareOfVoiceCard {...shareOfVoice}       source="news"   />}
-        {isSocial && <ShareOfVoiceCard {...shareOfVoiceSocial} source="social" />}
+        {isNews   && <TopIssueCard     {...topIssue}                            />}
 
-        {/* Always visible */}
-        <TopIssueCard {...topIssue} />
+        {isSocial && <EstimatedReachCard {...estimatedReach} />}
+        {isSocial && <ShareOfVoiceCard  {...shareOfVoiceSocial} source="social" />}
+
         <TopRegionCard {...topRegion} />
       </div>
     </section>
