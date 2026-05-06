@@ -62,7 +62,7 @@ function SentimentBar({
             style={{
               width: `${posPct}%`,
               height: '100%',
-              backgroundColor: foundation.color.green[500],
+              backgroundColor: foundation.color.green[500],  // #22C55E
               flexShrink: 0,
             }}
           />
@@ -72,7 +72,7 @@ function SentimentBar({
             style={{
               width: `${neuPct}%`,
               height: '100%',
-              backgroundColor: foundation.color.neutral[300],
+              backgroundColor: '#A3C74B',  // yellow-green / lime
               flexShrink: 0,
             }}
           />
@@ -82,7 +82,7 @@ function SentimentBar({
             style={{
               width: `${negPct}%`,
               height: '100%',
-              backgroundColor: foundation.color.red[400],
+              backgroundColor: foundation.color.red[500],   // #EF4444
               flexShrink: 0,
             }}
           />
@@ -96,7 +96,7 @@ function SentimentBar({
             fontFamily: FONT,
             fontSize: tokens.typography.size['body-sm'],
             fontWeight: tokens.typography.weight.medium,
-            color: tokens.color.text.success,
+            color: foundation.color.green[500],  // #22C55E
           }}
         >
           {positive}
@@ -106,7 +106,7 @@ function SentimentBar({
             fontFamily: FONT,
             fontSize: tokens.typography.size['body-sm'],
             fontWeight: tokens.typography.weight.medium,
-            color: tokens.color.text.secondary,
+            color: '#A3C74B',  // yellow-green / lime
           }}
         >
           {neutral}
@@ -116,7 +116,7 @@ function SentimentBar({
             fontFamily: FONT,
             fontSize: tokens.typography.size['body-sm'],
             fontWeight: tokens.typography.weight.medium,
-            color: tokens.color.text.error,
+            color: foundation.color.red[500],   // #EF4444
           }}
         >
           {negative}

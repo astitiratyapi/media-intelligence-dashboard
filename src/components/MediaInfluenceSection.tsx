@@ -26,7 +26,7 @@ const CARD_PADDING = tokens.spacing.xl
 
 const SENTIMENT_COLORS = {
   positif: foundation.color.green[500],   // #22C55E
-  netral:  '#A3C453',                     // yellow-green
+  netral:  '#A3C74B',                     // yellow-green / lime
   negatif: foundation.color.red[500],     // #EF4444
 }
 
