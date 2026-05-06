@@ -414,6 +414,7 @@ const demoIssuesNarratives = {
 const demoExecAndComms = {
   executiveSummary: {
     summaryText: 'Analisis terhadap topik MBG menunjukkan adanya perdebatan sengit seputar implementasi program, mulai dari kualitas makanan, pengawasan, hingga isu pengadaan barang dan dampaknya terhadap perekonomian. Narasi negatif didominasi oleh kekhawatiran akan kualitas dan keamanan makanan, potensi penyalahgunaan anggaran, serta dampak inflasi. Sementara itu, narasi positif menyoroti potensi manfaat program dan upaya pemerintah dalam mengatasi permasalahan. Kontroversi utama berkisar pada standar menu, pengawasan, dan pengadaan motor listrik.',
+    generatedAt: '30 Apr 2026, 15.49',
   },
   commsActions: {
     data: {

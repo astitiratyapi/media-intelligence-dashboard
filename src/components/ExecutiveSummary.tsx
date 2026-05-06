@@ -5,7 +5,8 @@ import { TooltipIcon } from './TooltipIcon'
 // ─── Types ────────────────────────────────────────────────────────────────────
 
 export interface ExecutiveSummaryProps {
-  summaryText: string
+  summaryText:  string
+  generatedAt?: string
 }
 
 // ─── Constants ────────────────────────────────────────────────────────────────
@@ -14,7 +15,7 @@ const FONT = "'Plus Jakarta Sans', system-ui, -apple-system, sans-serif"
 
 // ─── Component ────────────────────────────────────────────────────────────────
 
-export function ExecutiveSummary({ summaryText }: ExecutiveSummaryProps) {
+export function ExecutiveSummary({ summaryText, generatedAt }: ExecutiveSummaryProps) {
   return (
     <div
       style={{
@@ -81,6 +82,20 @@ export function ExecutiveSummary({ summaryText }: ExecutiveSummaryProps) {
       >
         {summaryText}
       </p>
+
+      {/* ── Generated timestamp ── */}
+      {generatedAt && (
+        <span
+          style={{
+            fontFamily:  FONT,
+            fontSize:    tokens.typography.size['label-xs'],
+            color:       tokens.color.text.tertiary,
+            marginTop:   tokens.spacing.xs,
+          }}
+        >
+          Generated: {generatedAt}
+        </span>
+      )}
     </div>
   )
 }
