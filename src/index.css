@@ -74,6 +74,12 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
+/* KPI source-switch fade-in */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(4px); }
+  to   { opacity: 1; transform: translateY(0);   }
+}
+
 /* Thin scrollbar for actors card */
 .overflow-y-auto::-webkit-scrollbar {
   width: 4px;

@@ -92,6 +92,16 @@ const demoKPI = {
     ],
     onClick: () => console.log('Share of Voice clicked'),
   },
+  shareOfVoiceSocial: {
+    sharePercent: 38.2,
+    label: 'Top Accounts',
+    topMedia: [
+      { name: '@badangizinasional.ri', percent: 38.2 },
+      { name: '@bgn.official',         percent: 24.1 },
+      { name: '@giziindonesia',        percent: 18.6 },
+    ],
+    onClick: () => console.log('Share of Voice Social clicked'),
+  },
   topIssue: {
     issue: 'MBG',
     mentions: 344,
@@ -505,7 +515,7 @@ export default function App() {
   // ── Filter state ─────────────────────────────────────────────────────────────
   const [timeRange,   setTimeRange]   = useState('last30')
   const [topic,       setTopic]       = useState('all')
-  const [source,      setSource]      = useState('all')
+  const [source,      setSource]      = useState('news')
   const [keyword,     setKeyword]     = useState('keyword')
   const [customFrom,  setCustomFrom]  = useState('')
   const [customTo,    setCustomTo]    = useState('')
@@ -578,7 +588,10 @@ export default function App() {
             executiveSummary={demoExecAndComms.executiveSummary}
           />
           <CommsActionsSection {...demoExecAndComms.commsActions} />
-          <KPISection {...demoKPI} />
+          <KPISection
+            {...demoKPI}
+            selectedSource={source as 'news' | 'social'}
+          />
           <DistributionAndInfluenceRow {...demoDistributionAndInfluence} />
           <TrendsMovementSection {...demoTrends} />
           <IssuesNarrativesSection {...demoIssuesNarratives} />

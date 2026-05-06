@@ -29,11 +29,13 @@ function SectionIcon({ icon }: { icon: React.ReactNode }) {
 // ─── Props ────────────────────────────────────────────────────────────────────
 
 export interface KPISectionProps {
-  totalMentions: TotalMentionsCardProps
-  estimatedReach: EstimatedReachCardProps
-  shareOfVoice: ShareOfVoiceCardProps
-  topIssue: TopIssueCardProps
-  topRegion: TopRegionCardProps
+  totalMentions:      TotalMentionsCardProps
+  estimatedReach:     EstimatedReachCardProps
+  shareOfVoice:       ShareOfVoiceCardProps        // news — top media outlets
+  shareOfVoiceSocial: ShareOfVoiceCardProps        // social — top accounts
+  topIssue:           TopIssueCardProps
+  topRegion:          TopRegionCardProps
+  selectedSource:     'news' | 'social'
 }
 
 // ─── Component ────────────────────────────────────────────────────────────────
@@ -42,9 +44,14 @@ export function KPISection({
   totalMentions,
   estimatedReach,
   shareOfVoice,
+  shareOfVoiceSocial,
   topIssue,
   topRegion,
+  selectedSource,
 }: KPISectionProps) {
+  const isNews   = selectedSource === 'news'
+  const isSocial = selectedSource === 'social'
+
   return (
     <section
       className="flex flex-col w-full"
@@ -77,13 +84,30 @@ export function KPISection({
         </div>
       </div>
 
-      {/* Single row — all 5 cards, equal width */}
-      <div className="flex flex-row items-stretch" style={{ gap: tokens.spacing.default }}>
-        <TotalMentionsCard  {...totalMentions}  />
-        <EstimatedReachCard {...estimatedReach} />
-        <ShareOfVoiceCard   {...shareOfVoice}   />
-        <TopIssueCard       {...topIssue}        />
-        <TopRegionCard      {...topRegion}       />
+      {/* Card row — 4 cards for News, 5 cards for Social Media */}
+      {/* key forces a remount (fade reset) when source changes             */}
+      <div
+        key={selectedSource}
+        className="flex flex-row items-stretch"
+        style={{
+          gap: tokens.spacing.default,
+          // Subtle fade-in on source switch via CSS animation
+          animation: 'fadeIn 200ms ease',
+        }}
+      >
+        {/* Always visible */}
+        <TotalMentionsCard {...totalMentions} />
+
+        {/* Social only */}
+        {isSocial && <EstimatedReachCard {...estimatedReach} />}
+
+        {/* News SOV vs Social SOV */}
+        {isNews   && <ShareOfVoiceCard {...shareOfVoice}       source="news"   />}
+        {isSocial && <ShareOfVoiceCard {...shareOfVoiceSocial} source="social" />}
+
+        {/* Always visible */}
+        <TopIssueCard {...topIssue} />
+        <TopRegionCard {...topRegion} />
       </div>
     </section>
   )

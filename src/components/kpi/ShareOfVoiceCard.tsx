@@ -7,6 +7,7 @@ export interface ShareOfVoiceCardProps {
   sharePercent: number   // e.g. 5.9
   label?: string
   topMedia: { name: string; percent: number }[]
+  source?: 'news' | 'social'
   onClick?: () => void
 }
 
@@ -20,9 +21,16 @@ export function ShareOfVoiceCard({
   sharePercent,
   label = 'Share of Voice',
   topMedia,
+  source = 'news',
   onClick,
 }: ShareOfVoiceCardProps) {
   const maxPercent = Math.max(...topMedia.map((m) => m.percent), 1)
+  const isSocial   = source === 'social'
+  const tooltipText = isSocial
+    ? 'Top 3 social accounts ranked by engagement share in the selected period.'
+    : 'Top 3 media outlets ranked by volume share in the selected period.'
+  // Social handles are longer — widen the name column
+  const nameColWidth = isSocial ? 104 : 64
 
   return (
     <KPICardBase onClick={onClick}>
@@ -47,7 +55,7 @@ export function ShareOfVoiceCard({
           >
             {sharePercent.toFixed(1)}% share
           </span>
-          <TooltipIcon text="Top 3 media outlets ranked by volume share in the selected period." />
+          <TooltipIcon text={tooltipText} />
         </div>
       </div>
 
@@ -63,7 +71,7 @@ export function ShareOfVoiceCard({
         {label}
       </span>
 
-      {/* Media bar rows — name | bar | percent */}
+      {/* Bar rows — name | bar | percent */}
       <div className="flex flex-col" style={{ gap: tokens.spacing.sm }}>
         {topMedia.slice(0, 3).map((media) => (
           <div
@@ -76,7 +84,7 @@ export function ShareOfVoiceCard({
                 fontFamily: FONT,
                 fontSize: kpiCard.sublabel.fontSize,
                 color: tokens.color.text.secondary,
-                width: 64,
+                width: nameColWidth,
                 flexShrink: 0,
                 overflow: 'hidden',
                 textOverflow: 'ellipsis',

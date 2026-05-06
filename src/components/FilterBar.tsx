@@ -20,7 +20,6 @@ export const topicOptions: FilterOption[] = [
 ]
 
 export const sourceOptions: FilterOption[] = [
-  { value: 'all',    label: 'All Sources'  },
   { value: 'news',   label: 'News'         },
   { value: 'social', label: 'Social Media' },
 ]
