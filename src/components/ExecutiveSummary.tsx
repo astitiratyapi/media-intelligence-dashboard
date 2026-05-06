@@ -66,7 +66,22 @@ export function ExecutiveSummary({ summaryText, generatedAt }: ExecutiveSummaryP
           </span>
         </div>
 
-        <TooltipIcon text="AI-generated summary of the current media landscape for this program." />
+        <div className="flex flex-row items-center" style={{ gap: tokens.spacing.sm }}>
+          {/* Generated timestamp — top right */}
+          {generatedAt && (
+            <span
+              style={{
+                fontFamily: FONT,
+                fontSize:   tokens.typography.size['label-xs'],
+                color:      '#9333EA',
+                opacity:    0.7,
+              }}
+            >
+              Generated: {generatedAt}
+            </span>
+          )}
+          <TooltipIcon text="AI-generated summary of the current media landscape for this program." />
+        </div>
       </div>
 
       {/* ── Body text ── */}
@@ -82,22 +97,6 @@ export function ExecutiveSummary({ summaryText, generatedAt }: ExecutiveSummaryP
       >
         {summaryText}
       </p>
-
-      {/* ── Generated timestamp ── */}
-      {generatedAt && (
-        <span
-          style={{
-            fontFamily: FONT,
-            fontSize:   tokens.typography.size['label-xs'],
-            color:      '#9333EA',   // purple-600 — readable on #F3E8FF bg
-            opacity:    0.7,
-            display:    'block',
-            marginTop:  tokens.spacing.xs,
-          }}
-        >
-          Generated: {generatedAt}
-        </span>
-      )}
     </div>
   )
 }
