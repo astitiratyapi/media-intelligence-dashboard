@@ -10,6 +10,7 @@ import { DistributionAndInfluenceRow } from './components/DistributionAndInfluen
 import { TrendsMovementSection } from './components/TrendsMovementSection'
 import { IssuesNarrativesSection } from './components/IssuesNarrativesSection'
 import { ChannelPerformanceSection } from './components/ChannelPerformanceSection'
+import { BigInsight } from './components/BigInsight'
 import { Facebook, Instagram, Music2 } from 'lucide-react'
 import { tokens } from './tokens'
 
@@ -565,6 +566,7 @@ export default function App() {
             gap: tokens.spacing['2xl'],
           }}
         >
+          <BigInsight text="Awareness meningkat tetapi reputasi menurun akibat lonjakan sentimen negatif" />
           <SituationOverview
             reputationHealth={demoReputationHealth}
             riskLevel={demoRiskLevel}
