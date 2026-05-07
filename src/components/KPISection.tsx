@@ -67,7 +67,6 @@ export function KPISection({
     { key: 'total',  node: <TotalMentionsCard  {...totalMentions}                      /> },
     { key: 'reach',  node: <EstimatedReachCard {...estimatedReach}                     /> },
     { key: 'sov',    node: <ShareOfVoiceCard   {...shareOfVoiceSocial} source="social" /> },
-    { key: 'issue',  node: <TopIssueCard       {...topIssue}                           /> },
     { key: 'region', node: <TopRegionCard      {...topRegion}                          /> },
   ]
 
@@ -107,7 +106,7 @@ export function KPISection({
 
       {/* Card row
           News   (5): Total Mentions | Share of Voice | Tier-1 Mentions | Top Issue | Top Region
-          Social (5): Total Mentions | Estimated Reach | Share of Voice | Top Issue | Top Region */}
+          Social (4): Total Mentions | Estimated Reach | Share of Voice | Top Region */}
       <div
         key={selectedSource}
         className="flex flex-row items-stretch"
