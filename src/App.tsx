@@ -113,8 +113,8 @@ const demoKPI = {
     onClick: () => console.log('Top Issue clicked'),
   },
   topRegion: {
-    region: 'N/A',
-    sublabel: 'Insufficient regional data',
+    region: 'Bogor',
+    sublabel: 'Highest mention volume by city',
   },
 }
 
