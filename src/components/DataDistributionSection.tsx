@@ -175,7 +175,7 @@ function BarRow({
             onMouseEnter={(e) => { (e.currentTarget as HTMLButtonElement).style.opacity = '0.65' }}
             onMouseLeave={(e) => { (e.currentTarget as HTMLButtonElement).style.opacity = '1' }}
           >
-            Lihat Detail
+            See Detail
           </button>
         )}
       </div>
