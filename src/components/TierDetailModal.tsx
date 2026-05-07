@@ -59,7 +59,10 @@ export function TierDetailModal({ title, items, onClose }: TierDetailModalProps)
             flexDirection:  'row',
             alignItems:     'center',
             justifyContent: 'space-between',
-            padding:        `${tokens.spacing.default} ${tokens.spacing.xl}`,
+            paddingTop:     24,
+            paddingBottom:  tokens.spacing.default,
+            paddingLeft:    24,
+            paddingRight:   24,
             flexShrink:     0,
           }}
         >
@@ -152,7 +155,7 @@ export function TierDetailModal({ title, items, onClose }: TierDetailModalProps)
         <div style={{ height: 1, backgroundColor: tokens.color.border.secondary, flexShrink: 0 }} />
 
         {/* ── Scrollable table body ── */}
-        <div style={{ overflowY: 'auto', maxHeight: 400, flexShrink: 1 }}>
+        <div style={{ overflowY: 'auto', maxHeight: 400, flexShrink: 1, paddingBottom: 24 }}>
           {items.map((item, i) => {
             const isLast = i === items.length - 1
             return (
