@@ -103,6 +103,10 @@ const demoKPI = {
     ],
     onClick: () => console.log('Share of Voice Social clicked'),
   },
+  tier1Mentions: {
+    value: 359,
+    sublabel: 'Mentions from Tier-1 media outlets',
+  },
   topIssue: {
     issue: 'MBG',
     mentions: 344,

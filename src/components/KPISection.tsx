@@ -3,6 +3,7 @@ import { tokens } from '../tokens'
 import { TotalMentionsCard, type TotalMentionsCardProps } from './kpi/TotalMentionsCard'
 import { EstimatedReachCard, type EstimatedReachCardProps } from './kpi/EstimatedReachCard'
 import { ShareOfVoiceCard, type ShareOfVoiceCardProps } from './kpi/ShareOfVoiceCard'
+import { Tier1MentionsCard, type Tier1MentionsCardProps } from './kpi/Tier1MentionsCard'
 import { TopIssueCard, type TopIssueCardProps } from './kpi/TopIssueCard'
 import { TopRegionCard, type TopRegionCardProps } from './kpi/TopRegionCard'
 
@@ -33,6 +34,7 @@ export interface KPISectionProps {
   estimatedReach:     EstimatedReachCardProps
   shareOfVoice:       ShareOfVoiceCardProps        // news — top media outlets
   shareOfVoiceSocial: ShareOfVoiceCardProps        // social — top accounts
+  tier1Mentions:      Tier1MentionsCardProps       // news only — Tier-1 outlet count
   topIssue:           TopIssueCardProps
   topRegion:          TopRegionCardProps
   selectedSource:     'news' | 'social'
@@ -45,12 +47,31 @@ export function KPISection({
   estimatedReach,
   shareOfVoice,
   shareOfVoiceSocial,
+  tier1Mentions,
   topIssue,
   topRegion,
   selectedSource,
 }: KPISectionProps) {
-  const isNews   = selectedSource === 'news'
-  const isSocial = selectedSource === 'social'
+  const isNews = selectedSource === 'news'
+
+  // ── Card arrays (5 cards each mode) ───────────────────────────────────────
+  const newsCards = [
+    { key: 'total',  node: <TotalMentionsCard  {...totalMentions}                      /> },
+    { key: 'sov',    node: <ShareOfVoiceCard   {...shareOfVoice}   source="news"       /> },
+    { key: 'tier1',  node: <Tier1MentionsCard  {...tier1Mentions}                      /> },
+    { key: 'issue',  node: <TopIssueCard       {...topIssue}                           /> },
+    { key: 'region', node: <TopRegionCard      {...topRegion}                          /> },
+  ]
+
+  const socialCards = [
+    { key: 'total',  node: <TotalMentionsCard  {...totalMentions}                      /> },
+    { key: 'reach',  node: <EstimatedReachCard {...estimatedReach}                     /> },
+    { key: 'sov',    node: <ShareOfVoiceCard   {...shareOfVoiceSocial} source="social" /> },
+    { key: 'issue',  node: <TopIssueCard       {...topIssue}                           /> },
+    { key: 'region', node: <TopRegionCard      {...topRegion}                          /> },
+  ]
+
+  const cards = isNews ? newsCards : socialCards
 
   return (
     <section
@@ -85,8 +106,8 @@ export function KPISection({
       </div>
 
       {/* Card row
-          News   (4): Total Mentions | Share of Voice | Top Issue | Top Region
-          Social (4): Total Mentions | Estimated Reach | Top Accounts | Top Region */}
+          News   (5): Total Mentions | Share of Voice | Tier-1 Mentions | Top Issue | Top Region
+          Social (5): Total Mentions | Estimated Reach | Share of Voice | Top Issue | Top Region */}
       <div
         key={selectedSource}
         className="flex flex-row items-stretch"
@@ -95,15 +116,11 @@ export function KPISection({
           animation: 'fadeIn 200ms ease',
         }}
       >
-        <TotalMentionsCard {...totalMentions} />
-
-        {isNews   && <ShareOfVoiceCard {...shareOfVoice}       source="news"   />}
-        {isNews   && <TopIssueCard     {...topIssue}                            />}
-
-        {isSocial && <EstimatedReachCard {...estimatedReach} />}
-        {isSocial && <ShareOfVoiceCard  {...shareOfVoiceSocial} source="social" />}
-
-        <TopRegionCard {...topRegion} />
+        {cards.map(({ key, node }) => (
+          <div key={key} className="flex-1 min-w-0" style={{ display: 'flex' }}>
+            {node}
+          </div>
+        ))}
       </div>
     </section>
   )
