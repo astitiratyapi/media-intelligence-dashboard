@@ -593,9 +593,24 @@ export default function App() {
             {...demoKPI}
             selectedSource={source as 'news' | 'social'}
           />
-          <DistributionAndInfluenceRow {...demoDistributionAndInfluence} />
+          <DistributionAndInfluenceRow
+            mediaInfluence={{
+              sentiment: source === 'social'
+                ? demoDistributionAndInfluence.mediaInfluence.sentimentByTab.social
+                : demoDistributionAndInfluence.mediaInfluence.sentimentByTab.media,
+            }}
+            dataDistribution={demoDistributionAndInfluence.dataDistribution}
+          />
           <TrendsMovementSection {...demoTrends} />
-          <IssuesNarrativesSection {...demoIssuesNarratives} />
+          <IssuesNarrativesSection
+            heatmap={{
+              rows: source === 'social'
+                ? demoIssuesNarratives.heatmap.rowsByTab.social
+                : demoIssuesNarratives.heatmap.rowsByTab.news,
+              onCellClick: demoIssuesNarratives.heatmap.onCellClick,
+            }}
+            narratives={demoIssuesNarratives.narratives}
+          />
           <ChannelPerformanceSection {...demoChannelPerformance} />
         </main>
       </div>

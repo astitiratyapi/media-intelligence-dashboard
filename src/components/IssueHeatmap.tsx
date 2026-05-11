@@ -1,23 +1,20 @@
-import { useState } from 'react'
-import { Grid2x2, Globe, MessageCircle } from 'lucide-react'
+import { Grid2x2 } from 'lucide-react'
 import { tokens, foundation } from '../tokens'
 import { TooltipIcon } from './TooltipIcon'
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
-type HeatmapTabId = 'all' | 'news' | 'social'
-
 export interface HeatmapRow {
   issue:    string
   mentions: number
-  pct:      string   // e.g. "47%"
+  pct:      string
   positive: number
   neutral:  number
   negative: number
 }
 
 export interface IssueHeatmapProps {
-  rowsByTab: Record<HeatmapTabId, HeatmapRow[]>
+  rows:         HeatmapRow[]
   onCellClick?: (row: HeatmapRow, field: 'positive' | 'neutral' | 'negative') => void
 }
 
@@ -26,17 +23,7 @@ export interface IssueHeatmapProps {
 const FONT   = "'Plus Jakarta Sans', system-ui, -apple-system, sans-serif"
 const PURPLE = { bg: '#EDE9FE', icon: '#7C3AED' }
 
-const TABS: { id: HeatmapTabId; label: string; icon?: React.ReactNode }[] = [
-  { id: 'all',    label: 'All'    },
-  { id: 'news',   label: 'News',   icon: <Globe          size={13} /> },
-  { id: 'social', label: 'Social', icon: <MessageCircle  size={13} /> },
-]
-
-// ─── Scroll height ────────────────────────────────────────────────────────────
-// thead:     ~40px (sticky header)
-// each row:  10px pad-top + 20px issue-name + 3px gap + 15px mentions + 10px pad-bottom ≈ 58px
-// 7 rows:    7 × 58 = 406px
-// total:     406 + 40 = 446px
+// thead ~40px + each row ~58px × 7 + scroll
 const SCROLL_HEIGHT = 446
 
 // ─── Pill color intensity ─────────────────────────────────────────────────────
@@ -55,14 +42,12 @@ function pillStyle(value: number, max: number, type: 'positive' | 'neutral' | 'n
     return               { bg: foundation.color.green[500], text: '#fff' }
   }
   if (type === 'neutral') {
-    // Yellow scale matching #FACC15 (yellow[400])
     if (r < 0.15) return { bg: foundation.color.yellow[50],  text: foundation.color.yellow[700] }
     if (r < 0.35) return { bg: foundation.color.yellow[100], text: foundation.color.yellow[700] }
     if (r < 0.6 ) return { bg: foundation.color.yellow[200], text: foundation.color.yellow[800] }
     if (r < 0.8 ) return { bg: foundation.color.yellow[400], text: '#fff'                       }
     return               { bg: foundation.color.yellow[500], text: '#fff'                       }
   }
-  // negative
   if (r < 0.15) return { bg: foundation.color.red[50],  text: foundation.color.red[600] }
   if (r < 0.35) return { bg: foundation.color.red[100], text: foundation.color.red[700] }
   if (r < 0.6 ) return { bg: foundation.color.red[200], text: foundation.color.red[800] }
@@ -72,11 +57,9 @@ function pillStyle(value: number, max: number, type: 'positive' | 'neutral' | 'n
 
 // ─── Pill ─────────────────────────────────────────────────────────────────────
 
-function Pill({
-  value, style, onClick,
-}: {
-  value: number
-  style: { bg: string; text: string }
+function Pill({ value, style, onClick }: {
+  value:   number
+  style:   { bg: string; text: string }
   onClick?: () => void
 }) {
   return (
@@ -88,7 +71,7 @@ function Pill({
         justifyContent:  'center',
         backgroundColor: style.bg,
         color:           style.text,
-        borderRadius:    tokens.radius.lg,   // rounded-lg — matches screenshot
+        borderRadius:    tokens.radius.lg,
         fontFamily:      FONT,
         fontSize:        tokens.typography.size['body-sm'],
         fontWeight:      tokens.typography.weight.semibold,
@@ -109,61 +92,22 @@ function Pill({
   )
 }
 
-// ─── Tab bar ──────────────────────────────────────────────────────────────────
-
-function TabBar({ active, onChange }: { active: HeatmapTabId; onChange: (id: HeatmapTabId) => void }) {
-  return (
-    <div className="flex flex-row items-center" style={{ gap: 2 }}>
-      {TABS.map((tab) => {
-        const isActive = tab.id === active
-        return (
-          <button
-            key={tab.id}
-            onClick={() => onChange(tab.id)}
-            className="flex flex-row items-center"
-            style={{
-              fontFamily:      FONT,
-              fontSize:        tokens.typography.size['label-xs'],
-              fontWeight:      isActive ? tokens.typography.weight.bold : tokens.typography.weight.medium,
-              color:           isActive ? tokens.color.text.brand : tokens.color.text.secondary,
-              backgroundColor: isActive ? tokens.color.surface.infoSubtle : 'transparent',
-              border:          isActive ? `1px solid ${tokens.color.border.info}` : '1px solid transparent',
-              borderRadius:    tokens.radius.default,
-              paddingLeft:     tokens.spacing.sm,
-              paddingRight:    tokens.spacing.sm,
-              paddingTop:      4,
-              paddingBottom:   4,
-              gap:             4,
-              cursor:          'pointer',
-              transition:      'all 150ms ease',
-              whiteSpace:      'nowrap',
-            }}
-          >
-            {tab.icon}
-            {tab.label}
-          </button>
-        )
-      })}
-    </div>
-  )
-}
-
 // ─── Column header ────────────────────────────────────────────────────────────
 
 function ColHeader({ label, color }: { label: string; color?: string }) {
   return (
     <th
       style={{
-        fontFamily:     FONT,
-        fontSize:       tokens.typography.size['label-xs'],
-        fontWeight:     tokens.typography.weight.semibold,
-        color:          color ?? tokens.color.text.tertiary,
-        textTransform:  'uppercase',
-        letterSpacing:  '0.07em',
-        padding:        `${tokens.spacing.sm}px ${tokens.spacing.sm}px`,
-        textAlign:      'center',
-        whiteSpace:     'nowrap',
-        borderBottom:   `1px solid ${tokens.color.border.secondary}`,
+        fontFamily:    FONT,
+        fontSize:      tokens.typography.size['label-xs'],
+        fontWeight:    tokens.typography.weight.semibold,
+        color:         color ?? tokens.color.text.tertiary,
+        textTransform: 'uppercase',
+        letterSpacing: '0.07em',
+        padding:       `${tokens.spacing.sm}px ${tokens.spacing.sm}px`,
+        textAlign:     'center',
+        whiteSpace:    'nowrap',
+        borderBottom:  `1px solid ${tokens.color.border.secondary}`,
       }}
     >
       {label}
@@ -173,10 +117,7 @@ function ColHeader({ label, color }: { label: string; color?: string }) {
 
 // ─── Component ────────────────────────────────────────────────────────────────
 
-export function IssueHeatmap({ rowsByTab, onCellClick }: IssueHeatmapProps) {
-  const [activeTab, setActiveTab] = useState<HeatmapTabId>('all')
-  const rows = rowsByTab[activeTab] ?? []
-
+export function IssueHeatmap({ rows, onCellClick }: IssueHeatmapProps) {
   const maxPositive = Math.max(...rows.map((r) => r.positive), 1)
   const maxNeutral  = Math.max(...rows.map((r) => r.neutral),  1)
   const maxNegative = Math.max(...rows.map((r) => r.negative), 1)
@@ -194,7 +135,7 @@ export function IssueHeatmap({ rowsByTab, onCellClick }: IssueHeatmapProps) {
     >
       {/* Card header */}
       <div
-        className="flex flex-row items-center justify-between"
+        className="flex flex-row items-center"
         style={{
           paddingLeft:   tokens.spacing.xl,
           paddingRight:  tokens.spacing.xl,
@@ -205,28 +146,25 @@ export function IssueHeatmap({ rowsByTab, onCellClick }: IssueHeatmapProps) {
           flexShrink:    0,
         }}
       >
-        <div className="flex flex-row items-center" style={{ gap: tokens.spacing.sm }}>
-          <div
-            className="flex items-center justify-center flex-shrink-0"
-            style={{ width: 32, height: 32, backgroundColor: PURPLE.bg, borderRadius: tokens.radius.lg, color: PURPLE.icon }}
-            aria-hidden="true"
-          >
-            <Grid2x2 size={16} />
-          </div>
-          <div className="flex flex-col" style={{ gap: 2 }}>
-            <span style={{ fontFamily: FONT, fontSize: tokens.typography.size['body-md'], fontWeight: tokens.typography.weight.bold, color: tokens.color.text.primary }}>
-              Issue Heatmap
-            </span>
-            <span style={{ fontFamily: FONT, fontSize: tokens.typography.size['label-xs'], color: tokens.color.text.tertiary }}>
-              Issue × Sentiment — click a cell to filter
-            </span>
-          </div>
-          <TooltipIcon text="Sentiment breakdown per issue — positive, neutral, and negative counts." />
+        <div
+          className="flex items-center justify-center flex-shrink-0"
+          style={{ width: 32, height: 32, backgroundColor: PURPLE.bg, borderRadius: tokens.radius.lg, color: PURPLE.icon }}
+          aria-hidden="true"
+        >
+          <Grid2x2 size={16} />
         </div>
-        <TabBar active={activeTab} onChange={setActiveTab} />
+        <div className="flex flex-col" style={{ gap: 2 }}>
+          <span style={{ fontFamily: FONT, fontSize: tokens.typography.size['body-md'], fontWeight: tokens.typography.weight.bold, color: tokens.color.text.primary }}>
+            Issue Heatmap
+          </span>
+          <span style={{ fontFamily: FONT, fontSize: tokens.typography.size['label-xs'], color: tokens.color.text.tertiary }}>
+            Issue × Sentiment — click a cell to filter
+          </span>
+        </div>
+        <TooltipIcon text="Sentiment breakdown per issue — positive, neutral, and negative counts." />
       </div>
 
-      {/* Table — fixed height shows 7 rows, scroll for the rest */}
+      {/* Table — fixed height, scrollable */}
       <div
         style={{
           height:         SCROLL_HEIGHT,
@@ -238,25 +176,23 @@ export function IssueHeatmap({ rowsByTab, onCellClick }: IssueHeatmapProps) {
         <table style={{ width: '100%', borderCollapse: 'collapse' }}>
           <thead style={{ position: 'sticky', top: 0, backgroundColor: tokens.component.card.bg, zIndex: 1 }}>
             <tr>
-              {/* Row number col */}
               <th style={{
                 width:        32,
                 padding:      `${tokens.spacing.sm}px ${tokens.spacing.sm}px ${tokens.spacing.sm}px ${tokens.spacing.xl}px`,
                 borderBottom: `1px solid ${tokens.color.border.secondary}`,
               }} />
-              {/* Issue / Topic */}
               <th
                 style={{
-                  fontFamily:   FONT,
-                  fontSize:     tokens.typography.size['label-xs'],
-                  fontWeight:   tokens.typography.weight.semibold,
-                  color:        tokens.color.text.tertiary,
-                  textTransform:'uppercase',
-                  letterSpacing:'0.07em',
-                  padding:      `${tokens.spacing.sm}px ${tokens.spacing.sm}px`,
-                  textAlign:    'left',
-                  borderBottom: `1px solid ${tokens.color.border.secondary}`,
-                  whiteSpace:   'nowrap',
+                  fontFamily:    FONT,
+                  fontSize:      tokens.typography.size['label-xs'],
+                  fontWeight:    tokens.typography.weight.semibold,
+                  color:         tokens.color.text.tertiary,
+                  textTransform: 'uppercase',
+                  letterSpacing: '0.07em',
+                  padding:       `${tokens.spacing.sm}px ${tokens.spacing.sm}px`,
+                  textAlign:     'left',
+                  borderBottom:  `1px solid ${tokens.color.border.secondary}`,
+                  whiteSpace:    'nowrap',
                 }}
               >
                 Issue / Topic
@@ -270,84 +206,33 @@ export function IssueHeatmap({ rowsByTab, onCellClick }: IssueHeatmapProps) {
             {rows.map((row, i) => (
               <tr
                 key={`${row.issue}-${i}`}
-                style={{
-                  backgroundColor: i % 2 === 1 ? tokens.color.surface.secondary : 'transparent',
-                }}
+                style={{ backgroundColor: i % 2 === 1 ? tokens.color.surface.secondary : 'transparent' }}
               >
-                {/* Row number */}
-                <td
-                  style={{
-                    padding:   `${tokens.spacing.sm}px ${tokens.spacing.sm}px ${tokens.spacing.sm}px ${tokens.spacing.xl}px`,
-                    verticalAlign: 'middle',
-                    width:     32,
-                  }}
-                >
-                  <span
-                    style={{
-                      fontFamily: FONT,
-                      fontSize:   tokens.typography.size['label-xs'],
-                      color:      tokens.color.text.tertiary,
-                      fontWeight: tokens.typography.weight.medium,
-                    }}
-                  >
+                <td style={{ padding: `${tokens.spacing.sm}px ${tokens.spacing.sm}px ${tokens.spacing.sm}px ${tokens.spacing.xl}px`, verticalAlign: 'middle', width: 32 }}>
+                  <span style={{ fontFamily: FONT, fontSize: tokens.typography.size['label-xs'], color: tokens.color.text.tertiary, fontWeight: tokens.typography.weight.medium }}>
                     {i + 1}
                   </span>
                 </td>
 
-                {/* Issue name + mentions/pct */}
                 <td style={{ padding: `${tokens.spacing.sm}px ${tokens.spacing.sm}px` }}>
                   <div className="flex flex-col" style={{ gap: 2, minWidth: 0 }}>
-                    <span
-                      style={{
-                        fontFamily:   FONT,
-                        fontSize:     tokens.typography.size['body-sm'],
-                        fontWeight:   tokens.typography.weight.bold,
-                        color:        tokens.color.text.primary,
-                        overflow:     'hidden',
-                        textOverflow: 'ellipsis',
-                        whiteSpace:   'nowrap',
-                      }}
-                    >
+                    <span style={{ fontFamily: FONT, fontSize: tokens.typography.size['body-sm'], fontWeight: tokens.typography.weight.bold, color: tokens.color.text.primary, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
                       {row.issue}
                     </span>
-                    <span
-                      style={{
-                        fontFamily: FONT,
-                        fontSize:   tokens.typography.size['label-xs'],
-                        color:      tokens.color.text.tertiary,
-                        whiteSpace: 'nowrap',
-                      }}
-                    >
+                    <span style={{ fontFamily: FONT, fontSize: tokens.typography.size['label-xs'], color: tokens.color.text.tertiary, whiteSpace: 'nowrap' }}>
                       {row.mentions.toLocaleString()} mentions ({row.pct})
                     </span>
                   </div>
                 </td>
 
-                {/* Positive */}
                 <td style={{ textAlign: 'center', padding: `${tokens.spacing.xs}px ${tokens.spacing.sm}px` }}>
-                  <Pill
-                    value={row.positive}
-                    style={pillStyle(row.positive, maxPositive, 'positive')}
-                    onClick={onCellClick ? () => onCellClick(row, 'positive') : undefined}
-                  />
+                  <Pill value={row.positive} style={pillStyle(row.positive, maxPositive, 'positive')} onClick={onCellClick ? () => onCellClick(row, 'positive') : undefined} />
                 </td>
-
-                {/* Neutral */}
                 <td style={{ textAlign: 'center', padding: `${tokens.spacing.xs}px ${tokens.spacing.sm}px` }}>
-                  <Pill
-                    value={row.neutral}
-                    style={pillStyle(row.neutral, maxNeutral, 'neutral')}
-                    onClick={onCellClick ? () => onCellClick(row, 'neutral') : undefined}
-                  />
+                  <Pill value={row.neutral}  style={pillStyle(row.neutral,  maxNeutral,  'neutral')}  onClick={onCellClick ? () => onCellClick(row, 'neutral')  : undefined} />
                 </td>
-
-                {/* Negative */}
                 <td style={{ textAlign: 'center', padding: `${tokens.spacing.xs}px ${tokens.spacing.sm}px` }}>
-                  <Pill
-                    value={row.negative}
-                    style={pillStyle(row.negative, maxNegative, 'negative')}
-                    onClick={onCellClick ? () => onCellClick(row, 'negative') : undefined}
-                  />
+                  <Pill value={row.negative} style={pillStyle(row.negative, maxNegative, 'negative')} onClick={onCellClick ? () => onCellClick(row, 'negative') : undefined} />
                 </td>
               </tr>
             ))}
