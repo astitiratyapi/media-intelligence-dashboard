@@ -1,4 +1,4 @@
-import { Filter, Calendar, Hash, Globe, SlidersHorizontal, Sparkles } from 'lucide-react'
+import { Filter, Calendar, Hash, Globe, Sparkles } from 'lucide-react'
 import { tokens, foundation } from '../tokens'
 import { ExportButton, type ExportButtonProps } from './ExportButton'
 import { FilterDropdown, type FilterOption } from './FilterDropdown'
@@ -113,16 +113,14 @@ function PrimaryButton({ label, icon, onClick }: { label: string; icon?: React.R
 // ─── Props ────────────────────────────────────────────────────────────────────
 
 export interface FilterBarProps extends ExportButtonProps {
-  timeRange:          string
-  topic:              string
-  source:             string
-  keyword:            string
-  customFrom?:        string
-  customTo?:          string
-  onTimeRangeChange:  (v: string) => void
-  onTopicChange:      (v: string) => void
-  onSourceChange:     (v: string) => void
-  onKeywordChange:    (v: string) => void
+  timeRange:           string
+  topic:               string
+  source:              string
+  customFrom?:         string
+  customTo?:           string
+  onTimeRangeChange:   (v: string) => void
+  onTopicChange:       (v: string) => void
+  onSourceChange:      (v: string) => void
   onCustomFromChange?: (v: string) => void
   onCustomToChange?:   (v: string) => void
   onGenerateNarrative?: () => void
@@ -131,9 +129,9 @@ export interface FilterBarProps extends ExportButtonProps {
 // ─── Component ────────────────────────────────────────────────────────────────
 
 export function FilterBar({
-  timeRange, topic, source, keyword,
+  timeRange, topic, source,
   customFrom = '', customTo = '',
-  onTimeRangeChange, onTopicChange, onSourceChange, onKeywordChange,
+  onTimeRangeChange, onTopicChange, onSourceChange,
   onCustomFromChange, onCustomToChange,
   onGenerateNarrative,
   onDownloadMonthlyPDF, onDownloadMonthlyPPTX, onDownloadRawDataXLSX,
@@ -197,13 +195,6 @@ export function FilterBar({
             options={sourceOptions}
             value={source}
             onChange={onSourceChange}
-          />
-          <FilterDropdown
-            icon={<SlidersHorizontal size={14} />}
-            label="Keyword"
-            options={keywordOptions}
-            value={keyword}
-            onChange={onKeywordChange}
           />
         </div>
 

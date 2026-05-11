@@ -522,7 +522,6 @@ export default function App() {
   const [timeRange,   setTimeRange]   = useState('last30')
   const [topic,       setTopic]       = useState('all')
   const [source,      setSource]      = useState('news')
-  const [keyword,     setKeyword]     = useState('keyword')
   const [customFrom,  setCustomFrom]  = useState('')
   const [customTo,    setCustomTo]    = useState('')
 
@@ -561,13 +560,11 @@ export default function App() {
           timeRange={timeRange}
           topic={topic}
           source={source}
-          keyword={keyword}
           customFrom={customFrom}
           customTo={customTo}
           onTimeRangeChange={setTimeRange}
           onTopicChange={setTopic}
           onSourceChange={setSource}
-          onKeywordChange={setKeyword}
           onCustomFromChange={setCustomFrom}
           onCustomToChange={setCustomTo}
           onGenerateNarrative={() => console.log('Generate Narrative')}
