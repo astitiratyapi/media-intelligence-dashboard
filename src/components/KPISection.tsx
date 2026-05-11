@@ -64,10 +64,10 @@ export function KPISection({
   ]
 
   const socialCards = [
-    { key: 'total',  node: <TotalMentionsCard  {...totalMentions}                      /> },
-    { key: 'reach',  node: <EstimatedReachCard {...estimatedReach}                     /> },
-    { key: 'sov',    node: <ShareOfVoiceCard   {...shareOfVoiceSocial} source="social" /> },
-    { key: 'region', node: <TopRegionCard      {...topRegion}                          /> },
+    { key: 'total', node: <TotalMentionsCard  {...totalMentions}                      /> },
+    { key: 'reach', node: <EstimatedReachCard {...estimatedReach}                     /> },
+    { key: 'sov',   node: <ShareOfVoiceCard   {...shareOfVoiceSocial} source="social" /> },
+    { key: 'issue', node: <TopIssueCard       {...topIssue}                           /> },
   ]
 
   const cards = isNews ? newsCards : socialCards
