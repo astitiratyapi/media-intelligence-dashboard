@@ -13,9 +13,16 @@ import { tokens, foundation } from '../tokens'
 // ─── Types ────────────────────────────────────────────────────────────────────
 
 export interface AllScrapedDataPoint {
-  date: string   // ISO date e.g. "2024-02-04"
-  news: number
-  social: number
+  date:           string   // ISO date e.g. "2024-02-04"
+  news:           number
+  social:         number
+  // per-sentiment breakdowns (used by TrendsMovementSection filter)
+  newsPositif?:   number
+  newsNetral?:    number
+  newsNegatif?:   number
+  socialPositif?: number
+  socialNetral?:  number
+  socialNegatif?: number
 }
 
 export interface AllScrapedChartProps {

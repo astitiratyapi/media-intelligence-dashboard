@@ -257,69 +257,40 @@ const demoChannelPerformance = {
 
 // ─── Demo Trends & Movement data ─────────────────────────────────────────────
 
+// Sentiment split ratios: positif ≈ 11%, netral ≈ 63%, negatif ≈ 24% (matches Media Influence)
 const demoTrends = {
   allScrapedData: [
-    { date: '2023-12-17', news: 8,  social: 4  },
-    { date: '2023-12-24', news: 12, social: 6  },
-    { date: '2023-12-31', news: 6,  social: 3  },
-    { date: '2024-01-07', news: 14, social: 8  },
-    { date: '2024-01-14', news: 20, social: 12 },
-    { date: '2024-01-21', news: 18, social: 10 },
-    { date: '2024-01-28', news: 24, social: 16 },
-    { date: '2024-02-04', news: 28, social: 18 },
-    { date: '2024-02-11', news: 22, social: 14 },
-    { date: '2024-02-18', news: 16, social: 10 },
-    { date: '2024-02-25', news: 20, social: 12 },
-    { date: '2024-03-03', news: 26, social: 17 },
-    { date: '2024-03-10', news: 30, social: 20 },
-    { date: '2024-03-17', news: 24, social: 15 },
-    { date: '2024-03-24', news: 18, social: 11 },
-    { date: '2024-03-31', news: 22, social: 13 },
-    { date: '2024-04-07', news: 28, social: 18 },
-    { date: '2024-04-14', news: 32, social: 22 },
-    { date: '2024-04-21', news: 26, social: 16 },
+    { date: '2026-04-12', news: 8,  social: 4,  newsPositif: 1, newsNetral: 5,  newsNegatif: 2,  socialPositif: 0, socialNetral: 3,  socialNegatif: 1 },
+    { date: '2026-04-13', news: 12, social: 6,  newsPositif: 1, newsNetral: 8,  newsNegatif: 3,  socialPositif: 1, socialNetral: 4,  socialNegatif: 1 },
+    { date: '2026-04-14', news: 6,  social: 3,  newsPositif: 1, newsNetral: 4,  newsNegatif: 1,  socialPositif: 0, socialNetral: 2,  socialNegatif: 1 },
+    { date: '2026-04-15', news: 14, social: 8,  newsPositif: 2, newsNetral: 9,  newsNegatif: 3,  socialPositif: 1, socialNetral: 5,  socialNegatif: 2 },
+    { date: '2026-04-16', news: 20, social: 12, newsPositif: 2, newsNetral: 13, newsNegatif: 5,  socialPositif: 1, socialNetral: 8,  socialNegatif: 3 },
+    { date: '2026-04-17', news: 18, social: 10, newsPositif: 2, newsNetral: 11, newsNegatif: 5,  socialPositif: 1, socialNetral: 6,  socialNegatif: 3 },
+    { date: '2026-04-18', news: 24, social: 16, newsPositif: 3, newsNetral: 15, newsNegatif: 6,  socialPositif: 2, socialNetral: 10, socialNegatif: 4 },
+    { date: '2026-04-19', news: 28, social: 18, newsPositif: 3, newsNetral: 18, newsNegatif: 7,  socialPositif: 2, socialNetral: 11, socialNegatif: 5 },
+    { date: '2026-04-20', news: 22, social: 14, newsPositif: 2, newsNetral: 14, newsNegatif: 6,  socialPositif: 2, socialNetral: 9,  socialNegatif: 3 },
+    { date: '2026-04-21', news: 16, social: 10, newsPositif: 2, newsNetral: 10, newsNegatif: 4,  socialPositif: 1, socialNetral: 6,  socialNegatif: 3 },
+    { date: '2026-04-22', news: 20, social: 12, newsPositif: 2, newsNetral: 13, newsNegatif: 5,  socialPositif: 1, socialNetral: 8,  socialNegatif: 3 },
+    { date: '2026-04-23', news: 26, social: 17, newsPositif: 3, newsNetral: 16, newsNegatif: 7,  socialPositif: 2, socialNetral: 11, socialNegatif: 4 },
+    { date: '2026-04-24', news: 30, social: 20, newsPositif: 3, newsNetral: 19, newsNegatif: 8,  socialPositif: 2, socialNetral: 13, socialNegatif: 5 },
+    { date: '2026-04-25', news: 24, social: 15, newsPositif: 3, newsNetral: 15, newsNegatif: 6,  socialPositif: 2, socialNetral: 10, socialNegatif: 3 },
+    { date: '2026-04-26', news: 18, social: 11, newsPositif: 2, newsNetral: 11, newsNegatif: 5,  socialPositif: 1, socialNetral: 7,  socialNegatif: 3 },
+    { date: '2026-04-27', news: 22, social: 13, newsPositif: 2, newsNetral: 14, newsNegatif: 6,  socialPositif: 1, socialNetral: 8,  socialNegatif: 4 },
+    { date: '2026-04-28', news: 28, social: 18, newsPositif: 3, newsNetral: 18, newsNegatif: 7,  socialPositif: 2, socialNetral: 11, socialNegatif: 5 },
+    { date: '2026-04-29', news: 32, social: 22, newsPositif: 4, newsNetral: 20, newsNegatif: 8,  socialPositif: 2, socialNetral: 14, socialNegatif: 6 },
+    { date: '2026-04-30', news: 26, social: 16, newsPositif: 3, newsNetral: 16, newsNegatif: 7,  socialPositif: 2, socialNetral: 10, socialNegatif: 4 },
+    { date: '2026-05-01', news: 20, social: 14, newsPositif: 2, newsNetral: 13, newsNegatif: 5,  socialPositif: 2, socialNetral: 9,  socialNegatif: 3 },
+    { date: '2026-05-02', news: 24, social: 16, newsPositif: 3, newsNetral: 15, newsNegatif: 6,  socialPositif: 2, socialNetral: 10, socialNegatif: 4 },
+    { date: '2026-05-03', news: 18, social: 10, newsPositif: 2, newsNetral: 11, newsNegatif: 5,  socialPositif: 1, socialNetral: 6,  socialNegatif: 3 },
+    { date: '2026-05-04', news: 14, social: 8,  newsPositif: 2, newsNetral: 9,  newsNegatif: 3,  socialPositif: 1, socialNetral: 5,  socialNegatif: 2 },
+    { date: '2026-05-05', news: 22, social: 14, newsPositif: 2, newsNetral: 14, newsNegatif: 6,  socialPositif: 2, socialNetral: 9,  socialNegatif: 3 },
+    { date: '2026-05-06', news: 28, social: 18, newsPositif: 3, newsNetral: 18, newsNegatif: 7,  socialPositif: 2, socialNetral: 11, socialNegatif: 5 },
+    { date: '2026-05-07', news: 34, social: 24, newsPositif: 4, newsNetral: 21, newsNegatif: 9,  socialPositif: 3, socialNetral: 15, socialNegatif: 6 },
+    { date: '2026-05-08', news: 30, social: 20, newsPositif: 3, newsNetral: 19, newsNegatif: 8,  socialPositif: 2, socialNetral: 13, socialNegatif: 5 },
+    { date: '2026-05-09', news: 26, social: 17, newsPositif: 3, newsNetral: 16, newsNegatif: 7,  socialPositif: 2, socialNetral: 11, socialNegatif: 4 },
+    { date: '2026-05-10', news: 22, social: 15, newsPositif: 2, newsNetral: 14, newsNegatif: 6,  socialPositif: 2, socialNetral: 9,  socialNegatif: 4 },
+    { date: '2026-05-11', news: 18, social: 12, newsPositif: 2, newsNetral: 11, newsNegatif: 5,  socialPositif: 1, socialNetral: 8,  socialNegatif: 3 },
   ],
-  coverageData: [
-    { date: '2023-12-28', value: 10 },
-    { date: '2024-01-07', value: 22 },
-    { date: '2024-01-14', value: 35 },
-    { date: '2024-01-21', value: 28 },
-    { date: '2024-01-28', value: 45 },
-    { date: '2024-02-04', value: 55 },
-    { date: '2024-02-11', value: 40 },
-    { date: '2024-02-18', value: 30 },
-    { date: '2024-02-25', value: 38 },
-    { date: '2024-03-03', value: 50 },
-    { date: '2024-03-10', value: 60 },
-    { date: '2024-03-17', value: 48 },
-    { date: '2024-03-24', value: 35 },
-    { date: '2024-03-31', value: 42 },
-    { date: '2024-04-07', value: 52 },
-    { date: '2024-04-14', value: 58 },
-    { date: '2024-04-21', value: 44 },
-  ],
-  negativeData: [
-    { date: '2023-12-25', value: 2  },
-    { date: '2024-01-01', value: 4  },
-    { date: '2024-01-08', value: 8  },
-    { date: '2024-01-15', value: 6  },
-    { date: '2024-01-22', value: 12 },
-    { date: '2024-01-29', value: 18 },
-    { date: '2024-02-05', value: 14 },
-    { date: '2024-02-12', value: 10 },
-    { date: '2024-02-19', value: 7  },
-    { date: '2024-02-26', value: 9  },
-    { date: '2024-03-04', value: 15 },
-    { date: '2024-03-11', value: 22 },
-    { date: '2024-03-18', value: 16 },
-    { date: '2024-03-25', value: 10 },
-    { date: '2024-04-01', value: 13 },
-    { date: '2024-04-08', value: 20 },
-    { date: '2024-04-14', value: 17 },
-  ],
-  coveragePeriod: '2016-04-24 to 2026-04-22',
-  onNegativeSpikeClick: (point: { date: string; value: number }) =>
-    console.log('Spike clicked:', point),
 }
 
 // ─── Demo Issues & Narratives data ───────────────────────────────────────────
@@ -601,7 +572,7 @@ export default function App() {
             }}
             dataDistribution={demoDistributionAndInfluence.dataDistribution}
           />
-          <TrendsMovementSection {...demoTrends} />
+          <TrendsMovementSection allScrapedData={demoTrends.allScrapedData} />
           <IssuesNarrativesSection
             heatmap={{
               rows: source === 'social'
